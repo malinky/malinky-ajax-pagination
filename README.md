@@ -1,2 +1,2 @@
-# malinky-wp-ajax-paging
+# Wordpress Ajax Paging
 Wordpress Ajax Paging
