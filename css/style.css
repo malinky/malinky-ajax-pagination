@@ -1,0 +1,6 @@
+.malinky-ajax-paging-loading {
+    display: none;
+    height: 100px;
+    background: url(../img/loader.gif) 50% no-repeat;
+    background-size: 50px;
+}
