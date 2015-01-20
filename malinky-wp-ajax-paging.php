@@ -8,7 +8,12 @@
  * Author URI: https://github.com/malinky
  * License: GPL2
  *
- * Notes: Add malinky-ajax-paging-content to the main div where content will be added.
+ * Notes: Need to add .malinky-ajax-paging-content to the main div where content will be added or create a setting
+ * for this and then pass into main.js during localize script.
+ * Also need to know the holder for the added content, for example <article> in content.php loop. This is due to the use
+ * of inline-block. The content in main.js is added using .after() as .append() adds whitespace and therefore we need to know
+ * <article to the add the content after the :last-child of the other setting .malinky-ajax-paging-content.
+ * Finally need the holding div for the original pagination .posts-pagination. This is removed and a new button and loading div added.
  */
 
 class Malinky_Ajax_Paging
@@ -110,18 +115,24 @@ class Malinky_Ajax_Paging
 	public function malinky_ajax_paging_submit()
 	{
 
-		$current_page 	= isset( $_POST['mapNextPage'] ) ? $_POST['mapNextPage'] : 1;
-		$current_query 	= isset( $_POST['mapQuery'] ) ? $_POST['mapQuery'] : false;
+		$current_page 	= isset( $_GET['mapNextPage'] ) ? $_GET['mapNextPage'] : 1;
+		$current_query 	= isset( $_GET['mapQuery'] ) ? $_GET['mapQuery'] : false;
 
 		$malinky_ajax_paging_wp_query = malinky_ajax_paging_wp_query( $current_page, $current_query );
 		
+		/**
+		 * Debugging.
+		 * echo json_encode( $malinky_ajax_paging_wp_query );
+		 * exit;
+		 */
+
 		ob_start();
 
 		while ( $malinky_ajax_paging_wp_query->have_posts() ) : $malinky_ajax_paging_wp_query->the_post();
 			
 			get_template_part( 'content', get_post_format() );
 
-		endwhile; //end loop.
+		endwhile;
 
 		$result['malinky_ajax_paging_posts'] = ob_get_clean();
 

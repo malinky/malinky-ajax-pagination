@@ -49,13 +49,18 @@ jQuery(document).ready(function($){
          * the use of display: inline-block.
          */
         $.ajax({
-                type:       'POST',
+                type:       'GET',
                 url:        malinky_ajax_paging.ajaxurl,
                 data:       data,
                 success:    function(response) {
 
                                 var result = $.parseJSON(response);
 
+                                /**
+                                 * Debug result, also set in malinky_ajax_paging_submit() and malinky_ajax_paging_wp_query().
+                                 * console.log(result);
+                                 */ 
+                                
                                 $('.malinky-ajax-paging-content article:last-child').after(result.malinky_ajax_paging_posts);
 
                                 /**
