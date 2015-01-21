@@ -58,7 +58,7 @@ if ( ! function_exists( 'malinky_ajax_paging_wp_query' ) ) {
 		 * return $args;
 		 */
 
-		return new WP_Query($args);
+		return new WP_Query( $args );
 
 	}
 
