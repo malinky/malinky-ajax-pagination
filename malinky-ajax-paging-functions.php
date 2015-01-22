@@ -4,10 +4,9 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
 
 	/**
 	 * Check if current page is the blog home page, archive or single.
-	 * Archive includes category, tag, date, author pages.
-	 * The function excludes CPT to just use native blog/posts.
+	 * Archive includes category, tag, date, author pages, custom post types.
 	 *
-	 * @param bool $single Whether to include is_single()
+	 * @param bool $single Include is_single()
 	 *
 	 * @return bool
 	 */
@@ -16,12 +15,10 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
 
 	    global $post;
 
-	    $post_type = get_post_type($post);
-
 	    if ( ! $single ) 
-	    	return ( ( is_home() || is_archive() ) && ( $post_type == 'post' ) );
+	    	return ( is_home() || is_archive() );
 
-	    return ( ( is_home() || is_archive() || is_single() ) && ( $post_type == 'post' ) );
+	    return ( is_home() || is_archive() || is_single() );
 
 	}
 
