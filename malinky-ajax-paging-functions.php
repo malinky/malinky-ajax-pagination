@@ -28,7 +28,10 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
 if ( ! function_exists( 'malinky_ajax_paging_wp_query' ) ) {
 
 	/**
+	 * New WP_Query
 	 *
+	 * @param int $current_page The current page number
+	 * @param arr $current_query The current query taken from $wp_query->query
 	 */
 	function malinky_ajax_paging_wp_query( $current_page, $current_query )
 	{
