@@ -15,7 +15,7 @@
  * <article to the add the content after the :last-child of the other setting .malinky-ajax-paging-content.
  * Finally need the holding div for the original pagination .posts-pagination. This is removed and a new button and
  * loading div added.
- * Uses content.php template part in theme and optional content-custom-post-type.php template part if on a CPT 
+ * Uses content.php template part in theme and optional content-$posttype.php template part if on a CPT 
  * the template exists.
  */
 
