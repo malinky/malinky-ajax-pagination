@@ -23,7 +23,7 @@ jQuery(document).ready(function($){
     {
 
         $('.posts-pagination').empty();
-        $('.posts-pagination').append('<a href="' + mapNextPageUrl + '" class="ajax-paging-load-more-button button full-width">More Projects</a>');
+        $('.posts-pagination').append('<a href="' + mapNextPageUrl + '" class="ajax-paging-load-more-button button full-width">Load More</a>');
         $('.posts-pagination').before('<div class="malinky-ajax-paging-loading"></div>');
         
     }
@@ -99,7 +99,7 @@ jQuery(document).ready(function($){
     function mapLoading()
     {
 
-        $('.ajax-paging-load-more-button').text('Loading Projects');
+        $('.ajax-paging-load-more-button').text('Loading...');
         $('.malinky-ajax-paging-loading').show();
 
     }
@@ -111,7 +111,7 @@ jQuery(document).ready(function($){
     function mapLoaded()
     {
 
-        $('.ajax-paging-load-more-button').text('More Projects');
+        $('.ajax-paging-load-more-button').text('Load More');
         $('.malinky-ajax-paging-loading').hide();
 
     }    
