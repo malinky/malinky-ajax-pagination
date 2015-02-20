@@ -1,0 +1,23 @@
+{
+  "name": "malinky-wp-ajax-modal",
+  "version": "1.0.0",
+  "description": "Wordpress Ajax Modal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/malinky/malinky-wp-ajax-modal.git"
+  },
+  "author": "Craig Ramsay",
+  "license": "GNU General Public License v2 or later",
+  "bugs": {
+    "url": "https://github.com/malinky/malinky-wp-ajax-modal/issues"
+  },
+  "homepage": "https://github.com/malinky/malinky-wp-ajax-modal",
+  "devDependencies": {
+    "del": "^1.1.0",
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-sourcemaps": "^1.2.8",
+    "gulp-uglify": "^1.0.2",
+    "run-sequence": "^1.0.2"
+  }
+}
