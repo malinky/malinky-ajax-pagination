@@ -57,24 +57,28 @@ class Malinky_Ajax_Paging
 	public function malinky_ajax_paging_styles()
 	{
 
-		/**
-		 * Conditional load on blog pages only and not singles.
-		 */
-		if ( malinky_is_blog_page( false ) ) {
+		//if ( WP_ENV != 'dev' && WP_ENV != 'prod' ) {
 
 			/**
-			 * Ajax paging style.
-			 *
-			 * @link http://bxslider.com/
-			 */		
-			wp_register_style( 'malinky-ajax-paging', 
-								MALINKY_AJAX_PAGING_PLUGIN_URL . '/css/style.css', 
-								false, 
-								NULL
-			);
-			wp_enqueue_style( 'malinky-ajax-paging' );
+			 * Conditional load on blog pages only and not singles.
+			 */
+			if ( malinky_is_blog_page( false ) ) {
 
-		}
+				/**
+				 * Ajax paging style.
+				 *
+				 * @link http://bxslider.com/
+				 */		
+				wp_register_style( 'malinky-ajax-paging', 
+									MALINKY_AJAX_PAGING_PLUGIN_URL . '/css/style.css', 
+									false, 
+									NULL
+				);
+				wp_enqueue_style( 'malinky-ajax-paging' );
+
+			}
+
+		//}
 
 	}
 
