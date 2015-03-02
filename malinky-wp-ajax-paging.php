@@ -57,7 +57,7 @@ class Malinky_Ajax_Paging
 	public function malinky_ajax_paging_styles()
 	{
 
-		//if ( WP_ENV != 'dev' && WP_ENV != 'prod' ) {
+		if ( WP_ENV != 'dev' && WP_ENV != 'prod' ) {
 
 			/**
 			 * Conditional load on blog pages only and not singles.
@@ -78,7 +78,7 @@ class Malinky_Ajax_Paging
 
 			}
 
-		//}
+		}
 
 	}
 
