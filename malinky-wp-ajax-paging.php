@@ -12,7 +12,7 @@
  * for this and then pass into main.js during localize script.
  * Also need to know the holder for the added content, for example <article> in content.php loop. This is due to the use
  * of inline-block. The content in main.js is added using .after() as .append() adds whitespace and therefore we need to know
- * <article to the add the content after the :last-child of the other setting .malinky-ajax-paging-content.
+ * <article> to the add the content after the :last-child of the other setting .malinky-ajax-paging-content.
  * Finally need the holding div for the original pagination .posts-pagination. This is removed and a new button and
  * loading div added.
  * Uses content.php template part in theme and optional content-$posttype.php template part if on a CPT 
@@ -177,6 +177,5 @@ class Malinky_Ajax_Paging
 	}
 
 }
-
 
 $malinky_ajax_paging = new Malinky_Ajax_Paging();
