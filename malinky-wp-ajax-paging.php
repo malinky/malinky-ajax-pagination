@@ -8,7 +8,12 @@
  * Author URI: https://github.com/malinky
  * License: GPL2
  *
- * Notes: Need to add .malinky-ajax-paging-content to the main div where content will be added or create a setting
+ * Notes:
+ *
+ * Comments //MAL$.ajax refers to any code used in the $.ajax version. Currently not set up as using jQuery .load().
+ * In the future this will be used with taxonomy filters.
+ *
+ * Need to add .malinky-ajax-paging-content to the main div where content will be added or create a setting
  * for this and then pass into main.js during localize script.
  * Also need to know the holder for the added content, for example <article> in content.php loop. This is due to the use
  * of inline-block. The content in main.js is added using .after() as .append() adds whitespace and therefore we need to know
@@ -33,7 +38,7 @@ class Malinky_Ajax_Paging
 
         /* ------------------------------------------------------------------------ *
 	     * Ajax
-	     * wp_ajax_nopriv and wp_ajax followed by ajax action / the method called
+	     * wp_ajax_nopriv and wp_ajax followed by ajax action / the method
 	     * ------------------------------------------------------------------------ */
         add_action( 'wp_ajax_nopriv_malinky-ajax-paging-submit', array( $this, 'malinky_ajax_paging_submit' ) );
         add_action( 'wp_ajax_malinky-ajax-paging-submit', array( $this, 'malinky_ajax_paging_submit' ) );
@@ -56,7 +61,6 @@ class Malinky_Ajax_Paging
 
 	public function malinky_ajax_paging_styles()
 	{
-
 		if ( WP_ENV != 'dev' && WP_ENV != 'prod' ) {
 
 			/**
@@ -102,14 +106,17 @@ class Malinky_Ajax_Paging
 			);
 
 			/**
-			 * Set up variables to localize in main.js.
+			 * Create an array to localize in main.js.
 			 */
 			global $wp_query;
-			$malinky_ajax_paging['mapMaxNumPages'] 	= $wp_query->max_num_pages;
-			$malinky_ajax_paging['mapNextPage'] 	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
-			$malinky_ajax_paging['mapNextPageUrl'] 	= get_next_posts_page_link();
-			$malinky_ajax_paging['mapQuery'] 		= $wp_query->query;
-			$malinky_ajax_paging['ajaxurl'] 		= admin_url( 'admin-ajax.php' );
+			$malinky_ajax_paging['mapQuery'] 				= $wp_query->query; //MAL$.ajax	
+			$malinky_ajax_paging['mapMaxNumPages'] 			= $wp_query->max_num_pages; //MAL$.ajax
+			$malinky_ajax_paging['mapPostsWrapperClass'] 	= '.malinky-ajax-paging-content';
+			$malinky_ajax_paging['mapPostClass'] 			= 'article';
+			$malinky_ajax_paging['mapPaginationClass'] 		= '.posts-pagination';
+			$malinky_ajax_paging['mapNextPage'] 			= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
+			$malinky_ajax_paging['mapNextPageUrl'] 			= get_next_posts_page_link();
+			$malinky_ajax_paging['ajaxurl'] 				= admin_url( 'admin-ajax.php' );
 
 			wp_localize_script( 'malinky-ajax-paging-main-js', 'malinky_ajax_paging', $malinky_ajax_paging );
 			wp_enqueue_script( 'malinky-ajax-paging-main-js' );
@@ -118,7 +125,8 @@ class Malinky_Ajax_Paging
 
 	}
 
-
+	
+	//MAL$.ajax
 	public function malinky_ajax_paging_submit()
 	{
 
