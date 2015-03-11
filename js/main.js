@@ -8,6 +8,7 @@ jQuery(document).ready(function($){
         mapNextPage     = parseInt(malinky_ajax_paging.mapNextPage),
         mapNextPageUrl  = malinky_ajax_paging.mapNextPageUrl,
         mapQuery        = malinky_ajax_paging.mapQuery;
+        mapjQueryLoad   = false;
 
 
     /**
@@ -26,6 +27,10 @@ jQuery(document).ready(function($){
         $('.posts-pagination').append('<a href="' + mapNextPageUrl + '" class="ajax-paging-load-more-button button full-width">Load More</a>');
         $('.posts-pagination').before('<div class="malinky-ajax-paging-loading"></div>');
         
+        if (mapjQueryLoad) {
+            $('.malinky-ajax-paging-loading').before('<div class="map-loading-placeholder-' + mapNextPage + '"></div>');
+        }
+        
     }
 
 
@@ -35,60 +40,99 @@ jQuery(document).ready(function($){
     function mapPosts()
     {
 
-        var data = {
-            action:        'malinky-ajax-paging-submit',
-            mapNextPage:   mapNextPage,
-            mapQuery:      mapQuery
-        };
+        /**
+         * If using jQuery .load().
+         */
+        if (mapjQueryLoad) {
+
+            /**
+             * Load page content with jQuery, using existing template and WP_Query
+             */
+            var $mapLoadedContent = $('.map-loading-placeholder-' + mapNextPage).load(mapNextPageUrl + ' article', function() {
+                mapNextSetup();
+            });
 
         /**
-         * Load the content of the next page.
-         * Find the .archive-content divs only found in content.php.
-         * Add after the last article of .malinky-ajax-paging-content.
-         * .after() is used as it doesn't add whitespace where using .append() breaks the layout due to
-         * the use of display: inline-block.
+         * Else use ajax get. This uses a new WP_Query and template part.
          */
-        $.ajax({
-                type:       'GET',
-                url:        malinky_ajax_paging.ajaxurl,
-                data:       data,
-                success:    function(response) {
+        } else {
 
-                                var result = $.parseJSON(response);
+            var data = {
+                action:        'malinky-ajax-paging-submit',
+                mapNextPage:   mapNextPage,
+                mapQuery:      mapQuery
+            };
 
-                                /**
-                                 * Debug result, also set in malinky_ajax_paging_submit() and malinky_ajax_paging_wp_query().
-                                 * console.log(result);
-                                 */ 
-                                
-                                $('.malinky-ajax-paging-content article:last-child').after(result.malinky_ajax_paging_posts);
+            /**
+             * Load the content of the next page.
+             * Find the .archive-content divs only found in content.php.
+             * Add after the last article of .malinky-ajax-paging-content.
+             * .after() is used as it doesn't add whitespace where using .append() breaks the layout due to
+             * the use of display: inline-block.
+             */
+            $.ajax({
+                    type:       'GET',
+                    url:        malinky_ajax_paging.ajaxurl,
+                    data:       data,
+                    success:    function(response) {
 
-                                /**
-                                 * Remove loading div and clear timer.s
-                                 */
-                                mapLoaded();
-                                clearTimeout(mapLoadingTimer);
+                                    var result = $.parseJSON(response);
 
-                                /**
-                                 * Increment page number.
-                                 */
-                                mapNextPage++;
+                                    /**
+                                     * Debug result, also set in malinky_ajax_paging_submit() and malinky_ajax_paging_wp_query().
+                                     * console.log(result);
+                                     */ 
+                                    
+                                    $('.malinky-ajax-paging-content article:last-child').after(result.malinky_ajax_paging_posts);
 
-                                /**
-                                 * Check the new next page number is not greater than the max pages.
-                                 */
-                                if (mapNextPage > mapMaxNumPages) {
-                                    $('.posts-pagination').remove();
-                                    return false;
+                                    mapNextSetup();
+
                                 }
+            });
 
-                                /**
-                                 * Create new page url for button link.
-                                 */
-                                mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]?/, '/page/'+ mapNextPage);
+        }
 
-                            }
-        });
+    }
+
+
+    /**
+     * Prepare and increment variables for next page of posts.
+     * Called after posts have been appended.
+     */
+    function mapNextSetup()
+    {
+
+        /**
+         * Remove loading div and clear timers
+         */
+        mapLoaded();
+        clearTimeout(mapLoadingTimer);
+
+        /**
+         * Increment page number.
+         */
+        mapNextPage++;
+
+        
+        if (mapjQueryLoad) {
+            /**
+             * Add new incremental placeholder as load() replaces contents not append.
+             */
+            $('.malinky-ajax-paging-loading').before('<div class="map-loading-placeholder-' + mapNextPage + '"></div>');
+        }
+
+        /**
+         * Check the new next page number is not greater than the max pages.
+         */
+        if (mapNextPage > mapMaxNumPages) {
+            $('.posts-pagination').remove();
+            return false;
+        }
+
+        /**
+         * Create new page url for button link.
+         */
+        mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]?/, '/page/'+ mapNextPage);
 
     }
 
@@ -129,6 +173,10 @@ jQuery(document).ready(function($){
         /**
          * Debug timer. Remove mapPosts call and use setTimeout instead.
          * setTimeout(mapPosts, 3000);
+         */
+        
+        /**
+         * Load more posts.
          */
         mapPosts();
 
