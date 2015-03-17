@@ -30,18 +30,14 @@ class Malinky_Ajax_Paging
 		//No Trailing Slash
 		define( 'MALINKY_AJAX_PAGING_PLUGIN_URL', plugins_url( basename( plugin_dir_path( __FILE__ ) ) ) );
 
-		/* ------------------------------------------------------------------------ *
-	     * Includes
-	     * ------------------------------------------------------------------------ */
+	    //Includes
 		require_once( 'malinky-ajax-paging-settings.php' );
 		require_once( 'malinky-ajax-paging-functions.php' );
 
         //Instantiate settings object.
         $this->settngs = new Malinky_Ajax_Paging_Settings();
 
-	   	/* ------------------------------------------------------------------------ *
-	     * Call Methods
-	     * ------------------------------------------------------------------------ */
+	    //Call Methods.
 	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_paging_styles' ), 99 );
 	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_paging_scripts' ), 99 );
 
