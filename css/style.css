@@ -1,48 +1,45 @@
 .malinky-ajax-paging-loading {
     display: none;
-    height: 100px;
-    background: url(../img/loader.gif) 50% no-repeat;
-    background-size: 50px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.malinky-ajax-paging-loading img {
+    width: 50px;
+    height: 50px;
 }
 
 .malinky-ajax-paging-button {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    background: #999;
+    padding: 8px;
+    cursor: pointer;
+    -webkit-appearance: none;
 }
 
-.button {
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  color: #fff;
-  background: #f47b20;
-  margin: 0 0 21px 0;
-  padding: 8px;
-  cursor: pointer;
-  -webkit-appearance: none;
+.malinky-ajax-paging-button:visited {
+  	color: #fff;
+  	background: #999;
 }
 
-.button:visited {
-	color: #fff;
-	background: #f47b20;
+.malinky-ajax-paging-button:hover {
+  	color: #fff;
+  	background: #666;
+  	text-decoration: none;
+  	cursor: pointer;
 }
 
-.button:hover {
-	color: #fff;
-	background: #9c0009;
-	text-decoration: none;
-	cursor: pointer;
+.malinky-ajax-paging-button:focus {
+  	color: #fff;	
+  	text-decoration: none;
 }
 
-.button:focus {
-	color: #fff;	
-	text-decoration: none;
-}
-
-.button:active {
-	color: #fff;
-	background: #9c0009;
-	text-decoration: none;
-}
-
-.button.full-width {
-	width: 100%;
+.malinky-ajax-paging-button:active {
+  	color: #fff;
+  	background: #666;
+  	text-decoration: none;
 }

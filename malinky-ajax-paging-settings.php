@@ -90,9 +90,9 @@ class Malinky_Ajax_Paging_Settings
         );
 
         add_settings_section(
-            'text_settings',
-            'Text Settings',
-            array( $this, 'malinky_settings_add_section_output_callback_text_settings' ),
+            'loading_settings',
+            'Loading Settings',
+            array( $this, 'malinky_settings_add_section_output_callback_loading_settings' ),
             'ajax-paging-settings'
         );          
 
@@ -102,7 +102,7 @@ class Malinky_Ajax_Paging_Settings
             array( $this, 'malinky_settings_select_field' ),
             'ajax-paging-settings',
             'paging_settings',
-            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'paging_type', 'option_default' => 'Load More', 'option_field_type_options' => array( 'load-more' => 'Load More', 'infinite-scroll' => 'Infinite Scroll', 'pagination' => 'Pagination' ) )
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'paging_type', 'option_default' => 'pagination', 'option_field_type_options' => array( 'infinite-scroll' => 'Infinite Scroll', 'load-more' => 'Load More', 'pagination' => 'Pagination' ) )
         );
 
         add_settings_field(
@@ -112,7 +112,7 @@ class Malinky_Ajax_Paging_Settings
             'ajax-paging-settings',
             'paging_settings',
             array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'infinite_scroll_buffer', 'option_default' => '20' )
-        );
+        );     
 
         add_settings_field(
             'posts_wrapper',
@@ -155,7 +155,7 @@ class Malinky_Ajax_Paging_Settings
             'Load More Button Text',
             array( $this, 'malinky_settings_text_field' ),
             'ajax-paging-settings',
-            'text_settings',
+            'loading_settings',
             array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'load_more_button_text', 'option_default' => 'Load More Posts' )
         );
 
@@ -164,9 +164,18 @@ class Malinky_Ajax_Paging_Settings
             'Loading More Posts Text',
             array( $this, 'malinky_settings_text_field' ),
             'ajax-paging-settings',
-            'text_settings',
+            'loading_settings',
             array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'loading_more_posts_text', 'option_default' => 'Loading...' )
-        );                               
+        );
+
+        add_settings_field(
+            'ajax_loader',
+            'AJAX Loader',
+            array( $this, 'malinky_settings_ajax_loader_field' ),
+            'ajax-paging-settings',
+            'loading_settings',
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'ajax_loader', 'option_default' => 'default' )
+        );                                         
 
     }
 
@@ -186,10 +195,10 @@ class Malinky_Ajax_Paging_Settings
     }
 
 
-    public function malinky_settings_add_section_output_callback_text_settings()
+    public function malinky_settings_add_section_output_callback_loading_settings()
     {
 
-        echo 'Add an intro for the text settings section.';
+        echo 'Add an intro for the loading settings section.';
 
     }
 
@@ -245,5 +254,37 @@ class Malinky_Ajax_Paging_Settings
     	echo $html;
 
     }
+
+
+    /**
+     * Output the ajax loader upload field. Uses WP Media Uploader.
+     * Check if a user has uploaded an ajax loader and it is a valid image.
+     * If not then use the default loader in the plugin folder.    
+     *
+     * @return  void   
+     */
+    public function malinky_settings_ajax_loader_field( $args )
+    {
+
+        $options = get_option( $args['option_name'] );
+    
+        if ( $options[ $args['option_id'] ] != $args['option_default'] && wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ) ) != '' ) {
+            $img_attr = array(
+                'class' => 'malinky-ajax-paging-admin-ajax-loader',
+                'alt'   => 'AJAX Loader'
+            );        
+            $ajax_loader = wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ), 'thumbnail', false, $img_attr );
+        } else {
+            $ajax_loader = '<img src="' . MALINKY_AJAX_PAGING_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-paging-admin-ajax-loader" alt="AJAX Loader" />';
+            $options[ $args['option_id'] ] = 'default';
+        }
+        
+        $html = '';
+        $html .= '<a href="javascript:;" id="' . $args['option_id'] . '_button">Upload AJAX Loader</a>';
+        $html .= $ajax_loader;
+        $html .= '<input type="hidden" id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" />';
+        echo $html;
+
+   }
 
 }
