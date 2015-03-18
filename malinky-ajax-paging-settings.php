@@ -45,7 +45,7 @@ class Malinky_Ajax_Paging_Settings
 
     	?>
         <div class="wrap">
-            <h2>Malinky AJAX Paging Settings</h2>
+            <h2>AJAX Paging Settings</h2>
             <form action="options.php" method="post">
                 <?php settings_fields( 'ajax-paging-settings' ); ?>
                 <?php do_settings_sections( 'ajax-paging-settings' ); ?>
@@ -87,7 +87,14 @@ class Malinky_Ajax_Paging_Settings
             'Wrapper Settings',
             array( $this, 'malinky_settings_add_section_output_callback_wrapper_settings' ),
             'ajax-paging-settings'
-        );    
+        );
+
+        add_settings_section(
+            'text_settings',
+            'Text Settings',
+            array( $this, 'malinky_settings_add_section_output_callback_text_settings' ),
+            'ajax-paging-settings'
+        );          
 
         add_settings_field(
             'paging_type',
@@ -96,6 +103,15 @@ class Malinky_Ajax_Paging_Settings
             'ajax-paging-settings',
             'paging_settings',
             array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'paging_type', 'option_default' => 'Load More', 'option_field_type_options' => array( 'load-more' => 'Load More', 'infinite-scroll' => 'Infinite Scroll', 'pagination' => 'Pagination' ) )
+        );
+
+        add_settings_field(
+            'infinite_scroll_buffer',
+            'Infinite Scroll Buffer (px)',
+            array( $this, 'malinky_settings_text_field' ),
+            'ajax-paging-settings',
+            'paging_settings',
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'infinite_scroll_buffer', 'option_default' => '20' )
         );
 
         add_settings_field(
@@ -122,8 +138,35 @@ class Malinky_Ajax_Paging_Settings
             array( $this, 'malinky_settings_text_field' ),
             'ajax-paging-settings',
             'wrapper_settings',
-            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'pagination_wrapper', 'option_default' => '.navigation' )
-        );            
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'pagination_wrapper', 'option_default' => '.nav-links' )
+        );
+
+        add_settings_field(
+            'next_page_selector',
+            'Next Page Selector',
+            array( $this, 'malinky_settings_text_field' ),
+            'ajax-paging-settings',
+            'wrapper_settings',
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'next_page_selector', 'option_default' => '.nav-links a.next' )
+        );
+
+        add_settings_field(
+            'load_more_button_text',
+            'Load More Button Text',
+            array( $this, 'malinky_settings_text_field' ),
+            'ajax-paging-settings',
+            'text_settings',
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'load_more_button_text', 'option_default' => 'Load More Posts' )
+        );
+
+        add_settings_field(
+            'loading_more_posts_text',
+            'Loading More Posts Text',
+            array( $this, 'malinky_settings_text_field' ),
+            'ajax-paging-settings',
+            'text_settings',
+            array( 'option_name' => '_malinky_ajax_paging_settings', 'option_id' => 'loading_more_posts_text', 'option_default' => 'Loading...' )
+        );                               
 
     }
 
@@ -139,6 +182,14 @@ class Malinky_Ajax_Paging_Settings
     {
 
     	echo 'Add an intro for the wrapper settings section.';
+
+    }
+
+
+    public function malinky_settings_add_section_output_callback_text_settings()
+    {
+
+        echo 'Add an intro for the text settings section.';
 
     }
 

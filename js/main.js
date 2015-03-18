@@ -1,13 +1,19 @@
 var MalinkyAjaxPaging = (function($) {
 
-    var mapPagingType           = malinky_ajax_paging.mapPagingType,
-        mapPostsWrapperClass    = malinky_ajax_paging.mapPostsWrapperClass,
-        mapPostClass            = malinky_ajax_paging.mapPostClass,
-        mapPaginationClass      = malinky_ajax_paging.mapPaginationClass,
-        mapMaxNumPages          = parseInt(malinky_ajax_paging.mapMaxNumPages),
-        mapNextPage             = parseInt(malinky_ajax_paging.mapNextPage),
-        mapNextPageUrl          = malinky_ajax_paging.mapNextPageUrl,
-        mapLoadingTimer         = '';
+    //Variables, some from wp_localize_script().
+    var mapInfiniteScrollBuffer             = parseInt(malinky_ajax_paging_options.infinite_scroll_buffer),
+        mapLoadingTimer                     = '',
+        mapLoadingMorePostsText             = malinky_ajax_paging_options.loading_more_posts_text,
+        mapLoadMoreButtonText               = malinky_ajax_paging_options.load_more_button_text,
+        mapPaginationClass                  = malinky_ajax_paging_options.pagination_wrapper,
+        mapPaginationClassPixelsToDocBottom = $(document).height() - $(mapPaginationClass).offset().top,
+        mapPagingType                       = malinky_ajax_paging_options.paging_type,
+        mapPostsWrapperClass                = malinky_ajax_paging_options.posts_wrapper,
+        mapPostClass                        = malinky_ajax_paging_options.post_wrapper,
+        mapMaxNumPages                      = parseInt(malinky_ajax_paging_options.max_num_pages),
+        mapNextPageNumber                   = parseInt(malinky_ajax_paging_options.next_page_number),
+        mapNextPageSelector                 = malinky_ajax_paging_options.next_page_selector,
+        mapNextPageUrl                      = $(malinky_ajax_paging_options.next_page_selector).attr('href') || malinky_ajax_paging_options.next_page_url;        
 
 
     /**
@@ -20,15 +26,12 @@ var MalinkyAjaxPaging = (function($) {
 
         if (mapPagingType == 'load-more') {
 
-            $(mapPaginationClass).last().after('<a href="' + mapNextPageUrl + '" class="malinky-ajax-paging-button button full-width">Load More</a>');
+            $(mapPaginationClass).last().after('<a href="' + mapNextPageUrl + '" class="malinky-ajax-paging-button button full-width">' + mapLoadMoreButtonText + '</a>');
             $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
             $(mapPaginationClass).remove();
             /**
              * Attach a click event handler to the new pagination button.
              * No longer use delegate event as this click event is added after the new pagination button is added to the dom.
-             * OLD The original pagination class is present on the initial page load.
-             * OLD When the new .malinky-ajax-paging-button is clicked it bubbles up one level to mapPaginationClass.
-             * OLD This is known as a delegated event.
              */
             $('.malinky-ajax-paging-button').click(function(event) {
                 event.preventDefault();
@@ -44,13 +47,20 @@ var MalinkyAjaxPaging = (function($) {
 
         } else if (mapPagingType == 'infinite-scroll') {
 
+            $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
+            $(mapPaginationClass).remove();
+            window.addEventListener('scroll', mapInfiniteScroll);
+
         } else if (mapPagingType == 'pagination') {
 
             $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
             /**
              * Attach a click event handler to the pagination links.
+             * The pagination class is reloaded after a page change to update the page numbers.
+             * Therefore a delegated event is used to bind to the newly added pagination class.
+             * This is attached to the document as it's the only item we can be sure to be there on first page load.
              */
-            $(mapPaginationClass).click(function(event) {
+            $(document).on('click', mapPaginationClass, function(event) {
                 event.preventDefault();
                 //Delay loading text and div.
                 mapLoadingTimer = setTimeout(mapLoading, 750);
@@ -99,25 +109,38 @@ var MalinkyAjaxPaging = (function($) {
                                     //Insert the posts after the last currently displayed post.
                                     $mapInsertPoint.after($mapLoadedPosts);
                                     //Increment page number.
-                                    mapNextPage++;
+                                    mapNextPageNumber++;
                                     //Check we're not on the last page and all posts have been loaded.
-                                    if (mapNextPage > mapMaxNumPages) {
+                                    if (mapNextPageNumber > mapMaxNumPages) {
                                         $('.malinky-ajax-paging-button').remove();
                                     }
                                     //Update next page url.
-                                    mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]*/, '/page/'+ mapNextPage);
+                                    mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]*/, '/page/'+ mapNextPageNumber);
                                 }
 
+                                if (mapPagingType == 'infinite-scroll') {
+                                    //Insert the posts after the last currently displayed post.
+                                    $mapInsertPoint.after($mapLoadedPosts);
+                                    //Increment page number.
+                                    mapNextPageNumber++;
+                                    //Check we're not on the last page and all posts have been loaded.
+                                    if (mapNextPageNumber > mapMaxNumPages) {
+                                        window.removeEventListener('scroll', mapInfiniteScroll);
+                                    }
+                                    //Update next page url.
+                                    mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]*/, '/page/'+ mapNextPageNumber);
+                                }                                
+
                                 if (mapPagingType == 'pagination') {
-                                    //Save the existing posts to be removed after insertion of new posts after them.
+                                    //Save the existing posts to be removed after insertion of the new posts after them.
                                     var $mapExistingPosts = $(mapPostClass);
                                     //Insert the posts after the last currently displayed post.
                                     $mapInsertPoint.after($mapLoadedPosts);                                    
-                                    //Remove existing posts if mapPagingType == 'pagination'.
+                                    //Remove previously existing posts.
                                     $mapExistingPosts.remove();
                                     //Update URL and store history for browser back/forward buttons
                                     history.pushState(null, null, mapNextPageUrl);
-                                    //Update navigation, active state, next and prev.
+                                    //Find the new navigation and update, active state, next and prev buttons.
                                     var $mapNewPagination = $(mapResponse).find(mapPaginationClass);
                                     $(mapPaginationClass).replaceWith($mapNewPagination);
                                 }
@@ -139,7 +162,7 @@ var MalinkyAjaxPaging = (function($) {
     var mapLoading = function() {
         $('.malinky-ajax-paging-loading').show();
         if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
-            $('.malinky-ajax-paging-button').text('Loading...');
+            $('.malinky-ajax-paging-button').text(mapLoadingMorePostsText);
         }        
     };
 
@@ -150,16 +173,54 @@ var MalinkyAjaxPaging = (function($) {
      * Add loading text to button if condition is true.
      * Clear timer.
      */
-    var mapLoaded = function () {        
+    var mapLoaded = function() {        
         $('.malinky-ajax-paging-loading').hide();        
         if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
-            $('.malinky-ajax-paging-button').text('Load More');
+            $('.malinky-ajax-paging-button').text(mapLoadMoreButtonText);
         }
         clearTimeout(mapLoadingTimer);
     };
 
 
-    //Add new pagination button and click event handler.
+    /**
+     * Infinite scroll ran through debounce function.
+     */
+    var mapInfiniteScroll = debounce(function() {
+        mapContentPixelsToDocBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+        if (mapContentPixelsToDocBottom - mapInfiniteScrollBuffer < mapPaginationClassPixelsToDocBottom) {
+            //Delay loading text and div.
+            mapLoadingTimer = setTimeout(mapLoading, 750);
+            //Load more posts.
+            mapLoadPosts();
+            /**
+             * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+             * setTimeout(mapLoadPosts, 3000);
+             */       
+        }
+    }, 250);
+
+
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds. If `immediate` is passed, trigger the function on the
+    // leading edge, instead of the trailing.
+    function debounce (func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    };
+
+
+    //Start.
     init();
 
 })(jQuery);
