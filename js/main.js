@@ -1,187 +1,226 @@
-/* ------------------------------------------------------------------------ *
- * jQuery
- * ------------------------------------------------------------------------ */
+var MalinkyAjaxPaging = (function($) {
 
-jQuery(document).ready(function($){
-
-    var mapMaxNumPages  = parseInt(malinky_ajax_paging.mapMaxNumPages),
-        mapNextPage     = parseInt(malinky_ajax_paging.mapNextPage),
-        mapNextPageUrl  = malinky_ajax_paging.mapNextPageUrl,
-        mapQuery        = malinky_ajax_paging.mapQuery;
-        mapjQueryLoad   = false;
+    //Variables, some from wp_localize_script().
+    var mapInfiniteScrollBuffer             = parseInt(malinky_ajax_paging_options.infinite_scroll_buffer),
+        mapLoadingTimer                     = '',
+        mapLoadingMorePostsText             = malinky_ajax_paging_options.loading_more_posts_text,
+        mapLoadMoreButtonText               = malinky_ajax_paging_options.load_more_button_text,
+        mapPaginationClass                  = malinky_ajax_paging_options.pagination_wrapper,
+        mapPaginationClassPixelsToDocBottom = $(document).height() - $(mapPaginationClass).offset().top,
+        mapPagingType                       = malinky_ajax_paging_options.paging_type,
+        mapPostsWrapperClass                = malinky_ajax_paging_options.posts_wrapper,
+        mapPostClass                        = malinky_ajax_paging_options.post_wrapper,
+        mapMaxNumPages                      = parseInt(malinky_ajax_paging_options.max_num_pages),
+        mapNextPageNumber                   = parseInt(malinky_ajax_paging_options.next_page_number),
+        mapNextPageSelector                 = malinky_ajax_paging_options.next_page_selector,
+        mapNextPageUrl                      = $(malinky_ajax_paging_options.next_page_selector).attr('href') || malinky_ajax_paging_options.next_page_url;        
 
 
     /**
      * Initialize.
+     * Add new pagination and loading div.
+     * These are added after the last mapPaginationClass as some theme developers don't wrap pagination
+     * but use same class for all elements of it.
      */
-    mapPagination();
+    var init = function() {
 
+        if (mapPagingType == 'load-more') {
 
-    /**
-     * Remove the existing and add new pagination.
-     */
-    function mapPagination()
-    {
-
-        $('.posts-pagination').empty();
-        $('.posts-pagination').append('<a href="' + mapNextPageUrl + '" class="ajax-paging-load-more-button button full-width">Load More</a>');
-        $('.posts-pagination').before('<div class="malinky-ajax-paging-loading"></div>');
-        
-        if (mapjQueryLoad) {
-            $('.malinky-ajax-paging-loading').before('<div class="map-loading-placeholder-' + mapNextPage + '"></div>');
-        }
-        
-    }
-
-
-    /**
-     * Load and append posts.
-     */
-    function mapPosts()
-    {
-
-        /**
-         * If using jQuery .load().
-         */
-        if (mapjQueryLoad) {
-
+            $(mapPaginationClass).last().after('<a href="' + mapNextPageUrl + '" class="malinky-ajax-paging-button button full-width">' + mapLoadMoreButtonText + '</a>');
+            $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
+            $(mapPaginationClass).remove();
             /**
-             * Load page content with jQuery, using existing template and WP_Query
+             * Attach a click event handler to the new pagination button.
+             * No longer use delegate event as this click event is added after the new pagination button is added to the dom.
              */
-            var $mapLoadedContent = $('.map-loading-placeholder-' + mapNextPage).load(mapNextPageUrl + ' article', function() {
-                mapNextSetup();
+            $('.malinky-ajax-paging-button').click(function(event) {
+                event.preventDefault();
+                //Delay loading text and div.
+                mapLoadingTimer = setTimeout(mapLoading, 750);
+                //Load more posts.
+                mapLoadPosts();
+                /**
+                 * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+                 * setTimeout(mapLoadPosts, 3000);
+                 */
+            }); 
+
+        } else if (mapPagingType == 'infinite-scroll') {
+
+            $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
+            $(mapPaginationClass).remove();
+            window.addEventListener('scroll', mapInfiniteScroll);
+
+        } else if (mapPagingType == 'pagination') {
+
+            $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading"></div>');
+            /**
+             * Attach a click event handler to the pagination links.
+             * The pagination class is reloaded after a page change to update the page numbers.
+             * Therefore a delegated event is used to bind to the newly added pagination class.
+             * This is attached to the document as it's the only item we can be sure to be there on first page load.
+             */
+            $(document).on('click', mapPaginationClass, function(event) {
+                event.preventDefault();
+                //Delay loading text and div.
+                mapLoadingTimer = setTimeout(mapLoading, 750);
+                //Get the url of the clicked page.
+                mapNextPageUrl = event.target.href;
+                //Load more posts.
+                mapLoadPosts();
+                /**
+                 * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+                 * setTimeout(mapLoadPosts, 3000);
+                 */
+            });
+            /**
+             * Attach popstate event listener which is triggered on the back button.
+             * The url generated by the browser back/forward button is saved in mapNextPageUrl and mapLoadPosts called.
+             */
+            window.addEventListener('popstate', function(event) {
+                mapNextPageUrl = document.URL;
+                mapLoadPosts();
             });
 
-        /**
-         * Else use ajax get. This uses a new WP_Query and template part.
-         */
-        } else {
+        }
+     
+    };
 
-            var data = {
-                action:        'malinky-ajax-paging-submit',
-                mapNextPage:   mapNextPage,
-                mapQuery:      mapQuery
-            };
 
-            /**
-             * Load the content of the next page.
-             * Find the .archive-content divs only found in content.php.
-             * Add after the last article of .malinky-ajax-paging-content.
-             * .after() is used as it doesn't add whitespace where using .append() breaks the layout due to
-             * the use of display: inline-block.
-             */
-            $.ajax({
-                    type:       'GET',
-                    url:        malinky_ajax_paging.ajaxurl,
-                    data:       data,
-                    success:    function(response) {
-
-                                    var result = $.parseJSON(response);
-
-                                    /**
-                                     * Debug result, also set in malinky_ajax_paging_submit() and malinky_ajax_paging_wp_query().
-                                     * console.log(result);
-                                     */ 
-                                    
-                                    $('.malinky-ajax-paging-content article:last-child').after(result.malinky_ajax_paging_posts);
-
-                                    mapNextSetup();
-
+    /**
+     * Load new posts and append to exists content.
+     * The response inserts new posts after the last displayed post that uses the mapPostClass.
+     * mapPostsWrapperClass is used to ensure the correct div is targeted.
+     */
+    var mapLoadPosts = function () {
+        $.ajax({
+                type:       'GET',
+                url:        mapNextPageUrl,
+                dataType:   'html',
+                success:    function(response) {
+                                //Parse HTML first.
+                                var mapResponse = $.parseHTML(response);
+                                //Find the actual posts from the full html response using mapPostClass.
+                                var $mapLoadedPosts = $(mapResponse).find(mapPostClass);
+                                //jQuery object of the last currently displayed post.
+                                var $mapInsertPoint = $(mapPostsWrapperClass + ' ' + mapPostClass).last();
+                                
+                                if (mapPagingType == 'load-more') {
+                                    //Insert the posts after the last currently displayed post.
+                                    $mapInsertPoint.after($mapLoadedPosts);
+                                    //Increment page number.
+                                    mapNextPageNumber++;
+                                    //Check we're not on the last page and all posts have been loaded.
+                                    if (mapNextPageNumber > mapMaxNumPages) {
+                                        $('.malinky-ajax-paging-button').remove();
+                                    }
+                                    //Update next page url.
+                                    mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]*/, '/page/'+ mapNextPageNumber);
                                 }
-            });
 
-        }
+                                if (mapPagingType == 'infinite-scroll') {
+                                    //Insert the posts after the last currently displayed post.
+                                    $mapInsertPoint.after($mapLoadedPosts);
+                                    //Increment page number.
+                                    mapNextPageNumber++;
+                                    //Check we're not on the last page and all posts have been loaded.
+                                    if (mapNextPageNumber > mapMaxNumPages) {
+                                        window.removeEventListener('scroll', mapInfiniteScroll);
+                                    }
+                                    //Update next page url.
+                                    mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]*/, '/page/'+ mapNextPageNumber);
+                                }                                
 
-    }
+                                if (mapPagingType == 'pagination') {
+                                    //Save the existing posts to be removed after insertion of the new posts after them.
+                                    var $mapExistingPosts = $(mapPostClass);
+                                    //Insert the posts after the last currently displayed post.
+                                    $mapInsertPoint.after($mapLoadedPosts);                                    
+                                    //Remove previously existing posts.
+                                    $mapExistingPosts.remove();
+                                    //Update URL and store history for browser back/forward buttons
+                                    history.pushState(null, null, mapNextPageUrl);
+                                    //Find the new navigation and update, active state, next and prev buttons.
+                                    var $mapNewPagination = $(mapResponse).find(mapPaginationClass);
+                                    $(mapPaginationClass).replaceWith($mapNewPagination);
+                                }
 
+                                //Remove loading div and clear timer.
+                                mapLoaded();
 
-    /**
-     * Prepare and increment variables for next page of posts.
-     * Called after posts have been appended.
-     */
-    function mapNextSetup()
-    {
-
-        /**
-         * Remove loading div and clear timers
-         */
-        mapLoaded();
-        clearTimeout(mapLoadingTimer);
-
-        /**
-         * Increment page number.
-         */
-        mapNextPage++;
-
-        
-        if (mapjQueryLoad) {
-            /**
-             * Add new incremental placeholder as load() replaces contents not append.
-             */
-            $('.malinky-ajax-paging-loading').before('<div class="map-loading-placeholder-' + mapNextPage + '"></div>');
-        }
-
-        /**
-         * Check the new next page number is not greater than the max pages.
-         */
-        if (mapNextPage > mapMaxNumPages) {
-            $('.posts-pagination').remove();
-            return false;
-        }
-
-        /**
-         * Create new page url for button link.
-         */
-        mapNextPageUrl = mapNextPageUrl.replace(/\/page\/[0-9]?/, '/page/'+ mapNextPage);
-
-    }
+                            }
+        });
+    };
 
 
     /**
-     * Add loading text to button and loader.gif
+     * While new posts are loaded.
+     * Show loader.gif.
+     * Add loading text to button if condition is true.
+     * This function is called using a setTimeout of 750 in the click event handler.
      */
-    function mapLoading()
-    {
-
-        $('.ajax-paging-load-more-button').text('Loading...');
+    var mapLoading = function() {
         $('.malinky-ajax-paging-loading').show();
+        if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
+            $('.malinky-ajax-paging-button').text(mapLoadingMorePostsText);
+        }        
+    };
 
-    }
+
+    /**
+     * After new posts have been loaded.
+     * Hide loader.gif.
+     * Add loading text to button if condition is true.
+     * Clear timer.
+     */
+    var mapLoaded = function() {        
+        $('.malinky-ajax-paging-loading').hide();        
+        if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
+            $('.malinky-ajax-paging-button').text(mapLoadMoreButtonText);
+        }
+        clearTimeout(mapLoadingTimer);
+    };
 
 
     /**
-     * Remove loading text to button and loader.gif
+     * Infinite scroll ran through debounce function.
      */
-    function mapLoaded()
-    {
+    var mapInfiniteScroll = debounce(function() {
+        mapContentPixelsToDocBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+        if (mapContentPixelsToDocBottom - mapInfiniteScrollBuffer < mapPaginationClassPixelsToDocBottom) {
+            //Delay loading text and div.
+            mapLoadingTimer = setTimeout(mapLoading, 750);
+            //Load more posts.
+            mapLoadPosts();
+            /**
+             * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+             * setTimeout(mapLoadPosts, 3000);
+             */       
+        }
+    }, 250);
 
-        $('.ajax-paging-load-more-button').text('Load More');
-        $('.malinky-ajax-paging-loading').hide();
 
-    }    
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds. If `immediate` is passed, trigger the function on the
+    // leading edge, instead of the trailing.
+    function debounce (func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    };
 
-    /**
-     * Use .on as the pagination is added after page load and we need to use delegated event.
-     */
-    $('.posts-pagination').on( 'click', '.ajax-paging-load-more-button', function(event) {
 
-        /**
-         * Delay loading text and div.
-         */
-        mapLoadingTimer = setTimeout(mapLoading, 750);
+    //Start.
+    init();
 
-        /**
-         * Debug timer. Remove mapPosts call and use setTimeout instead.
-         * setTimeout(mapPosts, 3000);
-         */
-        
-        /**
-         * Load more posts.
-         */
-        mapPosts();
-
-        event.preventDefault();
-
-    });
-
-});
+})(jQuery);

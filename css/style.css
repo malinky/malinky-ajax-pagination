@@ -4,3 +4,45 @@
     background: url(../img/loader.gif) 50% no-repeat;
     background-size: 50px;
 }
+
+.malinky-ajax-paging-button {
+}
+
+.button {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  background: #f47b20;
+  margin: 0 0 21px 0;
+  padding: 8px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.button:visited {
+	color: #fff;
+	background: #f47b20;
+}
+
+.button:hover {
+	color: #fff;
+	background: #9c0009;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.button:focus {
+	color: #fff;	
+	text-decoration: none;
+}
+
+.button:active {
+	color: #fff;
+	background: #9c0009;
+	text-decoration: none;
+}
+
+.button.full-width {
+	width: 100%;
+}
