@@ -2,3 +2,7 @@
 	display: block;
     margin-top: 20px;
 }
+
+.form-table th {
+	width: 245px;
+}

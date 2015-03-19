@@ -10,8 +10,10 @@
 }
 
 .malinky-ajax-paging-button {
+    box-sizing: border-box;
     width: 100%;
-    display: inline-block;
+    margin: 10px auto;
+    display: block;
     text-align: center;
     vertical-align: middle;
     color: #fff;
@@ -19,6 +21,7 @@
     padding: 8px;
     cursor: pointer;
     -webkit-appearance: none;
+    text-decoration: none;    
 }
 
 .malinky-ajax-paging-button:visited {
@@ -29,17 +32,14 @@
 .malinky-ajax-paging-button:hover {
   	color: #fff;
   	background: #666;
-  	text-decoration: none;
   	cursor: pointer;
 }
 
 .malinky-ajax-paging-button:focus {
   	color: #fff;	
-  	text-decoration: none;
 }
 
 .malinky-ajax-paging-button:active {
   	color: #fff;
   	background: #666;
-  	text-decoration: none;
 }

@@ -1,21 +1,21 @@
 var MalinkyAjaxPaging = (function($) {
 
     //Variables, some from wp_localize_script().
-    var mapAjaxLoader                       = malinky_ajax_paging_options.ajax_loader,
+    var mapIsWooCommerce                    = malinky_ajax_paging_options.is_woocommerce,
+        mapAjaxLoader                       = malinky_ajax_paging_options.ajax_loader,
         mapInfiniteScrollBuffer             = parseInt(malinky_ajax_paging_options.infinite_scroll_buffer),
         mapLoadingTimer                     = '',
         mapLoadingMorePostsText             = malinky_ajax_paging_options.loading_more_posts_text,
         mapLoadMoreButtonText               = malinky_ajax_paging_options.load_more_button_text,
-        mapPaginationClass                  = malinky_ajax_paging_options.pagination_wrapper,
+        mapPaginationClass                  = !mapIsWooCommerce ? malinky_ajax_paging_options.pagination_wrapper : malinky_ajax_paging_options.woo_pagination_wrapper,
         mapPaginationClassPixelsToDocBottom = $(document).height() - $(mapPaginationClass).offset().top,
         mapPagingType                       = malinky_ajax_paging_options.paging_type,
-        mapPostsWrapperClass                = malinky_ajax_paging_options.posts_wrapper,
-        mapPostClass                        = malinky_ajax_paging_options.post_wrapper,
+        mapPostsWrapperClass                = !mapIsWooCommerce ? malinky_ajax_paging_options.posts_wrapper : malinky_ajax_paging_options.woo_posts_wrapper,
+        mapPostClass                        = !mapIsWooCommerce ? malinky_ajax_paging_options.post_wrapper : malinky_ajax_paging_options.woo_post_wrapper,
         mapMaxNumPages                      = parseInt(malinky_ajax_paging_options.max_num_pages),
         mapNextPageNumber                   = parseInt(malinky_ajax_paging_options.next_page_number),
-        mapNextPageSelector                 = malinky_ajax_paging_options.next_page_selector,
-        mapNextPageUrl                      = $(malinky_ajax_paging_options.next_page_selector).attr('href') || malinky_ajax_paging_options.next_page_url;        
-
+        mapNextPageSelector                 = !mapIsWooCommerce ? malinky_ajax_paging_options.next_page_selector : malinky_ajax_paging_options.woo_next_page_selector,
+        mapNextPageUrl                      = $(malinky_ajax_paging_options.next_page_selector).attr('href') || malinky_ajax_paging_options.next_page_url;
 
     /**
      * Initialize.
@@ -37,6 +37,7 @@ var MalinkyAjaxPaging = (function($) {
         } else if (mapPagingType == 'load-more') {
 
             //Add new pagination button after last mapPaginationClass.
+            //Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
             $(mapPaginationClass).last().after('<a href="' + mapNextPageUrl + '" class="malinky-ajax-paging-button malinky-button">' + mapLoadMoreButtonText + '</a>');
             //Add loader.gif div.
             mapAddLoader();
@@ -155,7 +156,7 @@ var MalinkyAjaxPaging = (function($) {
             complete:       function() {
                                 if (mapPagingType == 'pagination') {
                                     $('body,html').animate({
-                                        scrollTop: $(mapPostsWrapperClass).offset().top
+                                        scrollTop: $(mapPostsWrapperClass).offset().top - 150
                                     }, 400);
                                 }
                             }                            
@@ -163,9 +164,9 @@ var MalinkyAjaxPaging = (function($) {
     };
 
 
-
     /**
      * Add loader.gif div.
+     * Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
      */
     var mapAddLoader = function() {
         $(mapPaginationClass).last().before('<div class="malinky-ajax-paging-loading">' + mapAjaxLoader + '</div>');     
