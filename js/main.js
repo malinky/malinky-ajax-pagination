@@ -1,6 +1,11 @@
 var MalinkyAjaxPaging = (function($) {
 
-    //Variables, some from wp_localize_script().
+    /**
+     * Variables, some from wp_localize_script().
+     * Note the mapIsWooCommerce check to determine what property to use when setting the following.
+     * mapPaginationClass, mapPostsWrapperClass, mapPostClass, mapNextPageSelector.
+     * As mapNextPageUrl is optional if not set use the WP_Query.
+     */
     var mapIsWooCommerce                    = malinky_ajax_paging_options.is_woocommerce,
         mapAjaxLoader                       = malinky_ajax_paging_options.ajax_loader,
         mapInfiniteScrollBuffer             = parseInt(malinky_ajax_paging_options.infinite_scroll_buffer),
