@@ -79,8 +79,8 @@ class Malinky_Ajax_Paging
 				array( 'jquery' ), 
 				NULL, 
 				true 
-			);		
-
+			);
+			
 			//Settings to be localized in main.js.
 			global $wp_query;
 			$malinky_ajax_paging_options 						= get_option( '_malinky_ajax_paging_settings' );
@@ -89,8 +89,8 @@ class Malinky_Ajax_Paging
 			$malinky_ajax_paging_options['next_page_number']	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
 			$malinky_ajax_paging_options['next_page_url'] 		= get_next_posts_page_link();
 
-			//Check if on a Woo Commerce page as different settings are used.
-			$malinky_ajax_paging_options['is_woocommerce'] = is_woocommerce();
+			//Check if WooCommerce is active and then on a Woo Commerce page as different settings are used.
+			$malinky_ajax_paging_options['is_woocommerce'] = in_array( 'woocommerce/woocommerce.php', get_option('active_plugins') ) && is_woocommerce();
 
 			wp_localize_script( 'malinky-ajax-paging-main-js', 'malinky_ajax_paging_options', $malinky_ajax_paging_options );
 			wp_enqueue_script( 'malinky-ajax-paging-main-js' );

@@ -1,5 +1,10 @@
 var MalinkyAjaxPaging = (function($) {
 
+    //If no pagination exists return false, not required.
+    if ( $(malinky_ajax_paging_options.pagination_wrapper).length == 0 && $(malinky_ajax_paging_options.woo_pagination_wrapper).length == 0 ) {
+        return false;
+    }
+
     /**
      * Variables, some from wp_localize_script().
      * Note the mapIsWooCommerce check to determine what property to use when setting the following.
@@ -8,6 +13,8 @@ var MalinkyAjaxPaging = (function($) {
      */
     var mapIsWooCommerce                    = malinky_ajax_paging_options.is_woocommerce,
         mapAjaxLoader                       = malinky_ajax_paging_options.ajax_loader,
+        mapCssLoadMore                      = malinky_ajax_paging_options.malinky_load_more,
+        mapCssLoadMoreButton                = malinky_ajax_paging_options.malinky_load_more_button,
         mapInfiniteScrollBuffer             = parseInt(malinky_ajax_paging_options.infinite_scroll_buffer),
         mapLoadingTimer                     = '',
         mapLoadingMorePostsText             = malinky_ajax_paging_options.loading_more_posts_text,
@@ -21,6 +28,7 @@ var MalinkyAjaxPaging = (function($) {
         mapNextPageNumber                   = parseInt(malinky_ajax_paging_options.next_page_number),
         mapNextPageSelector                 = !mapIsWooCommerce ? malinky_ajax_paging_options.next_page_selector : malinky_ajax_paging_options.woo_next_page_selector,
         mapNextPageUrl                      = $(malinky_ajax_paging_options.next_page_selector).attr('href') || malinky_ajax_paging_options.next_page_url;
+
 
     /**
      * Initialize.
@@ -43,16 +51,19 @@ var MalinkyAjaxPaging = (function($) {
 
             //Add new pagination button after last mapPaginationClass.
             //Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
-            $(mapPaginationClass).last().after('<a href="' + mapNextPageUrl + '" class="malinky-ajax-paging-button malinky-button">' + mapLoadMoreButtonText + '</a>');
+            $(mapPaginationClass).last().after('<div class="' + mapCssLoadMore + '"><a href="' + mapNextPageUrl + '" id="malinky-ajax-paging-button" class="' + mapCssLoadMoreButton + '">' + mapLoadMoreButtonText + '</a></div>');
             //Add loader.gif div.
             mapAddLoader();
-            //Remove existing pagination.
-            $(mapPaginationClass).remove();
+            //Remove the existing pagination.
+            //Search for mapPaginationClass but don't remove if child contains #malinky-ajax-paging-button.
+            //This would be the new navigation if the user has set a css class the same as the original mapPaginationClass.
+            $(mapPaginationClass + ':not(:has(>a#malinky-ajax-paging-button))').remove();
+            
             /**
              * Attach a click event handler to the new pagination button.
              * No longer use delegate event as this click event is added after the new pagination button is added to the dom.
              */
-            $('.malinky-ajax-paging-button').click(function(event) {
+            $('#malinky-ajax-paging-button').click(function(event) {
                 event.preventDefault();
                 //Delay loading text and div.
                 mapLoadingTimer = setTimeout(mapLoading, 750);
@@ -132,7 +143,7 @@ var MalinkyAjaxPaging = (function($) {
                                     //Check we're not on the last page and all posts have been loaded.
                                     if (mapNextPageNumber > mapMaxNumPages) {
                                         //mapPagingType == 'load-more'.
-                                        $('.malinky-ajax-paging-button').remove();
+                                        $('#malinky-ajax-paging-button').parent().remove();
                                         //mapPagingType == 'infinite-scroll'.
                                         window.removeEventListener('scroll', mapInfiniteScroll);
                                     }
@@ -187,7 +198,7 @@ var MalinkyAjaxPaging = (function($) {
     var mapLoading = function() {
         $('.malinky-ajax-paging-loading').show();
         if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
-            $('.malinky-ajax-paging-button').text(mapLoadingMorePostsText);
+            $('#malinky-ajax-paging-button').text(mapLoadingMorePostsText);
         }        
     };
 
@@ -201,7 +212,7 @@ var MalinkyAjaxPaging = (function($) {
     var mapLoaded = function() {        
         $('.malinky-ajax-paging-loading').hide();        
         if (mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll') {
-            $('.malinky-ajax-paging-button').text(mapLoadMoreButtonText);
+            $('#malinky-ajax-paging-button').text(mapLoadMoreButtonText);
         }
         clearTimeout(mapLoadingTimer);
     };

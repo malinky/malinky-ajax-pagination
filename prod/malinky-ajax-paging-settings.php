@@ -108,7 +108,14 @@ class Malinky_Ajax_Paging_Settings
             'Loading Settings', 
             array( $this, 'malinky_settings_add_section_output_callback_loading_settings' ), 
             'malinky-ajax-paging-settings' 
-        );          
+        );   
+
+        add_settings_section(
+            'css_settings', 
+            'CSS Settings', 
+            array( $this, 'malinky_settings_add_section_output_callback_css_settings' ), 
+            'malinky-ajax-paging-settings' 
+        );               
 
         /* ------------------------------------------------------------------------ *
          * Paging Settings
@@ -326,7 +333,37 @@ class Malinky_Ajax_Paging_Settings
                 'option_id' => 'ajax_loader', 
                 'option_default' => 'default' 
             )
-        );                                         
+        );
+
+        /* ------------------------------------------------------------------------ *
+         * CSS Settings
+         * ------------------------------------------------------------------------ */
+
+        add_settings_field(
+            'malinky_load_more', 
+            'Load More Button Wrapper', 
+            array( $this, 'malinky_settings_text_field' ), 
+            'malinky-ajax-paging-settings', 
+            'css_settings', 
+            array( 
+                'option_name' => '_malinky_ajax_paging_settings', 
+                'option_id' => 'malinky_load_more', 
+                'option_default' => 'malinky-load-more'
+            )
+        );
+
+        add_settings_field(
+            'malinky_load_more_button', 
+            'Load More Button', 
+            array( $this, 'malinky_settings_text_field' ), 
+            'malinky-ajax-paging-settings', 
+            'css_settings', 
+            array( 
+                'option_name' => '_malinky_ajax_paging_settings', 
+                'option_id' => 'malinky_load_more_button', 
+                'option_default' => 'malinky-load-more__button'
+            )
+        );                                              
 
     }
 
@@ -362,6 +399,13 @@ class Malinky_Ajax_Paging_Settings
 
     }
 
+    public function malinky_settings_add_section_output_callback_css_settings()
+    {
+
+        echo 'Add an intro for the css settings section.';
+
+    }
+
 
     /**
      * Display a select field.
@@ -381,7 +425,7 @@ class Malinky_Ajax_Paging_Settings
     	$options = get_option ( $args['option_name'] );
     	foreach ( $args['option_field_type_options'] as $key => $value ) {
     		//Set selected, if value is already set
-    		if ( isset( $args['option_id'] ) && $options[ $args['option_id'] ] == $key ) {
+    		if ( isset( $options[ $args['option_id'] ] ) && $options[ $args['option_id'] ] == $key ) {
     			$selected = 'selected';
     		} else {
     			$selected = '';
@@ -435,7 +479,7 @@ class Malinky_Ajax_Paging_Settings
         $ajax_loader_img = '';
         $options = get_option( $args['option_name'] );
     
-        if ( $options[ $args['option_id'] ] != $args['option_default'] && wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ) ) != '' ) {
+        if ( isset( $options[ $args['option_id'] ] ) && $options[ $args['option_id'] ] != $args['option_default'] && wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ) ) != '' ) {
             $img_attr = array(
                 'class' => 'malinky-ajax-paging-admin-ajax-loader',
                 'alt'   => 'AJAX Loader'
