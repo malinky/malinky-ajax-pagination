@@ -25,82 +25,11 @@ https://github.com/terinjokes/gulp-uglify/issues/56
 
 
 /* ------------------------------------------------------------------------ *
- * Dev
- * 
- * gulp dev
- *
- * Move all applicable files and folders.
- * Minify CSS, Autoprefix.
- * Minify JS.
- * ------------------------------------------------------------------------ */
-
-/**
- * Delete all contents of dev folder.
- */
-gulp.task('dev-clean', function (cb) {
-    del('dev/*', cb);
-});
-
-
-/**
-  * Move root .php files.
-  */
-gulp.task('dev-move-files', function() {
-    return gulp.src('*.php')
-        .pipe(gulp.dest('dev'));
-});
-
-
-/**
-  * Move root directories and their contents.
-  * Move img only.
-  * No sourcemaps used so no need to move css and js folders.
-  */
-gulp.task('dev-move-dir', function() {
-    return gulp.src('img/**', { base: './'} )
-        .pipe(gulp.dest('dev'));
-});
-
-
-/**
- * Minify CSS, Autoprefix.
- */
-gulp.task('dev-styles', function() {
-    return gulp.src('css/*.css')
-    .pipe(autoprefixer({browsers: ['last 5 versions']}))
-    .pipe(minifyCSS())
-    .pipe(gulp.dest('dev/css'));
-});
-
-
-/**
- * Minify JS.
- */
-gulp.task('dev-scripts', function() {
-    return gulp.src('js/*.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('dev/js'));
-});
-
-
-/**
- * Set up dev task.
- */
-gulp.task('dev', function() {
-    runSequence('dev-clean', 
-                'dev-move-files', 
-                'dev-move-dir', 
-                'dev-styles', 
-                'dev-scripts'
-            );
-})
-
-
-/* ------------------------------------------------------------------------ *
  * Prod
  * 
  * gulp prod
  *
+ * Empty existing prod folder.
  * Move all applicable files and folders.
  * Minify CSS, Autoprefix.
  * Minify JS.

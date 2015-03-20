@@ -1,5 +1,3 @@
 node_modules
 sourcemaps
 .sass-cache
-dev
-prod
