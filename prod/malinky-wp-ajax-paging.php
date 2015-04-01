@@ -79,8 +79,8 @@ class Malinky_Ajax_Paging
 				array( 'jquery' ), 
 				NULL, 
 				true 
-			);		
-
+			);
+			
 			//Settings to be localized in main.js.
 			global $wp_query;
 			$malinky_ajax_paging_options 						= get_option( '_malinky_ajax_paging_settings' );
