@@ -30,7 +30,7 @@ class Malinky_Ajax_Paging
 		require_once( 'malinky-ajax-paging-functions.php' );
 
         //Instantiate settings object.
-        $this->settngs = new Malinky_Ajax_Paging_Settings();
+        $this->settings = new Malinky_Ajax_Paging_Settings();
 
 	    //Call Methods.
 	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_paging_styles' ), 99 );
