@@ -1,3 +1,6 @@
+/* ------------------------------------------------------------------------ *
+ * Load more loader.gif
+ * ------------------------------------------------------------------------ */
 .malinky-ajax-paging-loading {
     display: none;
     margin: 15px 0;
@@ -9,10 +12,17 @@
     height: 50px;
 }
 
+/* ------------------------------------------------------------------------ *
+ * Load more button wrapper.
+ * ------------------------------------------------------------------------ */
 .malinky-load-more {
     text-align: center;
+    margin-top: 40px;
 }
 
+/* ------------------------------------------------------------------------ *
+ * Load more button.
+ * ------------------------------------------------------------------------ */
 .malinky-load-more__button {
     display: inline-block;
     width: 100%;
@@ -20,7 +30,8 @@
     text-align: center;
     vertical-align: middle;
     color: #fff;
-    background: #999;
+    font-weight: bold;
+    background: #666;
     padding: 8px;
     cursor: pointer;
     -webkit-appearance: none;
@@ -29,24 +40,15 @@
 
 .malinky-load-more__button:visited {
   	color: #fff;
-  	background: #999;
-    text-decoration: none;    
-}
-
-.malinky-load-more__button:hover {
-  	color: #fff;
   	background: #666;
-  	cursor: pointer;
     text-decoration: none;    
 }
 
-.malinky-load-more__button:focus {
-  	color: #fff;
-    text-decoration: none;
-}
-
+.malinky-load-more__button:hover,
+.malinky-load-more__button:focus,
 .malinky-load-more__button:active {
   	color: #fff;
-  	background: #666;
+  	background: #333;
+  	cursor: pointer;
     text-decoration: none;    
 }

@@ -3,6 +3,16 @@
     margin-top: 20px;
 }
 
-.form-table th {
+.malinky-ajax-paging-clone .form-table th {
 	width: 245px;
+}
+
+.malinky-ajax-paging-hr {
+	margin: 30px 0 10px 0;
+}
+
+p.submit {
+	float: right;
+	padding-top: 0;
+	margin-top: 0;
 }
