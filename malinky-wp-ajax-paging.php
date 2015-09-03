@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name: Malinky Ajax Paging Plugin
+ * Plugin Name: Malinky Ajax Pagination and Infinite Scroll Plugin
  * Plugin URI: https://github.com/malinky/malinky-wp-ajax-paging
- * Description: Add ajax paging to Wordpress.
+ * Description: This plugin allows you to use 3 types of paging including Infinite Scroll, Ajax Pagination and an Load More Button. All paging types use ajax for a seamless user experience. This plugin works on posts, custom post types and WooCommerce. Multiple pagination options can be added if you use different templates throughout your site.
  * Version: 1.0
  * Author: Malinky
  * Author URI: https://github.com/malinky
- * License: GPL2
+ * License: GNU General Public License (GPL) version 3
  *
  * Thanks:
  * @tommcfarlin for http://code.tutsplus.com/articles/how-to-integrate-the-wordpress-media-uploader-in-theme-and-plugin-options--wp-26052
  * https://github.com/thomasgriffin/New-Media-Image-Uploader
- * @davidwalshblog http://davidwalsh.name/javascript-debounce-functio
+ * @davidwalshblog http://davidwalsh.name/javascript-debounce-function
  */
 
 class Malinky_Ajax_Paging
@@ -74,7 +74,9 @@ class Malinky_Ajax_Paging
 			global $wp_query;
 
 			// Saved settings.
-			$malinky_settings = get_option( '_malinky_ajax_paging_settings' );
+			for ( $x = 1; $x <= $this->settings->malinky_ajax_paging_settings_count_settings(); $x++ ) {
+                $malinky_settings[ $x ] = get_option( '_malinky_ajax_paging_settings_' . $x );
+        	}
 
 			// Set ajax loader images.
 			foreach ( $malinky_settings as $key => $setting ) {

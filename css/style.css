@@ -19,36 +19,3 @@
     text-align: center;
     margin-top: 40px;
 }
-
-/* ------------------------------------------------------------------------ *
- * Load more button.
- * ------------------------------------------------------------------------ */
-.malinky-load-more__button {
-    display: inline-block;
-    width: 100%;
-    box-sizing: border-box;  
-    text-align: center;
-    vertical-align: middle;
-    color: #fff;
-    font-weight: bold;
-    background: #666;
-    padding: 8px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    text-decoration: none;  
-}
-
-.malinky-load-more__button:visited {
-  	color: #fff;
-  	background: #666;
-    text-decoration: none;    
-}
-
-.malinky-load-more__button:hover,
-.malinky-load-more__button:focus,
-.malinky-load-more__button:active {
-  	color: #fff;
-  	background: #333;
-  	cursor: pointer;
-    text-decoration: none;    
-}

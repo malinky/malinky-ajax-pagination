@@ -1,4 +1,4 @@
-function renderMediaUploader( $, loaderCount ) {
+function renderMediaUploader( $ ) {
 
     var mapFileFrame;
 
@@ -22,7 +22,8 @@ function renderMediaUploader( $, loaderCount ) {
     mapFileFrame.on( 'select', function() {
         // Grab attachment selection and construct a JSON representation.
         var mapAjaxLoader = mapFileFrame.state().get( 'selection' ).first().toJSON();
-        $( '#ajax_loader_' + loaderCount ).val( mapAjaxLoader.id );
+        $( '#ajax_loader' ).val( mapAjaxLoader.id );
+        $( '.malinky-ajax-paging-ajax-loader' ).attr( 'src', mapAjaxLoader.url );
     });
 
     // Open the media uploader.
@@ -32,16 +33,16 @@ function renderMediaUploader( $, loaderCount ) {
 
 (function( $ ) {
 
-    $( 'a[id^=ajax_loader_button]' ).on( 'click', function( event ) {
+    $( '#ajax_loader_button' ).click( function( event ) {
         event.preventDefault();
-
-        // Get the clicked loader count.
-        var loader      = event.target.id;
-        var loaderCount = loader.lastIndexOf( '_' );
-            loaderCount = loader.substring( loaderCount+1 );
-
-        // Display the media uploader and pass in the count of it.
-        renderMediaUploader( $, loaderCount );
+        renderMediaUploader( $ );
     });
+
+    // Revert to original preloader.
+    $( '#ajax_loader_remove' ).click( function( event ) {
+        event.preventDefault();
+        $( '.malinky-ajax-paging-ajax-loader' ).attr( 'src', $( this ).attr( 'href' ) );
+        $( '#ajax_loader' ).val( 'default' );
+    });    
     
 })(jQuery);

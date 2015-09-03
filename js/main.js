@@ -1,10 +1,12 @@
 var MalinkyAjaxPaging = ( function( $ ) {
 
+    // Check posts_wrapper, post_wrapper, pagination_wrapper and pagination_wrapper exist on the page.
+    // If not then loop onto the next key in malinkySettings.
     for ( var key in malinkySettings ) {
         if ($( malinkySettings[key].posts_wrapper ).length && 
             $( malinkySettings[key].post_wrapper ).length && 
             $( malinkySettings[key].pagination_wrapper ).length && 
-            $( malinkySettings[key].next_page_selector ).length ) {
+            $( malinkySettings[key].pagination_wrapper ).length ) {
             
             // Variables.
             // max_num_pages, next_page_number, next_page_url aren't part of the settings array.
@@ -48,7 +50,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
             // Add new pagination button after last mapPaginationClass.
             // Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
-            $( mapPaginationClass ).last().after('<div class="' + mapCssLoadMore + '"><a href="' + mapNextPageUrl + '" id="malinky-ajax-paging-button" class="' + mapCssLoadMoreButton + '">' + mapLoadMoreButtonText + '</a></div>');
+            $( mapPaginationClass ).last().after('<div class="malinky-load-more"><a href="' + mapNextPageUrl + '" id="malinky-ajax-paging-button" class="malinky-load-more__button">' + mapLoadMoreButtonText + '</a></div>');
 
             // Add loader.gif div.
             mapAddLoader();

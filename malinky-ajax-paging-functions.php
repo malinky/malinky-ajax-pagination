@@ -101,10 +101,10 @@ if ( ! function_exists( 'malinky_ajax_paging_theme_defaults' ) ) {
                 'next_page_selector'    => '.storefront-pagination a.next'
             ),
             'WooCommerce Storefront' => array(
-                'woo_posts_wrapper'         => '.site-main',
-                'woo_post_wrapper'          => '.product',
-                'woo_pagination_wrapper'    => '.woocommerce-pagination',
-                'woo_next_page_selector'    => '.woocommerce-pagination a.next'
+                'posts_wrapper'         => '.site-main',
+                'post_wrapper'          => '.product',
+                'pagination_wrapper'    => '.woocommerce-pagination',
+                'next_page_selector'    => '.woocommerce-pagination a.next'
             )
         );
         return $theme_defaults;
