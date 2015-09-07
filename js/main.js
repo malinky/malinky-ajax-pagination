@@ -2,11 +2,12 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
     // Check posts_wrapper, post_wrapper, pagination_wrapper and pagination_wrapper exist on the page.
     // If not then loop onto the next key in malinkySettings.
+    // Break once a match is found.
     for ( var key in malinkySettings ) {
         if ($( malinkySettings[key].posts_wrapper ).length && 
             $( malinkySettings[key].post_wrapper ).length && 
             $( malinkySettings[key].pagination_wrapper ).length && 
-            $( malinkySettings[key].pagination_wrapper ).length ) {
+            $( malinkySettings[key].next_page_selector ).length ) {
             
             // Variables.
             // max_num_pages, next_page_number, next_page_url aren't part of the settings array.
@@ -26,6 +27,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
                 mapNextPageUrl                      = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
+
+            break;
         }
     }
 

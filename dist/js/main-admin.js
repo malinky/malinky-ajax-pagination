@@ -1,0 +1,1 @@
+!function(e){e("#theme_defaults").change(function(a){var i=malinkyAjaxPagingThemeDefaults[e(this).val()];for(formField in i)i.hasOwnProperty(formField)&&e("#"+formField).val(i[formField])})}(jQuery);
