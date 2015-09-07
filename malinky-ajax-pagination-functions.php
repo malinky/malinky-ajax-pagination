@@ -57,19 +57,7 @@ if ( ! function_exists( 'malinky_ajax_pagination_theme_defaults' ) ) {
      */
     function malinky_ajax_pagination_theme_defaults()
     {
-        $theme_defaults = array(
-            'Fineturf Projects' => array(
-                'posts_wrapper'         => '.malinky-ajax-pagination-content',
-                'post_wrapper'          => '.post',
-                'pagination_wrapper'    => '.posts-pagination',
-                'next_page_selector'    => '.posts-pagination__link--newer'
-            ),
-            'Fineturf Machinery' => array(
-                'posts_wrapper'         => '.malinky-ajax-pagination-content',
-                'post_wrapper'          => '.mal-groundcare-type',
-                'pagination_wrapper'    => '.posts-pagination-links',
-                'next_page_selector'    => '.posts-pagination-links a.next'
-            ),            
+        $theme_defaults = array(         
             'Twenty Fifteen' => array(
                 'posts_wrapper'         => '.site-main',
                 'post_wrapper'          => '.post',
