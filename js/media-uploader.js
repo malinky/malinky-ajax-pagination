@@ -10,7 +10,7 @@ function renderMediaUploader( $ ) {
 
     // Use the wp.media library to define the settings for the media uploader.
     // https://github.com/thomasgriffin/New-Media-Image-Uploader/blob/master/js/media.js
-    // wp-includes/js/media-views.js
+    // includes/js/media-views.js
     mapFileFrame = wp.media.frames.mapFileFrame = wp.media({
         frame:    'select',
         multiple: false,

@@ -1,17 +1,17 @@
 {
-  "name": "malinky-wp-ajax-pagination",
+  "name": "malinky-ajax-pagination",
   "version": "1.0.0",
-  "description": "WP Ajax Pagination and Infinite Scroll",
+  "description": "Ajax Pagination and Infinite Scroll",
   "repository": {
     "type": "git",
-    "url": "https://github.com/malinky/malinky-wp-ajax-pagination.git"
+    "url": "https://github.com/malinky/malinky-ajax-pagination.git"
   },
   "author": "Craig Ramsay",
   "license": "GNU General Public License (GPL) version 3",
   "bugs": {
-    "url": "https://github.com/malinky/malinky-wp-ajax-pagination/issues"
+    "url": "https://github.com/malinky/malinky-ajax-pagination/issues"
   },
-  "homepage": "https://github.com/malinky/malinky-wp-ajax-pagination",
+  "homepage": "https://github.com/malinky/malinky-ajax-pagination",
   "devDependencies": {
     "del": "^2.0.1",
     "gulp": "^3.9.0",

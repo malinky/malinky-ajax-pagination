@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: WP Ajax Pagination and Infinite Scroll
- * Plugin URI: https://github.com/malinky/malinky-wp-ajax-pagination
- * Description: Choose from infinite scroll, load more button and pagination to load new content with Ajax. Works with posts, pages, custom post types, WooCommerce...or anywhere you'd expect paged content. Different pagination can be setup for different areas of your site.
+ * Plugin Name: Ajax Pagination and Infinite Scroll
+ * Plugin URI: https://github.com/malinky/malinky-ajax-pagination
+ * Description: Choose from infinite scroll, load more button and pagination to load new content with Ajax. Works where you'd expect to find paged content including posts, pages, custom post types and WooCommerce. Different pagination can be setup for different areas of your site.
  * Version: 1.0
  * Author: Malinky
  * Author URI: https://github.com/malinky
  * License: GNU General Public License (GPL) version 3
  * License URI: https://www.gnu.org/licenses/gpl.html
- * Text Domain: malinky-wp-ajax-pagination
+ * Text Domain: malinky-ajax-pagination
  * Domain Path: /languages
  */
 
@@ -22,8 +22,8 @@ class Malinky_Ajax_Pagination
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_URL', plugins_url( basename( plugin_dir_path( __FILE__ ) ) ) );
 
 	    // Includes.
-		require_once( 'malinky-wp-ajax-pagination-settings.php' );
-		require_once( 'malinky-wp-ajax-pagination-functions.php' );
+		require_once( 'malinky-ajax-pagination-settings.php' );
+		require_once( 'malinky-ajax-pagination-functions.php' );
 
         // Instantiate settings object.
         $this->settings = new Malinky_Ajax_Pagination_Settings();
