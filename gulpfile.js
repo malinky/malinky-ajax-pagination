@@ -16,39 +16,39 @@ https://www.npmjs.com/package/del
 https://github.com/sindresorhus/del
 https://www.npmjs.com/package/gulp-minify-css
 https://github.com/jonathanepollack/gulp-minify-css
-https://github.com/OverZealous/run-sequence
 https://www.npmjs.com/package/run-sequence
-https://github.com/terinjokes/gulp-uglify
+https://github.com/OverZealous/run-sequence
 https://www.npmjs.com/package/gulp-uglify
+https://github.com/terinjokes/gulp-uglify
 https://github.com/terinjokes/gulp-uglify/issues/56
 */
 
 
 /* ------------------------------------------------------------------------ *
- * Prod
+ * Dist
  * 
- * gulp prod
+ * gulp dist
  *
- * Empty existing prod folder.
+ * Empty existing dist folder.
  * Move all applicable files and folders.
  * Minify CSS, Autoprefix.
  * Minify JS.
  * ------------------------------------------------------------------------ */
 
 /**
- * Delete all contents of prod folder.
+ * Delete all contents of dist folder.
  */
-gulp.task('prod-clean', function (cb) {
-    del('prod/*', cb);
+gulp.task('dist-clean', function () {
+    del('dist/*');
 });
 
 
 /**
   * Move root .php files.
   */
-gulp.task('prod-move-files', function() {
+gulp.task('dist-move-files', function() {
     return gulp.src('*.php')
-        .pipe(gulp.dest('prod'));
+        .pipe(gulp.dest('dist'));
 });
 
 
@@ -57,41 +57,41 @@ gulp.task('prod-move-files', function() {
   * Move img only.
   * No sourcemaps used so no need to move css and js folders.
   */
-gulp.task('prod-move-dir', function() {
+gulp.task('dist-move-dir', function() {
     return gulp.src('img/**', { base: './'} )
-        .pipe(gulp.dest('prod'));
+        .pipe(gulp.dest('dist'));
 });
 
 
 /**
  * Minify CSS, Autoprefix.
  */
-gulp.task('prod-styles', function() {
+gulp.task('dist-styles', function() {
     return gulp.src('css/*.css')
     .pipe(autoprefixer({browsers: ['last 5 versions']}))
     .pipe(minifyCSS())
-    .pipe(gulp.dest('prod/css'));
+    .pipe(gulp.dest('dist/css'));
 });
 
 
 /**
  * Minify JS.
  */
-gulp.task('prod-scripts', function() {
+gulp.task('dist-scripts', function() {
     return gulp.src('js/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('prod/js'));
+    .pipe(gulp.dest('dist/js'));
 });
 
 
 /**
- * Set up prod task.
+ * Set up dist task.
  */
-gulp.task('prod', function() {
-    runSequence('prod-clean', 
-                'prod-move-files', 
-                'prod-move-dir', 
-                'prod-styles', 
-                'prod-scripts'
+gulp.task('dist', function() {
+    runSequence('dist-clean', 
+                'dist-move-files', 
+                'dist-move-dir', 
+                'dist-styles', 
+                'dist-scripts'
             );
 })

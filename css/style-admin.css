@@ -1,8 +1,17 @@
-.malinky-ajax-paging-ajax-loader {
-	display: block;
-	width: 100px;
-	height: 100px;
-    margin-top: 20px;
+.malinky-ajax-paging {
+	margin-top: 20px;
+	padding: 20px;
+}
+
+.malinky-ajax-paging.postbox .form-table {
+	padding-bottom: 40px;
+	border-bottom: 1px solid #e1e1e1;	
+	margin: 0 0 40px 0;
+}
+
+.malinky-ajax-paging .form-table tr:last-child th:last-child,
+.malinky-ajax-paging .form-table tr:last-child td:last-child {
+	padding-bottom: 40px;
 }
 
 .malinky-ajax-paging a {
@@ -14,30 +23,28 @@
 	text-decoration: underline;
 }
 
-.malinky-ajax-paging-saved-settings {
-	display: inline-block;
-	margin-bottom: 15px;
-}
-
-.malinky-ajax-paging .form-table {
-    margin-bottom: 40px;
+.malinky-ajax-paging-ajax-loader {
+	display: block;
+	width: 80px;
+	height: 80px;
+    margin: 20px 0 20px 0;
 }
 
 .malinky-ajax-paging .button-delete {
 	background: #d9534f;
-	border-color: #d43f3a;
-	box-shadow: inset 0 1px 0 rgba(226,107,102,.5),0 1px 0 rgba(0,0,0,.15);	
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);	
 }
 
 .malinky-ajax-paging .button-delete:hover,
 .malinky-ajax-paging .button-delete:focus,
 .malinky-ajax-paging .button-delete:active {
-	background: #ca403c;
-	border-color: #d43f3a;
-	box-shadow: inset 0 1px 0 rgba(219,89,84,.5),0 1px 0 rgba(0,0,0,.15);
+	background: #c54440;
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);
 }
 
-p.submit {
+.malinky-ajax-paging .submit {
 	float: right;
 	padding-top: 0;
 	margin-top: 0;
