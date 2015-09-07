@@ -1,13 +1,13 @@
 <?php
 
-class Malinky_Ajax_Paging_Settings
+class Malinky_Ajax_Pagination_Settings
 {
     public function __construct()
     {
         // Add page.
-        add_action( 'admin_menu', array( $this, 'malinky_ajax_paging_settings_add_page' ) );
+        add_action( 'admin_menu', array( $this, 'malinky_ajax_pagination_settings_add_page' ) );
         // Set up sections and fields.
-        add_action( 'admin_init', array( $this, 'malinky_ajax_paging_settings_init' ) );
+        add_action( 'admin_init', array( $this, 'malinky_ajax_pagination_settings_init' ) );
     }
 
     /**
@@ -15,10 +15,10 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return int
      */
-    public function malinky_ajax_paging_settings_count_settings()
+    public function malinky_ajax_pagination_settings_count_settings()
     {
         for ( $x = 1; ; $x++ ) {
-            if ( ! get_option( '_malinky_ajax_paging_settings_' . $x ) ) return --$x;
+            if ( ! get_option( '_malinky_ajax_pagination_settings_' . $x ) ) return --$x;
         }
     }
 
@@ -27,7 +27,7 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return int
      */
-    public function malinky_ajax_paging_settings_current_page_number()
+    public function malinky_ajax_pagination_settings_current_page_number()
     {
         return substr( strrchr( $_GET['page'], '-' ), 1 );
     }  
@@ -37,9 +37,9 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return int
      */
-    public function malinky_ajax_paging_settings_new_page_number()
+    public function malinky_ajax_pagination_settings_new_page_number()
     {
-        $total_pages = $this->malinky_ajax_paging_settings_count_settings();
+        $total_pages = $this->malinky_ajax_pagination_settings_count_settings();
         return ++$total_pages;
     }
 
@@ -48,17 +48,17 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return void
      */
-    private function malinky_ajax_paging_settings_delete( $page_number )
+    private function malinky_ajax_pagination_settings_delete( $page_number )
     {
         $all_settings = array();
-        $total_settings = $this->malinky_ajax_paging_settings_count_settings();
+        $total_settings = $this->malinky_ajax_pagination_settings_count_settings();
         for ( $x = 1; $x <= $total_settings; $x++ ) {
             // Add remaining settings to a new array.
             // Delete each option.
             if ( $x != $page_number ) { 
-                $all_settings[ $x ] = get_option( '_malinky_ajax_paging_settings_' . $x );
+                $all_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
             }
-            delete_option( '_malinky_ajax_paging_settings_' . $x );
+            delete_option( '_malinky_ajax_pagination_settings_' . $x );
         }
 
         // Renumber array keys.
@@ -66,11 +66,11 @@ class Malinky_Ajax_Paging_Settings
         
         // Save new settings.
         foreach ( $all_settings as $key => $value ) {
-            add_option( '_malinky_ajax_paging_settings_' . $key, $value );
+            add_option( '_malinky_ajax_pagination_settings_' . $key, $value );
         }
 
         //Redirect.
-        wp_redirect('options-general.php?page=malinky-ajax-paging-settings-1');
+        wp_redirect('options-general.php?page=malinky-ajax-pagination-settings-1');
     }
 
     /**
@@ -78,9 +78,9 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return void
      */
-    public function malinky_ajax_paging_settings_add_page()
+    public function malinky_ajax_pagination_settings_add_page()
     {
-        for ( $x = 1; $x <= $this->malinky_ajax_paging_settings_new_page_number(); $x++ ) {
+        for ( $x = 1; $x <= $this->malinky_ajax_pagination_settings_new_page_number(); $x++ ) {
 
             /**
              * add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
@@ -93,11 +93,11 @@ class Malinky_Ajax_Paging_Settings
 
             add_submenu_page(
                 $show_in_menu,
-                'AJAX Pagination Setting',
-                'AJAX Pagination Settings',
+                __( 'Ajax Pagination Setting', 'malinky-wp-ajax-pagination' ),
+                __( 'Ajax Pagination Settings', 'malinky-wp-ajax-pagination' ),
                 'manage_options',
-                'malinky-ajax-paging-settings-' . $x,
-                array( $this, 'malinky_ajax_paging_settings_add_page_output_callback' )
+                'malinky-ajax-pagination-settings-' . $x,
+                array( $this, 'malinky_ajax_pagination_settings_add_page_output_callback' )
             );
         }
     }
@@ -107,31 +107,31 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return void   
      */
-    public function malinky_ajax_paging_settings_add_page_output_callback()
+    public function malinky_ajax_pagination_settings_add_page_output_callback()
     {   
         // Check if deleting.
         if ( isset( $_GET['delete'] ) ) {
             if ( is_numeric( $_GET['delete'] ) ) {
-                $this->malinky_ajax_paging_settings_delete( $_GET['delete'] );
+                $this->malinky_ajax_pagination_settings_delete( $_GET['delete'] );
             } else {
-                wp_redirect('options-general.php?page=malinky-ajax-paging-settings-1');
+                wp_redirect('options-general.php?page=malinky-ajax-pagination-settings-1');
             }
         }
 
-        $total_settings = $this->malinky_ajax_paging_settings_count_settings(); ?>
+        $total_settings = $this->malinky_ajax_pagination_settings_count_settings(); ?>
 
         <div class="wrap">
             <h1>
-                AJAX Paging Settings
-                <a href="options-general.php?page=malinky-ajax-paging-settings-<?php echo $this->malinky_ajax_paging_settings_new_page_number(); ?>" class="page-title-action">Add New</a>
+                <?php _e( 'Ajax Pagination Settings', 'malinky-wp-ajax-pagination' ); ?>
+                <a href="options-general.php?page=malinky-ajax-pagination-settings-<?php echo $this->malinky_ajax_pagination_settings_new_page_number(); ?>" class="page-title-action"><?php _e( 'Add New', 'malinky-wp-ajax-pagination' ); ?></a>
             </h1>
-            <div class="malinky-ajax-paging postbox">
+            <div class="malinky-ajax-pagination postbox">
                 <?php for ( $x = 1; $x <= $total_settings; $x++ ) {
                     if ( $x == 1 ) { ?>
                         <div class="form-table">
-                            <h3>Saved Settings</h3>
+                            <h3><?php _e( 'Saved Settings', 'malinky-wp-ajax-pagination' ); ?></h3>
                     <?php } ?>
-                            <a href="options-general.php?page=malinky-ajax-paging-settings-<?php echo $x ?>" class="<?php echo $_GET['page'] == 'malinky-ajax-paging-settings-' . $x ? ' active' : '';?>">Paging Settings <?php echo $x; ?></a>
+                            <a href="options-general.php?page=malinky-ajax-pagination-settings-<?php echo $x ?>" class="<?php echo $_GET['page'] == 'malinky-ajax-pagination-settings-' . $x ? ' active' : '';?>">Paging Settings <?php echo $x; ?></a>
                     <?php if ( $x < $total_settings ) { ?> | <?php }
                     if ( $x == $total_settings ) { ?>
                         </div>
@@ -141,7 +141,7 @@ class Malinky_Ajax_Paging_Settings
                     <?php settings_fields( $_GET['page'] ); ?>
                     <?php do_settings_sections( $_GET['page'] ); ?>
                     <?php if ( $total_settings > 1 ) { ?>
-                        <a href="options-general.php?page=malinky-ajax-paging-settings-1&delete=<?php echo $this->malinky_ajax_paging_settings_current_page_number(); ?>&noheader=true" class="malinky-ajax-paging-add-button button button-primary button-delete">Delete</a>
+                        <a href="options-general.php?page=malinky-ajax-pagination-settings-1&delete=<?php echo $this->malinky_ajax_pagination_settings_current_page_number(); ?>&noheader=true" class="malinky-ajax-pagination-add-button button button-primary button-delete"><?php _e( 'Delete', 'malinky-wp-ajax-pagination' ); ?></a>
                     <?php  } ?>
                     <?php submit_button(); ?>
                 </form>
@@ -159,18 +159,18 @@ class Malinky_Ajax_Paging_Settings
      *
      * @return void   
      */
-    public function malinky_ajax_paging_settings_init()
+    public function malinky_ajax_pagination_settings_init()
     {
         // Populate defaults.
-        $malinky_ajax_paging_theme_defaults = malinky_ajax_paging_theme_defaults();
+        $malinky_ajax_pagination_theme_defaults = malinky_ajax_pagination_theme_defaults();
 
-        $total_settings = $this->malinky_ajax_paging_settings_count_settings(); 
+        $total_settings = $this->malinky_ajax_pagination_settings_count_settings(); 
 
-        for ( $x = 1; $x <= $this->malinky_ajax_paging_settings_new_page_number(); $x++ ) {
+        for ( $x = 1; $x <= $this->malinky_ajax_pagination_settings_new_page_number(); $x++ ) {
 
             register_setting(
-                'malinky-ajax-paging-settings-' . $x,
-                '_malinky_ajax_paging_settings_' . $x
+                'malinky-ajax-pagination-settings-' . $x,
+                '_malinky_ajax_pagination_settings_' . $x
                 //'malinky_settings_validation_callback' 
             );
 
@@ -180,30 +180,30 @@ class Malinky_Ajax_Paging_Settings
 
             add_settings_section(
                 'wrapper_settings',
-                'Wrapper Settings',
-                array( $this, 'malinky_ajax_paging_settings_wrapper_message' ),
-                'malinky-ajax-paging-settings-' . $x
+                __( 'Wrapper Settings', 'malinky-wp-ajax-pagination' ),
+                array( $this, 'malinky_ajax_pagination_settings_wrapper_message' ),
+                'malinky-ajax-pagination-settings-' . $x
             );
 
             add_settings_section(
                 'pagination_type_settings',
-                'Pagination Type Settings',
-                array( $this, 'malinky_ajax_paging_settings_pagination_type_message' ),
-                'malinky-ajax-paging-settings-' . $x
+                __( 'Pagination Type Settings', 'malinky-wp-ajax-pagination' ),
+                array( $this, 'malinky_ajax_pagination_settings_pagination_type_message' ),
+                'malinky-ajax-pagination-settings-' . $x
             );
 
             add_settings_section(
                 'loader_settings',
-                'Loader Settings',
-                array( $this, 'malinky_ajax_paging_settings_loader_message' ),
-                'malinky-ajax-paging-settings-' . $x
+                __( 'Loader Settings', 'malinky-wp-ajax-pagination' ),
+                array( $this, 'malinky_ajax_pagination_settings_loader_message' ),
+                'malinky-ajax-pagination-settings-' . $x
             );
 
             add_settings_section(
                 'load_more_button_settings',
-                'Load More Button Settings',
-                array( $this, 'malinky_ajax_paging_settings_load_more_button_message' ),
-                'malinky-ajax-paging-settings-' . $x
+                __( 'Load More Button Settings', 'malinky-wp-ajax-pagination' ),
+                array( $this, 'malinky_ajax_pagination_settings_load_more_button_message' ),
+                'malinky-ajax-pagination-settings-' . $x
             );
 
             /* ------------------------------------------------------------------------ *
@@ -212,72 +212,72 @@ class Malinky_Ajax_Paging_Settings
 
             add_settings_field(
                 'theme_defaults',
-                'Theme Defaults',
+                 __( 'Theme Defaults', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_select_field' ), 
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'wrapper_settings',
                 array(
-                    'option_name'               => '_malinky_ajax_paging_settings_' . $x,        
+                    'option_name'               => '_malinky_ajax_pagination_settings_' . $x,        
                     'option_id'                 => 'theme_defaults',
                     'option_default'            => 'Twenty Fifteen',
-                    'option_field_type_options' => malinky_ajax_paging_theme_default_names(),
-                    'option_small'              => 'Select from popular themes or overwrite the settings below yourself.'
+                    'option_field_type_options' => malinky_ajax_pagination_theme_default_names(),
+                    'option_small'              => __( 'Select from popular themes or overwrite the settings below yourself.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'posts_wrapper',
-                'Posts Selector',
+                __( 'Posts Selector', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'wrapper_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'posts_wrapper',
-                    'option_default'    => $malinky_ajax_paging_theme_defaults['Twenty Fifteen']['posts_wrapper'],
-                    'option_small'      => 'The selector that wraps all of the posts/products.'
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['posts_wrapper'],
+                    'option_small'      => __( 'The selector that wraps all of the posts/products.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'post_wrapper',
-                'Post Selector',
+                __( 'Post Selector', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'wrapper_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'post_wrapper',
-                    'option_default'    => $malinky_ajax_paging_theme_defaults['Twenty Fifteen']['post_wrapper'],
-                    'option_small'      => 'The selector of an individual post/product.'
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['post_wrapper'],
+                    'option_small'      => __( 'The selector of an individual post/product.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'pagination_wrapper',
-                'Navigation Selector',
+                __( 'Navigation Selector', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'wrapper_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'pagination_wrapper',
-                    'option_default'    => $malinky_ajax_paging_theme_defaults['Twenty Fifteen']['pagination_wrapper'],
-                    'option_small'      => 'The selector of the post/product navigation.'
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['pagination_wrapper'],
+                    'option_small'      => __( 'The selector of the post/product navigation.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'next_page_selector',
-                'Next Selector',
+                __( 'Next Selector', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'wrapper_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'next_page_selector',
-                    'option_default'    => $malinky_ajax_paging_theme_defaults['Twenty Fifteen']['next_page_selector'],
-                    'option_small'      => 'The selector of the navigation next link.'
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['next_page_selector'],
+                    'option_small'      => __( 'The selector of the navigation next link.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
@@ -287,12 +287,12 @@ class Malinky_Ajax_Paging_Settings
 
             add_settings_field(
                 'paging_type',
-                'Paging Type',
+                __( 'Paging Type', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_select_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'pagination_type_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_array'      => $x,
                     'option_id'         => 'paging_type',
                     'option_default'    => 'load-more',
@@ -301,21 +301,21 @@ class Malinky_Ajax_Paging_Settings
                         'load-more'         => 'Load More Button',
                         'pagination'        => 'Pagination'
                     ),
-                    'option_small'      => 'Choose a pagination type.'
+                    'option_small'      => __( 'Choose a pagination type.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'infinite_scroll_buffer',
-                'Infinite Scroll Buffer (px)',
+                __( 'Infinite Scroll Buffer (px)', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'pagination_type_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,  
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,  
                     'option_id'         => 'infinite_scroll_buffer',
                     'option_default'    => '20',
-                    'option_small'      => 'The higher the buffer the earlier, during scrolling, additional posts/products will be loaded.<br /><em>Only used when Infinite Scroll is selected as the paging type.</em>'
+                    'option_small'      => __( 'The higher the buffer the earlier, during scrolling, additional posts/products will be loaded.<br /><em>Only used when Infinite Scroll is selected as the paging type.</em>', 'malinky-wp-ajax-pagination' )
                 )
             );
 
@@ -325,12 +325,12 @@ class Malinky_Ajax_Paging_Settings
 
             add_settings_field(
                 'ajax_loader',
-                'AJAX Loader',
+                __( 'AJAX Loader', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_ajax_loader_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'loader_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'ajax_loader',
                     'option_default'    => 'default',
                     'option_small'      => ''
@@ -343,29 +343,29 @@ class Malinky_Ajax_Paging_Settings
 
             add_settings_field(
                 'load_more_button_text',
-                'Load More Button Text',
+                __( 'Load More Button Text', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'load_more_button_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'load_more_button_text',
                     'option_default'    => 'Load More Posts',
-                    'option_small'      => 'Change the button text.'
+                    'option_small'      => __( 'Change the button text.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
             add_settings_field(
                 'loading_more_posts_text',
-                'Loading More Posts Text',
+                __( 'Loading More Posts Text', 'malinky-wp-ajax-pagination' ),
                 array( $this, 'malinky_settings_text_field' ),
-                'malinky-ajax-paging-settings-' . $x,
+                'malinky-ajax-pagination-settings-' . $x,
                 'load_more_button_settings',
                 array(
-                    'option_name'       => '_malinky_ajax_paging_settings_' . $x,    
+                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,    
                     'option_id'         => 'loading_more_posts_text',
                     'option_default'    => 'Loading...' ,
-                    'option_small'      => 'Change the text that is displayed on the button while new posts/products are being loaded.'
+                    'option_small'      => __( 'Change the text that is displayed on the button while new posts/products are being loaded.', 'malinky-wp-ajax-pagination' )
                 )
             );
 
@@ -376,24 +376,24 @@ class Malinky_Ajax_Paging_Settings
      * Section Messages
      * ------------------------------------------------------------------------ */
 
-    public function malinky_ajax_paging_settings_wrapper_message()
+    public function malinky_ajax_pagination_settings_wrapper_message()
     {
-        echo '<p>These options allow you to set the selectors that contain your posts/products and pagination.<br />If you use a popular theme it may be listed in the Theme Defaults, if not just overwrite the settings.<br /><em>Include a leading . before the selector names.</em></p>';
+        _e( '<p>These options allow you to set the selectors that contain your posts/products and pagination.<br />If you use a popular theme it may be listed in the Theme Defaults, if not just overwrite the settings.<br /><em>Include a leading . before the selector names.</em></p>', 'malinky-wp-ajax-pagination' );
     }
 
-    public function malinky_ajax_paging_settings_pagination_type_message()
+    public function malinky_ajax_pagination_settings_pagination_type_message()
     {
-    	echo '<p>These options control the type of ajax pagination used.<br />Infinite Scroll automatically loads new posts/products as the user scrolls to the bottom of the screen.<br />Load More Button displays a single button at the bottom of the posts/products that when clicked loads new posts/products via ajax.<br />Pagination displays the themes standard pagination but new posts/products are now loaded via ajax.</p>';
+    	_e( '<p>These options control the type of ajax pagination used.<br />Infinite Scroll automatically loads new posts/products as the user scrolls to the bottom of the screen.<br />Load More Button displays a single button at the bottom of the posts/products that when clicked loads new posts/products via ajax.<br />Pagination displays the themes standard pagination but new posts/products are now loaded via ajax.</p>', 'malinky-wp-ajax-pagination' );
     }
 
-    public function malinky_ajax_paging_settings_loader_message()
+    public function malinky_ajax_pagination_settings_loader_message()
     {
-        echo '<p>This option allows you to upload a new preloader .gif.</p>';
+        _e( '<p>This option allows you to upload a new preloader .gif.</p>', 'malinky-wp-ajax-pagination' );
     }
 
-    public function malinky_ajax_paging_settings_load_more_button_message()
+    public function malinky_ajax_pagination_settings_load_more_button_message()
     {
-        echo '<p>These options allow you to override the button text if Load More Button is selected as the paging type.</p>';
+        _e( '<p>These options allow you to override the button text if Load More Button is selected as the paging type.</p>', 'malinky-wp-ajax-pagination' );
     }
 
     /**
@@ -463,19 +463,19 @@ class Malinky_Ajax_Paging_Settings
     
         if ( isset( $options[ $args['option_id'] ] ) && $options[ $args['option_id'] ] != $args['option_default'] && wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ) ) != '' ) {
             $img_attr = array(
-                'class' => 'malinky-ajax-paging-ajax-loader',
+                'class' => 'malinky-ajax-pagination-ajax-loader',
                 'alt'   => 'AJAX Loader',
             );        
             $ajax_loader_img = wp_get_attachment_image( esc_attr( $options[ $args['option_id'] ] ), 'thumbnail', false, $img_attr );
         } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGING_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-paging-ajax-loader" alt="AJAX Loader" />';
+            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-ajax-loader" alt="AJAX Loader" />';
             $options[ $args['option_id'] ] = 'default';
         }
         
         $html = '';
         $html .= $ajax_loader_img;
         $html .= '<p><a href="javascript:;" id="' . $args['option_id'] . '_button' . '">Upload AJAX Loader</a> | ';
-        $html .= '<a href="' . MALINKY_AJAX_PAGING_PLUGIN_URL . '/img/loader.gif" id="' . $args['option_id'] . '_remove' . '">Use Original AJAX Loader</a></p>';
+        $html .= '<a href="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" id="' . $args['option_id'] . '_remove' . '">Use Original AJAX Loader</a></p>';
         $html .= '<input type="hidden" id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" /><br /><small>' . $args['option_small'] . '</small>';  
         echo $html;
    }

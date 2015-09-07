@@ -50,19 +50,19 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
             // Add new pagination button after last mapPaginationClass.
             // Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
-            $( mapPaginationClass ).last().after('<div class="malinky-load-more"><a href="' + mapNextPageUrl + '" id="malinky-ajax-paging-button" class="malinky-load-more__button">' + mapLoadMoreButtonText + '</a></div>');
+            $( mapPaginationClass ).last().after('<div class="malinky-load-more"><a href="' + mapNextPageUrl + '" id="malinky-ajax-pagination-button" class="malinky-load-more__button">' + mapLoadMoreButtonText + '</a></div>');
 
             // Add loader.gif div.
             mapAddLoader();
 
             // Remove the existing pagination.
-            // Search for mapPaginationClass but don't remove if child contains #malinky-ajax-paging-button.
+            // Search for mapPaginationClass but don't remove if child contains #malinky-ajax-pagination-button.
             // This would be the new navigation if the user has set a css class the same as the original mapPaginationClass.
-            $( mapPaginationClass + ':not(:has(>a#malinky-ajax-paging-button))' ).remove();
+            $( mapPaginationClass + ':not(:has(>a#malinky-ajax-pagination-button))' ).remove();
             
             // Attach a click event handler to the new pagination button.
             // Doesn't use delegated event as this click event is added after the new pagination button is added to the dom.
-            $( '#malinky-ajax-paging-button').click( function( event ) {
+            $( '#malinky-ajax-pagination-button').click( function( event ) {
                 event.preventDefault();
 
                 // Delay loading text and div.
@@ -149,7 +149,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     // If we're on the last page and all posts have been loaded.
                                     if (mapNextPageNumber > mapMaxNumPages ) {
                                         // mapPagingType == 'load-more'.
-                                        $( '#malinky-ajax-paging-button' ).parent().remove();
+                                        $( '#malinky-ajax-pagination-button' ).parent().remove();
 
                                         // mapPagingType == 'infinite-scroll'.
                                         window.removeEventListener( 'scroll', mapInfiniteScroll );
@@ -193,7 +193,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
      * Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
      */
     var mapAddLoader = function() {
-        $( mapPaginationClass ).last().before( '<div class="malinky-ajax-paging-loading">' + mapAjaxLoader + '</div>' );     
+        $( mapPaginationClass ).last().before( '<div class="malinky-ajax-pagination-loading">' + mapAjaxLoader + '</div>' );     
     };
 
     /**
@@ -203,9 +203,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
      * This function is called using a setTimeout of 750 in the click event handler.
      */
     var mapLoading = function() {
-        $( '.malinky-ajax-paging-loading' ).show();
+        $( '.malinky-ajax-pagination-loading' ).show();
         if ( mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll' ) {
-            $( '#malinky-ajax-paging-button' ).text( mapLoadingMorePostsText );
+            $( '#malinky-ajax-pagination-button' ).text( mapLoadingMorePostsText );
         }        
     };
 
@@ -216,9 +216,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
      * Clear timer.
      */
     var mapLoaded = function() {        
-        $( '.malinky-ajax-paging-loading' ).hide();        
+        $( '.malinky-ajax-pagination-loading' ).hide();        
         if ( mapPagingType == 'load-more' || mapPagingType == 'infinite-scroll' ) {
-            $( '#malinky-ajax-paging-button' ).text( mapLoadMoreButtonText );
+            $( '#malinky-ajax-pagination-button' ).text( mapLoadMoreButtonText );
         }
         clearTimeout( mapLoadingTimer );
     };
@@ -227,7 +227,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
      * Called if AJAX error.
      */
     var mapFailed = function() {        
-        $( '.malinky-ajax-paging-loading' ).hide();        
+        $( '.malinky-ajax-pagination-loading' ).hide();        
         clearTimeout( mapLoadingTimer );
     };    
 

@@ -20,7 +20,7 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
 
 }
 
-if ( ! function_exists( 'malinky_ajax_paging_ajax_loader' ) ) {
+if ( ! function_exists( 'malinky_ajax_pagination_ajax_loader' ) ) {
 
     /**
      * Check if a user has uploaded an ajax loader and it is a valid image.
@@ -31,23 +31,23 @@ if ( ! function_exists( 'malinky_ajax_paging_ajax_loader' ) ) {
      *
      * @return str
      */
-    function malinky_ajax_paging_ajax_loader( $ajax_loader )
+    function malinky_ajax_pagination_ajax_loader( $ajax_loader )
     {
         if ( $ajax_loader != 'default' && wp_get_attachment_image( esc_attr( $ajax_loader ) ) != '' ) {
             $img_attr = array(
-                'class' => 'malinky-ajax-paging-loading',
+                'class' => 'malinky-ajax-pagination-loading',
                 'alt'   => 'AJAX Loader'
             );        
             $ajax_loader_img = wp_get_attachment_image( esc_attr( $ajax_loader ), 'thumbnail', false, $img_attr );
         } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGING_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-paging-loading" alt="AJAX Loader" />';
+            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-loading" alt="AJAX Loader" />';
         }
         return $ajax_loader_img;
     }
 
 }
 
-if ( ! function_exists( 'malinky_ajax_paging_theme_defaults' ) ) {
+if ( ! function_exists( 'malinky_ajax_pagination_theme_defaults' ) ) {
 
     /**
      * Set up defaults based on popular themes.
@@ -55,17 +55,17 @@ if ( ! function_exists( 'malinky_ajax_paging_theme_defaults' ) ) {
      *
      * @return arr
      */
-    function malinky_ajax_paging_theme_defaults()
+    function malinky_ajax_pagination_theme_defaults()
     {
         $theme_defaults = array(
             'Fineturf Projects' => array(
-                'posts_wrapper'         => '.malinky-ajax-paging-content',
+                'posts_wrapper'         => '.malinky-ajax-pagination-content',
                 'post_wrapper'          => '.post',
                 'pagination_wrapper'    => '.posts-pagination',
                 'next_page_selector'    => '.posts-pagination__link--newer'
             ),
             'Fineturf Machinery' => array(
-                'posts_wrapper'         => '.malinky-ajax-paging-content',
+                'posts_wrapper'         => '.malinky-ajax-pagination-content',
                 'post_wrapper'          => '.mal-groundcare-type',
                 'pagination_wrapper'    => '.posts-pagination-links',
                 'next_page_selector'    => '.posts-pagination-links a.next'
@@ -112,16 +112,16 @@ if ( ! function_exists( 'malinky_ajax_paging_theme_defaults' ) ) {
 
 }
 
-if ( ! function_exists( 'malinky_ajax_paging_theme_default_names' ) ) {
+if ( ! function_exists( 'malinky_ajax_pagination_theme_default_names' ) ) {
 
     /**
      * Get the default themes names based on the theme type.
      *
      * @return arr
      */
-    function malinky_ajax_paging_theme_default_names()
+    function malinky_ajax_pagination_theme_default_names()
     {
-        $theme_names = malinky_ajax_paging_theme_defaults();
+        $theme_names = malinky_ajax_pagination_theme_defaults();
         return array_combine( array_keys( $theme_names ), array_keys( $theme_names ) );
     }
 
