@@ -1,52 +1,21 @@
-.malinky-ajax-paging-loading {
+/* ------------------------------------------------------------------------ *
+ * Preloader loader.gif.
+ * ------------------------------------------------------------------------ */
+.malinky-ajax-pagination-loading {
     display: none;
     margin: 15px 0;
     text-align: center;
 }
 
-.malinky-ajax-paging-loading img {
+.malinky-ajax-pagination-loading img {
     width: 50px;
     height: 50px;
 }
 
+/* ------------------------------------------------------------------------ *
+ * Load more button wrapper.
+ * ------------------------------------------------------------------------ */
 .malinky-load-more {
     text-align: center;
-}
-
-.malinky-load-more__button {
-    display: inline-block;
-    width: 100%;
-    box-sizing: border-box;  
-    text-align: center;
-    vertical-align: middle;
-    color: #fff;
-    background: #999;
-    padding: 8px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    text-decoration: none;  
-}
-
-.malinky-load-more__button:visited {
-  	color: #fff;
-  	background: #999;
-    text-decoration: none;    
-}
-
-.malinky-load-more__button:hover {
-  	color: #fff;
-  	background: #666;
-  	cursor: pointer;
-    text-decoration: none;    
-}
-
-.malinky-load-more__button:focus {
-  	color: #fff;
-    text-decoration: none;
-}
-
-.malinky-load-more__button:active {
-  	color: #fff;
-  	background: #666;
-    text-decoration: none;    
+    margin-top: 40px;
 }

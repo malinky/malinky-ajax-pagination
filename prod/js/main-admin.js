@@ -1,1 +1,0 @@
-!function(e){e("#theme_defaults, #woo_theme_defaults").change(function(a){var t=a.target.id,i=malinky_ajax_paging_theme_defaults[t][e(this).val()];for(formField in i)i.hasOwnProperty(formField)&&e("#"+formField).val(i[formField])})}(jQuery);

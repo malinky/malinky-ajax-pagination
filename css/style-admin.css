@@ -1,8 +1,51 @@
-.malinky-ajax-paging-admin-ajax-loader {
-	display: block;
-    margin-top: 20px;
+.malinky-ajax-pagination {
+	margin-top: 20px;
+	padding: 20px 20px 50px 20px;
 }
 
-.form-table th {
-	width: 245px;
+.malinky-ajax-pagination.postbox .form-table {
+	padding-bottom: 40px;
+	border-bottom: 1px solid #e1e1e1;	
+	margin: 0 0 40px 0;
+}
+
+.malinky-ajax-pagination .form-table tr:last-child th:last-child,
+.malinky-ajax-pagination .form-table tr:last-child td:last-child {
+	padding-bottom: 40px;
+}
+
+.malinky-ajax-pagination a {
+	text-decoration: none;
+}
+
+.malinky-ajax-pagination a:hover,
+.malinky-ajax-pagination a.active {
+	text-decoration: underline;
+}
+
+.malinky-ajax-pagination-ajax-loader {
+	display: block;
+	width: 80px;
+	height: 80px;
+    margin: 20px 0 20px 0;
+}
+
+.malinky-ajax-pagination .button-delete {
+	background: #d9534f;
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);	
+}
+
+.malinky-ajax-pagination .button-delete:hover,
+.malinky-ajax-pagination .button-delete:focus,
+.malinky-ajax-pagination .button-delete:active {
+	background: #c54440;
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);
+}
+
+.malinky-ajax-pagination .submit {
+	float: right;
+	padding-top: 0;
+	margin-top: 0;
 }
