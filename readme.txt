@@ -41,6 +41,11 @@ For a quicker setup options for popular themes are included. If your theme isn't
 * At the top of the screen select the pagination setting you wish to delete.
 * Scroll to the bottom of the screen and click 'Delete'.
 
+= Styling Load More Button =
+
+* The load more button is wrapped in a div with the class name malinky-load-more and the actual button has the class name malinky-load-more__button.
+* Style these in your themes style.css file.
+
 = Additional =
 
 * If using infinite scroll there is an option to amend the buffer in pixels before the next set of posts are loaded.
