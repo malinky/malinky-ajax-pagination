@@ -47,7 +47,7 @@ gulp.task('dist-clean', function () {
   * Move root .php files.
   */
 gulp.task('dist-move-files', function() {
-    return gulp.src('*.php')
+    return gulp.src(['*.php', 'readme.txt'])
         .pipe(gulp.dest('dist'));
 });
 
