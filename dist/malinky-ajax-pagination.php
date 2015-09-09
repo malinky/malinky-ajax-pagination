@@ -32,6 +32,15 @@ class Malinky_Ajax_Pagination
 	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_styles' ), 99 );
 	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_scripts' ), 99 );
 	   	add_action( 'admin_enqueue_scripts', array( $this, 'malinky_ajax_pagination_admin_scripts' ) );
+	   	add_action( 'plugins_loaded', array( $this, 'malinky_ajax_pagination_load_textdomain' ) );
+	}
+
+	/**
+	 * Load plugin textdomain.
+	 */
+	public function malinky_ajax_pagination_load_textdomain()
+	{
+  		load_plugin_textdomain( 'malinky-ajax-pagination', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
 	}
 
 	/**

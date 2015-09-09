@@ -58,7 +58,7 @@ gulp.task('dist-move-files', function() {
   * No sourcemaps used so no need to move css and js folders.
   */
 gulp.task('dist-move-dir', function() {
-    return gulp.src('img/**', { base: './'} )
+    return gulp.src(['img/**', 'languages/*'], { base: './'} )
         .pipe(gulp.dest('dist'));
 });
 

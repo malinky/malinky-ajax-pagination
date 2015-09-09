@@ -11,7 +11,11 @@ Choose from infinite scroll, load more button and pagination to load paged conte
 
 == Description ==
 
-Load paged content with Ajax throughout your Wordpress site. This plugin works where you'd usually display paged content including on posts, pages, custom post types and WooCommerce. There are 3 paging types to choose from; infinite scroll that automatically loads new posts as the user reaches the bottom of the screen, a load more button that when clicked loads new posts and pagination that displays normal pagination but loads the next page with Ajax. When using pagination the browser back and forward button still operate as expected. All 3 options deliver a great user experience.
+Load paged content with Ajax throughout your Wordpress site. This plugin works where you'd usually display paged content including on posts, pages, custom post types and WooCommerce.
+
+There are 3 paging types to choose from; infinite scroll that automatically loads new posts as the user reaches the bottom of the screen, a load more button that when clicked loads new posts and pagination that displays normal pagination but loads the next page with Ajax. When using pagination the browser back and forward button still operate as expected.
+
+All 3 options deliver a great user experience.
 
 Multiple pagination settings can be created for different post types and templates throughout your site. For example, if you were running a WooCommerce site which contained a blog you could use different pagination types for each.
 
