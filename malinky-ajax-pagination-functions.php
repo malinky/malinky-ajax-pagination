@@ -58,6 +58,12 @@ if ( ! function_exists( 'malinky_ajax_pagination_theme_defaults' ) ) {
     function malinky_ajax_pagination_theme_defaults()
     {
         $theme_defaults = array(         
+            'Twenty Sixteen' => array(
+                'posts_wrapper'         => '.site-main',
+                'post_wrapper'          => '.post',
+                'pagination_wrapper'    => '.navigation',
+                'next_page_selector'    => '.nav-links a.next'
+            ),
             'Twenty Fifteen' => array(
                 'posts_wrapper'         => '.site-main',
                 'post_wrapper'          => '.post',
