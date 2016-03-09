@@ -35,12 +35,11 @@ if ( ! function_exists( 'malinky_ajax_pagination_ajax_loader' ) ) {
     {
         if ( $ajax_loader != 'default' && wp_get_attachment_image( esc_attr( $ajax_loader ) ) != '' ) {
             $img_attr = array(
-                'class' => 'malinky-ajax-pagination-loading',
                 'alt'   => 'AJAX Loader'
             );        
             $ajax_loader_img = wp_get_attachment_image( esc_attr( $ajax_loader ), 'thumbnail', false, $img_attr );
         } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-loading" alt="AJAX Loader" />';
+            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" alt="AJAX Loader" />';
         }
         return $ajax_loader_img;
     }

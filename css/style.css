@@ -1,13 +1,13 @@
 /* ------------------------------------------------------------------------ *
  * Preloader loader.gif.
  * ------------------------------------------------------------------------ */
-.malinky-ajax-pagination-loading {
+div[class^="malinky-ajax-pagination-loading-"] {
     display: none;
     margin: 15px 0;
     text-align: center;
 }
 
-.malinky-ajax-pagination-loading img {
+div[class^="malinky-ajax-pagination-loading-"] img {
     width: 50px;
     height: 50px;
 }
