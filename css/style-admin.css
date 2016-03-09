@@ -31,17 +31,19 @@
 }
 
 .malinky-ajax-pagination .button-delete {
-	background: #d9534f;
-	border-color: #ab2a26;
-	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);	
+    background: #d9534f;
+    border-color: #d43f3a #c03834 #c03834;
+    box-shadow: 0 1px 0 #c03834;
+    color: #fff;
+    text-shadow: 0 -1px 1px #c03834,1px 0 1px #c03834,0 1px 1px #c03834,-1px 0 1px #c03834;	
 }
 
 .malinky-ajax-pagination .button-delete:hover,
 .malinky-ajax-pagination .button-delete:focus,
 .malinky-ajax-pagination .button-delete:active {
-	background: #c54440;
-	border-color: #ab2a26;
-	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);
+    background: #e25752;
+    border-color: #c03834;
+	text-decoration: none;
 }
 
 .malinky-ajax-pagination .submit {
