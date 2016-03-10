@@ -219,7 +219,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'               => '_malinky_ajax_pagination_settings_' . $x,        
                     'option_id'                 => 'theme_defaults',
-                    'option_default'            => 'Twenty Fifteen',
+                    'option_default'            => 'Twenty Sixteen',
                     'option_field_type_options' => malinky_ajax_pagination_theme_default_names(),
                     'option_small'              => __( 'Select from popular themes or overwrite the settings below yourself.', 'malinky-ajax-pagination' )
                 )
@@ -234,7 +234,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'posts_wrapper',
-                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['posts_wrapper'],
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['posts_wrapper'],
                     'option_small'      => __( 'The selector that wraps all of the posts/products.', 'malinky-ajax-pagination' )
                 )
             );
@@ -248,7 +248,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'post_wrapper',
-                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['post_wrapper'],
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['post_wrapper'],
                     'option_small'      => __( 'The selector of an individual post/product.', 'malinky-ajax-pagination' )
                 )
             );
@@ -262,7 +262,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'pagination_wrapper',
-                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['pagination_wrapper'],
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['pagination_wrapper'],
                     'option_small'      => __( 'The selector of the post/product navigation.', 'malinky-ajax-pagination' )
                 )
             );
@@ -276,7 +276,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'next_page_selector',
-                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Fifteen']['next_page_selector'],
+                    'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['next_page_selector'],
                     'option_small'      => __( 'The selector of the navigation next link.', 'malinky-ajax-pagination' )
                 )
             );

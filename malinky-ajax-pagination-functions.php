@@ -42,7 +42,7 @@ if ( ! function_exists( 'malinky_ajax_pagination_ajax_loader' ) ) {
             $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" alt="AJAX Loader" />';
         }
         return $ajax_loader_img;
-    }
+    }  
 
 }
 
