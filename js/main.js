@@ -49,15 +49,22 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                         if ($( malinkySettings[key].posts_wrapper ).length ) {        
                                             // If there is only one pagination on the page that uses these css classes.
                                             if ( $( mapResponse ).find( malinkySettings[key].posts_wrapper ).length == 1 ) {
-
                                                 $( mapResponse ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
-                                                $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                // $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                //SWAP
+                                                // As there is only one it's always the first that is found.
+                                                $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).eq(0).attr( 'data-paginator-count', paginatorCountAjax );
                                                 paginatorCountAjax++;
                                             // If there are multiple paginations on the page that use these css classes.                
                                             } else {
+                                                // Need to count the position in the dom for the eq. Reset each time.
+                                                var positionInDom = 0;
                                                 $( mapResponse ).find( malinkySettings[key].posts_wrapper ).each(function( index ) {
                                                     $(this).attr( 'data-paginator-count', paginatorCountAjax );
-                                                    $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                    //SWAP
+                                                    // $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                    $( malinkySettings[key].pagination_wrapper ).eq(positionInDom).attr( 'data-paginator-count', paginatorCountSetUp );
+                                                    positionInDom++;
                                                     paginatorCountAjax++;
                                                 });
                                             }
@@ -308,14 +315,23 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // If there is only one pagination on the page that uses these css classes.
             if ( $( malinkySettings[key].posts_wrapper ).length == 1 ) {
                 $( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
-                $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                //SWAP
+                // $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                // As there is only one it's always the first that is found.
+                $( malinkySettings[key].pagination_wrapper ).eq(0).attr( 'data-paginator-count', paginatorCountSetUp );
                 paginatorCountSetUp++;
             // If there are multiple paginations on the page that use these css classes.                
             } else {
                 // paginatorCountSetUp will be the same number as paginatorCount.
+                // Need to count the position in the dom for the eq. Reset each time.
+                var positionInDom = 0;
                 $( malinkySettings[key].posts_wrapper ).each(function( index ) {
+                    
                     $(this).attr( 'data-paginator-count', paginatorCountSetUp );
-                    $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                    //SWAP
+                    // $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                    $( malinkySettings[key].pagination_wrapper ).eq(positionInDom).attr( 'data-paginator-count', paginatorCountSetUp );
+                    positionInDom++;
                     paginatorCountSetUp++;
                 });
             }
