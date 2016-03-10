@@ -22,7 +22,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
             mymapNextPageNumber                   = mapNextPageNumber,
             mymapNextPageSelector                 = mapNextPageSelector,
             mymapNextPageUrl                      = mapNextPageUrl,
-            mymapAjaxCount                        = mapAjaxCount;
+            mymapPaginatorCount                   = mapPaginatorCount;
+
+        $( mymapPostsWrapperClass ).attr( 'data-paginator-count', mymapPaginatorCount );
 
         /**
         * Load new posts and append to or replace existing posts depending on paging_type.
@@ -56,7 +58,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                         // If we're on the last page and all posts have been loaded.
                                         if (mymapNextPageNumber > mymapMaxNumPages ) {
                                             // mymapPagingType == 'load-more'.
-                                            $( '#malinky-ajax-pagination-button-' + mymapAjaxCount ).parent().remove();
+                                            $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
 
                                             // mymapPagingType == 'infinite-scroll'.
                                             window.removeEventListener( 'scroll', mapInfiniteScroll );
@@ -65,7 +67,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                         mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
                                     }
 
-                                    if ( mymapPagingType == 'pagination' ) {                                  
+                                    if ( mymapPagingType == 'pagination' ) {
                                         // Remove previously existing posts.
                                         $mapExistingPosts.remove();
 
@@ -103,7 +105,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
          */
         var mapAddLoader = function() {
             // $( mymapPaginationClass ).last().before( '<div class="malinky-ajax-pagination-loading-' + mymapAjaxCount + '">' + mymapAjaxLoader + '</div>' );     
-            $( mymapPaginationClass ).before( '<div class="malinky-ajax-pagination-loading-' + mymapAjaxCount + '">' + mymapAjaxLoader + '</div>' );     
+            $( mymapPaginationClass ).before( '<div class="malinky-ajax-pagination-loading">' + mymapAjaxLoader + '</div>' );     
         };
 
         /**
@@ -113,9 +115,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
          * This function is called using a setTimeout of 750 in the click event handler.
          */
         var mapLoading = function() {
-            $( '.malinky-ajax-pagination-loading-' + mymapAjaxCount ).show();
+            $( '.malinky-ajax-pagination-loading' ).show();
             if ( mymapPagingType == 'load-more' || mymapPagingType == 'infinite-scroll' ) {
-                $( '#malinky-ajax-pagination-button-' + mymapAjaxCount ).text( mymapLoadingMorePostsText );
+                $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).text( mymapLoadingMorePostsText );
             }        
         };
 
@@ -126,9 +128,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
          * Clear timer.
          */
         var mapLoaded = function() {        
-            $( '.malinky-ajax-pagination-loading-' + mymapAjaxCount ).hide();        
+            $( '.malinky-ajax-pagination-loading' ).hide();        
             if ( mymapPagingType == 'load-more' || mymapPagingType == 'infinite-scroll' ) {
-                $( '#malinky-ajax-pagination-button-' + mymapAjaxCount ).text( mymapLoadMoreButtonText );
+                $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).text( mymapLoadMoreButtonText );
             }
             clearTimeout( mapLoadingTimer );
         };
@@ -137,7 +139,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
          * Called if AJAX error.
          */
         var mapFailed = function() {        
-            $( '.malinky-ajax-pagination-loading-' + mymapAjaxCount ).hide();        
+            $( '.malinky-ajax-pagination-loading' ).hide();        
             clearTimeout( mapLoadingTimer );
         };    
 
@@ -200,7 +202,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // MALINKY - Issue above now as removed last() need sample theme where navigation isn't wrapped.
             
             // $( mymapPaginationClass ).last().after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button-' + mymapAjaxCount + '" class="malinky-load-more__button">' + mapLoadMoreButtonText + '</a></div>');
-            $( mymapPaginationClass ).after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button-' + mymapAjaxCount + '" class="malinky-load-more__button">' + mapLoadMoreButtonText + '</a></div>');
+            $( mymapPaginationClass ).after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button" class="malinky-load-more__button" data-paginator-count="' + mymapPaginatorCount + '">' + mapLoadMoreButtonText + '</a></div>');
 
             // Add loader.gif div.
             mapAddLoader();
@@ -208,11 +210,11 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // Remove the existing pagination.
             // Search for mymapPaginationClass but don't remove if child contains #malinky-ajax-pagination-button.
             // This would be the new navigation if the user has set a css class the same as the original mymapPaginationClass.
-            $( mymapPaginationClass + ':not(:has(>a#malinky-ajax-pagination-button-' + mymapAjaxCount + '))' ).remove();
+            $( mymapPaginationClass + ':not(:has(>a#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]))' ).remove();
             
             // Attach a click event handler to the new pagination button.
             // Doesn't use delegated event as this click event is added after the new pagination button is added to the dom.
-            $( '#malinky-ajax-pagination-button-' + mymapAjaxCount).click( function( event ) {
+            $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).click( function( event ) {
                 event.preventDefault();
 
                 // Delay loading text and div.
@@ -269,7 +271,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
     // Check posts_wrapper, post_wrapper, pagination_wrapper and pagination_wrapper exist on the page.
     // If not then loop onto the next key in malinkySettings.
     // Iterating while there are still others.
-    var settingsCount = 0;
+    var paginatorCount = 0;
 
     for ( var key in malinkySettings ) {
         if ($( malinkySettings[key].posts_wrapper ).length && 
@@ -295,7 +297,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
                 mapNextPageUrl                      = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url,
-                mapAjaxCount                        = ++settingsCount;
+                mapPaginatorCount                   = ++paginatorCount;
 
                 // Start.
                 init();
