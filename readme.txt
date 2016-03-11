@@ -87,8 +87,9 @@ For a quicker setup options for popular themes are included. If your theme isn't
 == Changelog ==
 
 = 1.1.0 =
+Add pagination to search page templates.
 Add twenty sixteen theme to list of defaults.
-Updates to admin styling.
+Updates to admin button styles.
 
 = 1.0.0 =
 Ajax Pagination and Infinite Scroll

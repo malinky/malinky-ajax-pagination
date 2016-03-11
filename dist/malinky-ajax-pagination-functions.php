@@ -14,8 +14,8 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
     {
         global $post;
         if ( ! $single ) 
-            return ( is_home() || is_archive() );
-        return ( is_home() || is_archive() || is_single() );
+            return ( is_home() || is_archive() || is_search() );
+        return ( is_home() || is_archive() || is_search() || is_single() );
     }
 
 }
@@ -35,15 +35,14 @@ if ( ! function_exists( 'malinky_ajax_pagination_ajax_loader' ) ) {
     {
         if ( $ajax_loader != 'default' && wp_get_attachment_image( esc_attr( $ajax_loader ) ) != '' ) {
             $img_attr = array(
-                'class' => 'malinky-ajax-pagination-loading',
                 'alt'   => 'AJAX Loader'
             );        
             $ajax_loader_img = wp_get_attachment_image( esc_attr( $ajax_loader ), 'thumbnail', false, $img_attr );
         } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-loading" alt="AJAX Loader" />';
+            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" alt="AJAX Loader" />';
         }
         return $ajax_loader_img;
-    }
+    }  
 
 }
 
@@ -58,6 +57,12 @@ if ( ! function_exists( 'malinky_ajax_pagination_theme_defaults' ) ) {
     function malinky_ajax_pagination_theme_defaults()
     {
         $theme_defaults = array(         
+            'Twenty Sixteen' => array(
+                'posts_wrapper'         => '.site-main',
+                'post_wrapper'          => '.post',
+                'pagination_wrapper'    => '.navigation',
+                'next_page_selector'    => '.nav-links a.next'
+            ),
             'Twenty Fifteen' => array(
                 'posts_wrapper'         => '.site-main',
                 'post_wrapper'          => '.post',
