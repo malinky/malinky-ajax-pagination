@@ -26,7 +26,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapMaxNumPages                      = parseInt( malinkySettings.max_num_pages ),
                 mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
-                mapNextPageUrl                      = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
+                mapNextPageUrl                      = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url,
+                infiniteScrollRunning               = false;
 
             break;
         }
@@ -188,6 +189,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                         scrollTop: $( mapPostsWrapperClass ).offset().top - 150
                                     }, 400 );
                                 }
+                                if ( mapPagingType == 'infinite-scroll' ) {
+                                    infiniteScrollRunning = false;
+                                }
                             }                            
         });
     };
@@ -239,6 +243,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
      * Infinite scroll called with debounce.
      */
     var mapInfiniteScroll = debounce( function() {
+        if (infiniteScrollRunning) return;
+        infiniteScrollRunning = true;
+        
         // After scroll calculate the number of pixels still hidden off the bottom of the screen.
         var mapContentPixelsToDocBottom = $( document ).height() - $( window ).scrollTop() - $( window ).height();
 
