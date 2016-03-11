@@ -70,13 +70,25 @@ class Malinky_Ajax_Pagination
 		// Conditional load, don't include script on singles.
 		if ( malinky_is_blog_page( false ) ) {
 
-			wp_register_script(
-				'malinky-ajax-pagination-main-js',
-				MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/js/main.js',
-				array( 'jquery' ),
-				NULL,
-				true
-			);
+			$malinky_global_settings = get_option( '_malinky_ajax_pagination_global_settings' );
+
+			if ( isset( $malinky_global_settings['multiple_pagination'] ) ) {
+				wp_register_script(
+					'malinky-ajax-pagination-main-js',
+					MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/js/main-multiple.js',
+					array( 'jquery' ),
+					NULL,
+					true
+				);
+			} else {
+				wp_register_script(
+					'malinky-ajax-pagination-main-js',
+					MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/js/main.js',
+					array( 'jquery' ),
+					NULL,
+					true
+				);
+			}
 
 			global $wp_query;
 

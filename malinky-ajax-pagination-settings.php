@@ -174,9 +174,21 @@ class Malinky_Ajax_Pagination_Settings
                 //'malinky_settings_validation_callback' 
             );
 
+            register_setting(
+                'malinky-ajax-pagination-settings-' . $x,
+                '_malinky_ajax_pagination_global_settings'
+            );
+
             /* ------------------------------------------------------------------------ *
              * Sections
              * ------------------------------------------------------------------------ */
+
+            add_settings_section(
+                'multiple_pagination',
+                __( 'Global Settings', 'malinky-ajax-pagination' ),
+                array( $this, 'malinky_ajax_pagination_global_settings_message' ),
+                'malinky-ajax-pagination-settings-' . $x
+            );
 
             add_settings_section(
                 'wrapper_settings',
@@ -235,7 +247,7 @@ class Malinky_Ajax_Pagination_Settings
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'posts_wrapper',
                     'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['posts_wrapper'],
-                    'option_small'      => __( 'The selector that wraps all of the posts/products.', 'malinky-ajax-pagination' )
+                    'option_small'      => __( 'The selector that wraps all of the posts/products.<br /><strong>If using the multiple pagination per page option this must be a parent of the navigation selector.</strong>', 'malinky-ajax-pagination' )
                 )
             );
 
@@ -263,7 +275,7 @@ class Malinky_Ajax_Pagination_Settings
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'pagination_wrapper',
                     'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['pagination_wrapper'],
-                    'option_small'      => __( 'The selector of the post/product navigation.', 'malinky-ajax-pagination' )
+                    'option_small'      => __( 'The selector of the post/product navigation.<br /><strong>If using the multiple pagination per page option this must be a child of the posts selector.</strong>', 'malinky-ajax-pagination' )
                 )
             );
 
@@ -315,7 +327,7 @@ class Malinky_Ajax_Pagination_Settings
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,  
                     'option_id'         => 'infinite_scroll_buffer',
                     'option_default'    => '20',
-                    'option_small'      => __( 'The higher the buffer the earlier, during scrolling, additional posts/products will be loaded.<br /><em>Only used when Infinite Scroll is selected as the paging type.</em>', 'malinky-ajax-pagination' )
+                    'option_small'      => __( 'The higher the buffer the earlier during scrolling additional posts/products will be loaded.<br /><em>Only used when Infinite Scroll is selected as the paging type.</em>', 'malinky-ajax-pagination' )
                 )
             );
 
@@ -369,6 +381,24 @@ class Malinky_Ajax_Pagination_Settings
                 )
             );
 
+            /* ------------------------------------------------------------------------ *
+             * Global Settings
+             * ------------------------------------------------------------------------ */
+
+            add_settings_field(
+                'multiple_pagination',
+                 __( 'Multiple Pagination', 'malinky-ajax-pagination' ),
+                array( $this, 'malinky_settings_checkbox_field' ), 
+                'malinky-ajax-pagination-settings-' . $x,
+                'multiple_pagination',
+                array(
+                    'option_name'               => '_malinky_ajax_pagination_global_settings',        
+                    'option_id'                 => 'multiple_pagination',
+                    'option_default'            => false,
+                    'option_small'              => __( 'Check this option if you want to use ajax pagination more than once on the same page.<br />If using this option ensure that the navigation selector is a child of the posts selector for any page that uses ajax pagaination even those that only contain one set of pagination.', 'malinky-ajax-pagination' )
+                )
+            );            
+
         }
     }
 
@@ -376,9 +406,14 @@ class Malinky_Ajax_Pagination_Settings
      * Section Messages
      * ------------------------------------------------------------------------ */
 
+    public function malinky_ajax_pagination_global_settings_message()
+    {
+        _e( '<p>These global options </p>', 'malinky-ajax-pagination' );
+    }
+
     public function malinky_ajax_pagination_settings_wrapper_message()
     {
-        _e( '<p>These options allow you to set the selectors that contain your posts/products and pagination.<br />If you use a popular theme it may be listed in the Theme Defaults, if not just overwrite the settings.<br /><em>Include a leading . before the selector names.</em></p>', 'malinky-ajax-pagination' );
+        _e( '<p>These options allow you to set the selectors that contain your posts/products and pagination.<br />If you use a popular theme it may be listed in the Theme Defaults; if not just overwrite the settings.<br /><em>Include a leading . before the selector names.</em></p>', 'malinky-ajax-pagination' );
     }
 
     public function malinky_ajax_pagination_settings_pagination_type_message()
@@ -443,6 +478,23 @@ class Malinky_Ajax_Pagination_Settings
     	$html = '';
     	$html .= '<input type="text" id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" placeholder="" size="30" /><br /><small>' . $args['option_small'] . '</small>';
     	echo $html;
+    }
+
+    /**
+     * Output a checkbox field.
+     *
+     * @param   arr $args   option_name,
+     *                      option_id,
+     *                      option_default
+     * 
+     * @return  void
+     */
+    public function malinky_settings_checkbox_field( $args )
+    {
+        $options = get_option( $args['option_name'] );
+        $html = '';
+        $html .= '<input type="checkbox" id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" class="checkbox-margin"' . ( isset( $options[ $args['option_id'] ] ) ? ' checked="checked"' : '' ) . '/><br /><small>' . $args['option_small'] . '</small>';
+        echo $html;
     }
 
     /**
