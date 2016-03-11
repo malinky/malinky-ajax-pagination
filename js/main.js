@@ -169,7 +169,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     history.pushState( null, null, mapNextPageUrl );
 
                                     // Find the new navigation and update, active state, next and prev buttons.
-                                    var $mapNewPagination = $( mapResponse ).find( mapPaginationClass );
+                                    // Use first to ensure pages with top and bottom pagination doesn't replace them twice.
+                                    var $mapNewPagination = $( mapResponse ).find( mapPaginationClass ).first();
                                     $( mapPaginationClass ).replaceWith( $mapNewPagination );
                                 }
 
