@@ -135,7 +135,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                             mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
                                         // Multiple paginations on the page.
                                         } else {
-                                            // Get the max number of pages
+                                            // Get the max number of pages.
                                             var maxNumPagesRegex = new RegExp('paged' + mymapPaginatorCount + 'max\\=' + '[0-9]*');
                                             var maxNumPages = mymapNextPageUrl.match(maxNumPagesRegex)[0];
                                             maxNumPages = maxNumPages.split('=')[1];
