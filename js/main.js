@@ -79,10 +79,11 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                         if ($( mapResponse ).find( malinkySettings[key].posts_wrapper ).length && 
                                             $( mapResponse ).find( malinkySettings[key].post_wrapper ).length && 
                                             $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).length ) {
-                                            // We already know there is only one pagination on the page.
+                                            // Single pagination on the page.
                                             if ( paginatorTotalCountAjax == 1 ) {
                                                 $( mapResponse ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
                                                 $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                            // Multiple paginations on the page.
                                             } else {
                                                 // If there is only one pagination on the page that uses these css classes.
                                                 if ( $( mapResponse ).find( malinkySettings[key].posts_wrapper ).length == 1 ) {
@@ -115,19 +116,43 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     $mapInsertPoint.after( $mapLoadedPosts );
                                 
                                     if ( mymapPagingType == 'infinite-scroll' || mymapPagingType == 'load-more' ) {
+
                                         // Increment page number.
                                         mymapNextPageNumber++;
 
-                                        // If we're on the last page and all posts have been loaded.
-                                        if (mymapNextPageNumber > mymapMaxNumPages ) {
-                                            // mymapPagingType == 'load-more'.
-                                            $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
+                                        // Single pagination on the page.
+                                        if ( paginatorTotalCountAjax == 1 ) {
+                                            // If we're on the last page and all posts have been loaded.
+                                            if (mymapNextPageNumber > mymapMaxNumPages ) {
+                                                // mymapPagingType == 'load-more'.
+                                                $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
 
-                                            // mymapPagingType == 'infinite-scroll'.
-                                            window.removeEventListener( 'scroll', mapInfiniteScroll );
+                                                // mymapPagingType == 'infinite-scroll'.
+                                                window.removeEventListener( 'scroll', mapInfiniteScroll );
+                                            }
+
+                                            // Update next page url.
+                                            mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
+                                        // Multiple paginations on the page.
+                                        } else {
+                                            // Get the max number of pages
+                                            var maxNumPagesRegex = new RegExp('paged' + mymapPaginatorCount + 'max\\=' + '[0-9]*');
+                                            var maxNumPages = mymapNextPageUrl.match(maxNumPagesRegex)[0];
+                                            maxNumPages = maxNumPages.split('=')[1];
+
+                                            // If we're on the last page and all posts have been loaded.
+                                            if (mymapNextPageNumber > maxNumPages ) {
+                                                // mymapPagingType == 'load-more'.
+                                                $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
+
+                                                // mymapPagingType == 'infinite-scroll'.
+                                                window.removeEventListener( 'scroll', mapInfiniteScroll );
+                                            }
+
+                                            // Update next page url.
+                                            var pagedRegex = new RegExp('\\?paged' + mymapPaginatorCount + '\\=' + '[0-9]*');
+                                            mymapNextPageUrl = mymapNextPageUrl.replace( pagedRegex, '?paged' + mymapPaginatorCount + '=' + mymapNextPageNumber );
                                         }
-                                        // Update next page url.
-                                        mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
                                     }
 
                                     if ( mymapPagingType == 'pagination' ) {

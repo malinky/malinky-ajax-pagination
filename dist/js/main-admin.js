@@ -1,1 +1,14 @@
-!function(e){e("#theme_defaults").change(function(a){var i=malinkyAjaxPagingThemeDefaults[e(this).val()];for(formField in i)i.hasOwnProperty(formField)&&e("#"+formField).val(i[formField])})}(jQuery);
+(function( $ ) {
+
+	$( '#theme_defaults' ).change( function( event ) {		
+		// Get chosen theme name using bracket notation as value can contain a space 'Twenty Fifteen'.
+		var mapDefaultTheme = malinkyAjaxPagingThemeDefaults[ $( this ).val() ];
+		
+		for ( formField in mapDefaultTheme ) {
+			if( mapDefaultTheme.hasOwnProperty( formField ) ) {
+				$( '#' + formField ).val( mapDefaultTheme[ formField ] );
+      		}
+		}
+	});
+
+})(jQuery);
