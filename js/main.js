@@ -214,13 +214,15 @@ var MalinkyAjaxPaging = ( function( $ ) {
          */
         var mapInfiniteScroll = debounce( function() {
             if (infiniteScrollRunning) return;
-            infiniteScrollRunning = true;
-
+            
             // After scroll calculate the number of pixels still hidden off the bottom of the screen.
             var mapContentPixelsToDocBottom = $( document ).height() - $( window ).scrollTop() - $( window ).height();
 
             // (Is number of pixels hidden off bottom of screen minus the buffer) less than (the top position of the nav in relation to the bottom of the doc).
             if ( mapContentPixelsToDocBottom - mymapInfiniteScrollBuffer < mymapPaginationClassPixelsToDocBottom ) {
+                // We're scrolling
+                infiniteScrollRunning = true;
+
                 // Delay loading text and div.
                 mapLoading();
 
