@@ -87,6 +87,8 @@ For a quicker setup options for popular themes are included. If your theme isn't
 == Changelog ==
 
 = 1.1.0 =
+Fix duplicate page numbers being loaded when pagination option is used and the page contains more than one set of the same navigation. An example would be the top and bottom of WooCommerce product listings.
+Fix issue where infinite scroll could fire twice and load the same posts.
 Add pagination to search page templates.
 Add twenty sixteen theme to list of defaults.
 Updates to admin button styles.

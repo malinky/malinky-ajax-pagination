@@ -187,9 +187,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
          * Infinite scroll called with debounce.
          */
         var mapInfiniteScroll = debounce( function() {
-
             if (infiniteScrollRunning) return;
-
             infiniteScrollRunning = true;
 
             // After scroll calculate the number of pixels still hidden off the bottom of the screen.
