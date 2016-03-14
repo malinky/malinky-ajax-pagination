@@ -235,7 +235,7 @@ class Malinky_Ajax_Pagination_Settings
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'posts_wrapper',
                     'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['posts_wrapper'],
-                    'option_small'      => __( 'The selector that wraps all of the posts/products.', 'malinky-ajax-pagination' )
+                    'option_small'      => __( 'The selector that wraps all of the posts/products.<br /><strong>If displaying multiple paginations on the same page this must be a parent of the navigation selector.</strong>', 'malinky-ajax-pagination' )
                 )
             );
 
@@ -263,7 +263,7 @@ class Malinky_Ajax_Pagination_Settings
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'pagination_wrapper',
                     'option_default'    => $malinky_ajax_pagination_theme_defaults['Twenty Sixteen']['pagination_wrapper'],
-                    'option_small'      => __( 'The selector of the post/product navigation.', 'malinky-ajax-pagination' )
+                    'option_small'      => __( 'The selector of the post/product navigation.<br /><strong>If displaying multiple paginations on the same page this must be a child of the posts selector.</strong>', 'malinky-ajax-pagination' )
                 )
             );
 
