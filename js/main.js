@@ -94,7 +94,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                                     paginatorCountAjax++;
                                                 // If there are multiple paginations on the page that use these css classes.                
                                                 } else {
-                                                    // Need to count the position in the dom for the eq. Reset each time.
                                                     $( mapResponse ).find( malinkySettings[key].posts_wrapper ).each(function( index ) {
                                                         $(this).attr( 'data-paginator-count', paginatorCountAjax );
                                                         $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
@@ -148,6 +147,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                                 window.removeEventListener( 'scroll', mapInfiniteScroll );
                                             }
 
+                                            // Update next page url.
                                             mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
                                         }
                                     }
@@ -278,46 +278,59 @@ var MalinkyAjaxPaging = ( function( $ ) {
         };
         
         if ( mymapPagingType == 'infinite-scroll' ) {
-            
-            // Add loader.gif div.
-            mapAddLoader();
 
-            // Remove existing pagination.
-            $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).remove();
+            // If the next page href is undefined this means there is no next page.
+            // This is removed this way to be used for multiple pagination.
+            if ( $( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
 
-            // Attach scroll event listener to the window.
-            // See mapInfiniteScroll function.
-            window.addEventListener( 'scroll', mapInfiniteScroll );
+                // Add loader.gif div.
+                mapAddLoader();
+
+                // Remove existing pagination.
+                $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).remove();
+
+                // Attach scroll event listener to the window.
+                // See mapInfiniteScroll function.
+                window.addEventListener( 'scroll', mapInfiniteScroll );
+
+            }
 
         } else if ( mymapPagingType == 'load-more' ) {
-            // Add new pagination button after last mymapPaginationClass.
-            // Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
-            $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).last().after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button" class="malinky-load-more__button" data-paginator-count="' + mymapPaginatorCount + '">' + mapLoadMoreButtonText + '</a></div>');
 
-            // Add loader.gif div.
-            mapAddLoader();
+            // If the next page href is undefined this means there is no next page.
+            // This is removed this way to be used for multiple pagination.
+            if ( $( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
 
-            // Remove the existing pagination.
-            // Search for mymapPaginationClass but don't remove if child contains #malinky-ajax-pagination-button.
-            // This would be the new navigation if the user has set a css class the same as the original mymapPaginationClass.
-            $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ':not(:has(>a#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]))' ).remove();
-            
-            // Attach a click event handler to the new pagination button.
-            // Doesn't use delegated event as this click event is added after the new pagination button is added to the dom.
-            $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).click( function( event ) {
-                event.preventDefault();
+                // Add new pagination button after last mymapPaginationClass.
+                // Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
+                $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).last().after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button" class="malinky-load-more__button" data-paginator-count="' + mymapPaginatorCount + '">' + mapLoadMoreButtonText + '</a></div>');
 
-                // Delay loading text and div.
-                mapLoadingTimer = setTimeout( mapLoading, 750 );
+                // Add loader.gif div.
+                mapAddLoader();
+
+                // Remove the existing pagination.
+                // Search for mymapPaginationClass but don't remove if child contains #malinky-ajax-pagination-button.
+                // This would be the new navigation if the user has set a css class the same as the original mymapPaginationClass.
+                $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ':not(:has(>a#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]))' ).remove();
                 
-                // Load more posts.
-                mapLoadPosts();
-                
-                /**
-                 * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
-                 * setTimeout(mapLoadPosts, 3000);
-                 */
-            }); 
+                // Attach a click event handler to the new pagination button.
+                // Doesn't use delegated event as this click event is added after the new pagination button is added to the dom.
+                $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).click( function( event ) {
+                    event.preventDefault();
+
+                    // Delay loading text and div.
+                    mapLoadingTimer = setTimeout( mapLoading, 750 );
+                    
+                    // Load more posts.
+                    mapLoadPosts();
+                    
+                    /**
+                     * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+                     * setTimeout(mapLoadPosts, 3000);
+                     */
+                });
+
+            }
 
         } else if ( mymapPagingType == 'pagination' ) {
 
@@ -400,12 +413,14 @@ var MalinkyAjaxPaging = ( function( $ ) {
             if ( paginatorTotalCount == 1 ) {
                 $( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
                 $( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                $( malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountSetUp );
             // Multiple paginations on the page.
             } else {
                 // If there is only one pagination on the page that uses these css classes.
                 if ( $( malinkySettings[key].posts_wrapper ).length == 1 ) {
                     $( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
                     $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                    $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountSetUp );
                     paginatorCountSetUp++;
                 // If there are multiple paginations on the page that use these css classes.                
                 } else {
@@ -413,6 +428,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                     $( malinkySettings[key].posts_wrapper ).each(function( index ) {
                         $(this).attr( 'data-paginator-count', paginatorCountSetUp );
                         $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+                        $(this).find( malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountSetUp );
                         paginatorCountSetUp++;
                     });
                 }
