@@ -14,8 +14,8 @@ if ( ! function_exists( 'malinky_is_blog_page' ) ) {
     {
         global $post;
         if ( ! $single ) 
-            return ( is_home() || is_archive() || is_search() );
-        return ( is_home() || is_archive() || is_search() || is_single() );
+            return ( is_home() || is_front_page() || is_archive() || is_search() );
+        return ( is_home() || is_front_page() || is_archive() || is_search() || is_single() );
     }
 
 }
