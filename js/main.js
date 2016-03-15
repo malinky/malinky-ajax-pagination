@@ -89,6 +89,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                                 if ( $( mapResponse ).find( malinkySettings[key].posts_wrapper ).length == 1 ) {
                                                     $( mapResponse ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
                                                     $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                    // Set up a data attribute on the the next page selector generally a.next.
+                                                    $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountAjax );
                                                     paginatorCountAjax++;
                                                 // If there are multiple paginations on the page that use these css classes.                
                                                 } else {
@@ -96,6 +98,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                                     $( mapResponse ).find( malinkySettings[key].posts_wrapper ).each(function( index ) {
                                                         $(this).attr( 'data-paginator-count', paginatorCountAjax );
                                                         $(this).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                                                        // Set up a data attribute on the the next page selector generally a.next.
+                                                        $(this).find( malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountAjax );
                                                         paginatorCountAjax++;
                                                     });
                                                 }
@@ -135,13 +139,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                             mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
                                         // Multiple paginations on the page.
                                         } else {
-                                            // Get the max number of pages.
-                                            var maxNumPagesRegex = new RegExp('paged' + mymapPaginatorCount + 'max\\=' + '[0-9]*');
-                                            var maxNumPages = mymapNextPageUrl.match(maxNumPagesRegex)[0];
-                                            maxNumPages = maxNumPages.split('=')[1];
-
-                                            // If we're on the last page and all posts have been loaded.
-                                            if (mymapNextPageNumber > maxNumPages ) {
+                                            // If the next page href is undefined this means there is no next page, generally the a.next element.
+                                            if ( ! $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
                                                 // mymapPagingType == 'load-more'.
                                                 $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
 
@@ -149,9 +148,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                                 window.removeEventListener( 'scroll', mapInfiniteScroll );
                                             }
 
-                                            // Update next page url.
-                                            var pagedRegex = new RegExp('\\?paged' + mymapPaginatorCount + '\\=' + '[0-9]*');
-                                            mymapNextPageUrl = mymapNextPageUrl.replace( pagedRegex, '?paged' + mymapPaginatorCount + '=' + mymapNextPageNumber );
+                                            mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
                                         }
                                     }
 
@@ -399,10 +396,11 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // Add data attribute count to each of the posts wrapper.
             // Add data attribute count to each of the pagination classes.
             
-            // We already know there is only one pagination on the page.
+            // Single pagination on the page.
             if ( paginatorTotalCount == 1 ) {
                 $( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
                 $( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountSetUp );
+            // Multiple paginations on the page.
             } else {
                 // If there is only one pagination on the page that uses these css classes.
                 if ( $( malinkySettings[key].posts_wrapper ).length == 1 ) {
