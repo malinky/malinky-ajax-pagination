@@ -231,6 +231,19 @@ var MalinkyAjaxPaging = ( function( $ ) {
             clearTimeout( mapLoadingTimer );
         };
 
+        var isScrolledIntoView = function (elem) {
+            var $elem = $(elem);
+            var $window = $(window);
+
+            var docViewTop = $window.scrollTop();
+            var docViewBottom = docViewTop + $window.height();
+
+            var elemTop = $elem.offset().top;
+            var elemBottom = elemTop + $elem.height();
+
+            return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+        }
+
         /**
          * Infinite scroll called with debounce.
          */
@@ -240,8 +253,10 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // After scroll calculate the number of pixels still hidden off the bottom of the screen.
             var mapContentPixelsToDocBottom = $( document ).height() - $( window ).scrollTop() - $( window ).height();
 
-            // (Is number of pixels hidden off bottom of screen minus the buffer) less than (the top position of the nav in relation to the bottom of the doc).
-            if ( mapContentPixelsToDocBottom - mymapInfiniteScrollBuffer < mymapPaginationClassPixelsToDocBottom ) {
+            var postsWrapperClassOffset = $( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).offset().top;
+            var postsWrapperClassHeight = $( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).outerHeight();
+
+            if ( ( $(window).height() + $(window).scrollTop() + mymapInfiniteScrollBuffer ) > ( postsWrapperClassOffset + postsWrapperClassHeight ) ) {
                 // We're scrolling
                 infiniteScrollRunning = true;
 
@@ -254,8 +269,25 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 /**
                  * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
                  * setTimeout(mapLoadPosts, 3000);
-                 */       
+                 */                
             }
+
+            // (Is number of pixels hidden off bottom of screen minus the buffer) less than (the top position of the nav in relation to the bottom of the doc).
+            // if ( mapContentPixelsToDocBottom - mymapInfiniteScrollBuffer < mymapPaginationClassPixelsToDocBottom ) {
+            //     // We're scrolling
+            //     infiniteScrollRunning = true;
+
+            //     // Delay loading text and div.
+            //     mapLoading();
+
+            //     // Load more posts.
+            //     mapLoadPosts();
+
+            //     /**
+            //      * Debug timer. Remove mapLoadPosts call and use setTimeout instead.
+            //      * setTimeout(mapLoadPosts, 3000);
+            //      */       
+            // }
 
         }, 250 );
 
