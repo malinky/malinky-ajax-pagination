@@ -91,3 +91,7 @@ It's possible to query and display multiple sets of posts in the same template a
 
 #### 1.0.0
 * Ajax Pagination and Infinite Scroll
+
+## Thanks
+
+Thanks to [qazbnm456](https://github.com/qazbnm456) for the initial work on the multiple pagaintion code.
