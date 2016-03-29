@@ -1,7 +1,5 @@
 # Wordpress Ajax Pagination
 
-## Description
-
 Load paged content with Ajax throughout your Wordpress site. The plugin works on posts, pages, search, custom post types and WooCommerce. Paginate MULTIPLE sets of posts in the same template.
 
 Download from the [plugin directory](https://wordpress.org/plugins/malinky-ajax-pagination).
@@ -94,4 +92,4 @@ It's possible to query and display multiple sets of posts in the same template a
 
 ## Thanks
 
-Thanks to [qazbnm456](https://github.com/qazbnm456) for the initial work on the multiple pagaintion code.
+Thanks to [qazbnm456](https://github.com/qazbnm456) for the initial work on the multiple pagination code.
