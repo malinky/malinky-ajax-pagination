@@ -1,4 +1,4 @@
-# Wordpress Ajax Paging
+# Wordpress Ajax Pagination
 
 ## Description
 
