@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Choose from infinite scroll, load more button and pagination. Load paged content with Ajax on your posts, pages, search, custom post types and WooCommerce. Paginate MULTIPLE sets of posts in the same template.
+Choose infinite scroll, load more button or pagination. Load paged content with Ajax on your posts, pages, search, custom post types and WooCommerce.
 
 == Description ==
 
@@ -23,7 +23,7 @@ There are 3 pagination types to choose from.
 
 * Once the plugin is installed navigate to Settings -> Ajax Pagination Settings.
 * Select an applicable theme default. If your theme isn't listed then add the correct selectors.
-* There are 4 required selectors which can be found by using your browser developer tools. For additional help watch this *video*.
+* There are 4 required selectors which can be found by using your browser developer tools. For additional help watch this <a href="http://www.wordpress-ajax-pagination.com/set-up" target="_blank">video</a>.
 * 'Posts Selector' The selector that wraps all of the posts/products.
 * 'Post Selector' The selector of an individual post/product.
 * 'Navigation Selector' The selector of the post/product navigation.
@@ -39,7 +39,7 @@ There are 3 pagination types to choose from.
 
 = Multiple Sets of Posts =
 
-It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template files which has been outlined *here*.
+It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template files which has been outlined <a href="http://www.wordpress-ajax-pagination.com/multiple-posts-set-up" target="_blank">here</a>.
 
 = Delete Setting =
 
@@ -89,12 +89,12 @@ It's possible to query and display multiple sets of posts in the same template a
 == Changelog ==
 
 = 1.1.0 =
-Independently paginate through multiple sets of posts.
-Fix duplicate page numbers being loaded when pagination option is used and the page contains more than one set of the same navigation.
-Fix issue where infinite scroll could fire twice and load the same posts.
-Allow the pagaintion of search page templates.
-Add twenty sixteen theme to list of defaults.
-Updates to admin button styles.
+* Independently paginate through multiple sets of posts.
+* Fix duplicate page numbers being loaded when pagination option is used and the page contains more than one set of the same navigation.
+* Fix issue where infinite scroll could fire twice and load the same posts.
+* Allow the pagaintion of search page templates.
+* Add Twenty Sixteen theme to list of defaults.
+* Updates to admin button styles.
 
 = 1.0.0 =
-Ajax Pagination and Infinite Scroll
+* Ajax Pagination and Infinite Scroll
