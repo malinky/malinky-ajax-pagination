@@ -3,7 +3,7 @@ Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
 Tested up to: 4.4.2
-Stable tag: trunk
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,8 @@ There are 3 pagination types to choose from.
 
 * Once the plugin is installed navigate to Settings -> Ajax Pagination Settings.
 * Select an applicable theme default. If your theme isn't listed then add the correct selectors.
-* There are 4 required selectors which can be found by using your browser developer tools. For additional help watch this <a href="http://www.wordpress-ajax-pagination.com/set-up" target="_blank">video</a>.
+* There are 4 required selectors which can be found by using your browser developer tools.
+* For additional help watch this <a href="http://www.wordpress-ajax-pagination.com/set-up" target="_blank">video</a>.
 * 'Posts Selector' The selector that wraps all of the posts/products.
 * 'Post Selector' The selector of an individual post/product.
 * 'Navigation Selector' The selector of the post/product navigation.
@@ -33,13 +34,15 @@ There are 3 pagination types to choose from.
 
 = Multiple Settings =
 
+If for example your site is running WooCommerce and also a Blog then the two templates will probably use different selectors and require a different set up from the admin settings.
+
 * Click 'Add New' at the top of the screen.
 * Repeat the set up steps above and click 'Save Changes'.
 * At the top of the screen you can navigate between your saved settings.
 
 = Multiple Sets of Posts =
 
-It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template files which has been outlined <a href="http://www.wordpress-ajax-pagination.com/multiple-posts-set-up" target="_blank">here</a>.
+It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template file which has been outlined <a href="http://www.wordpress-ajax-pagination.com/multiple-posts-set-up" target="_blank">here</a>.
 
 = Delete Setting =
 

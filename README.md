@@ -14,7 +14,8 @@ There are 3 pagination types to choose from.
 
 * Once the plugin is installed navigate to Settings -> Ajax Pagination Settings.
 * Select an applicable theme default. If your theme isn't listed then add the correct selectors.
-* There are 4 required selectors which can be found by using your browser developer tools. For additional help watch this [video](http://www.wordpress-ajax-pagination.com/set-up).
+* There are 4 required selectors which can be found by using your browser developer tools.
+* For additional help watch this [video](http://www.wordpress-ajax-pagination.com/set-up).
 * 'Posts Selector' The selector that wraps all of the posts/products.
 * 'Post Selector' The selector of an individual post/product.
 * 'Navigation Selector' The selector of the post/product navigation.
@@ -24,13 +25,15 @@ There are 3 pagination types to choose from.
 
 #### Multiple Settings
 
+If for example your site is running WooCommerce and also a Blog then the two templates will probably use different selectors and require a different set up from the admin settings.
+
 * Click 'Add New' at the top of the screen.
 * Repeat the set up steps above and click 'Save Changes'.
 * At the top of the screen you can navigate between your saved settings.
 
 #### Multiple Sets of Posts
 
-It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template files which has been outlined [here](http://www.wordpress-ajax-pagination.com/multiple-posts-set-up).
+It's possible to query and display multiple sets of posts in the same template and independently paginate them. This requires a specific set up within the template file which has been outlined [here](http://www.wordpress-ajax-pagination.com/multiple-posts-set-up).
 
 #### Delete Setting
 
