@@ -31,26 +31,17 @@
 }
 
 .malinky-ajax-pagination .button-delete {
-    background: #d9534f;
-    border-color: #d43f3a #c03834 #c03834;
-    box-shadow: 0 1px 0 #c03834;
-    color: #fff;
-    text-shadow: 0 -1px 1px #c03834,1px 0 1px #c03834,0 1px 1px #c03834,-1px 0 1px #c03834;	
+	background: #d9534f;
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);	
 }
 
 .malinky-ajax-pagination .button-delete:hover,
 .malinky-ajax-pagination .button-delete:focus,
 .malinky-ajax-pagination .button-delete:active {
-    background: #e25752;
-    border-color: #c03834;
-    box-shadow: 0 1px 0 #c03834;
-	text-decoration: none;
-}
-
-.malinky-ajax-pagination .button-delete:active {
-    -webkit-box-shadow: inset 0 2px 0 #e25752;
-    box-shadow: inset 0 2px 0 #e25752;
-    vertical-align: top;
+	background: #c54440;
+	border-color: #ab2a26;
+	box-shadow: inset 0 1px 0 rgba(237,159,156,.5),0 1px 0 rgba(0,0,0,.15);
 }
 
 .malinky-ajax-pagination .submit {
