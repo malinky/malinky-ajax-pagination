@@ -82,6 +82,9 @@ It's possible to query and display multiple sets of posts in the same template a
 
 ## Changelog
 
+#### 1.1.1
+* Allow posts pagination on single templates. An example would be a sidebar showing category posts with a load more button. **NOTE** This is not to paginate through single posts.
+
 #### 1.1.0
 * Independently paginate through multiple sets of posts.
 * Fix duplicate page numbers being loaded when pagination option is used and the page contains more than one set of the same navigation.
