@@ -15,7 +15,7 @@ Load paged content with Ajax throughout your Wordpress site. The plugin works on
 
 Take a look at the <a href="http://www.wordpress-ajax-pagination.com" target="_blank">demo site</a>.
 
-We're looking for websites that use the plugin to feature on a showcase page. If you’re interested please email a link to your website to <a href="mailto:hello@wordpress-ajax-pagination.com?subject=Website Submission">hello@wordpress-ajax-pagination.com</a>
+We're looking for websites that use the plugin to feature on a showcase page. If you’re interested please email a link to your website to <a href="mailto:hello@wordpress-ajax-pagination.com?subject=Website Submission">hello@wordpress-ajax-pagination.com</a>.
 
 There are 3 pagination types to choose from.
 
