@@ -420,11 +420,13 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
             // If there is only one pagination we can find the next_page_selector anywhere on the page.
             if ( paginatorTotalCount == 1 ) {
-                var mapNextPageUrl = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;    
+                // Would like to remove the next_page_url altogether and force this to be set in the navigation href.
+                var mapNextPageUrl = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
             // Otherwise it should be a child of posts wrapper.
             // This also allows the settings to be added into the admin in any order.
             } else {
-                var mapNextPageUrl = $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;    
+                // Would like to remove the next_page_url altogether and force this to be set in the navigation href.
+                var mapNextPageUrl = $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
             }
             
             // Start.

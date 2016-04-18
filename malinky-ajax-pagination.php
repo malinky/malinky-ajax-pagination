@@ -3,7 +3,7 @@
  * Plugin Name: Ajax Pagination and Infinite Scroll
  * Plugin URI: https://github.com/malinky/malinky-ajax-pagination
  * Description: Choose from infinite scroll, load more button and pagination to load paged content with Ajax on your posts, pages, custom post types and WooCommerce. Multiple pagination settings can be created for different post types and templates.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Malinky
  * Author URI: https://github.com/malinky
  * License: GPLv2 or later
@@ -49,7 +49,7 @@ class Malinky_Ajax_Pagination
 	public function malinky_ajax_pagination_styles()
 	{
 		// Conditional load, don't include script on singles.
-		if ( malinky_is_blog_page( false ) ) {
+		if ( malinky_is_blog_page() ) {
 
 			wp_register_style(
 				'malinky-ajax-pagination',
@@ -67,8 +67,8 @@ class Malinky_Ajax_Pagination
 	 */
 	public function malinky_ajax_pagination_scripts()
 	{
-		// Conditional load, don't include script on singles.
-		if ( malinky_is_blog_page( false ) ) {
+		// Conditional load
+		if ( malinky_is_blog_page() ) {
 
 			wp_register_script(
 				'malinky-ajax-pagination-main-js',
@@ -93,7 +93,11 @@ class Malinky_Ajax_Pagination
 			// Settings from the loaded page.
 			$malinky_settings['max_num_pages'] 		= $wp_query->max_num_pages;
 			$malinky_settings['next_page_number'] 	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
-			$malinky_settings['next_page_url'] 		= get_next_posts_page_link();
+			
+			// Allow pagination of posts on a single by passing an empty string.
+			// Otherwise there is a javascript error as get_next_posts_page_link is undefined.
+			// next_page_url won't work though and so the navigation for the posts must contain the href.
+			$malinky_settings['next_page_url'] 		= ( ! is_single() ) ? get_next_posts_page_link() : '';
 
 			wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
 			wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
