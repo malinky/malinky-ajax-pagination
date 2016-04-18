@@ -2,8 +2,8 @@
 Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
-Tested up to: 4.4.2
-Stable tag: 1.1.0
+Tested up to: 4.5
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,8 @@ Choose infinite scroll, load more button or pagination. Load paged content with 
 Load paged content with Ajax throughout your Wordpress site. The plugin works on posts, pages, search, custom post types and WooCommerce. Paginate MULTIPLE sets of posts in the same template.
 
 Take a look at the <a href="http://www.wordpress-ajax-pagination.com" target="_blank">demo site</a>.
+
+We're looking for websites that use the plugin to feature on a showcase page. If you’re interested please email a link to your website to <a href="mailto:hello@wordpress-ajax-pagination.com?subject=Website Submission">hello@wordpress-ajax-pagination.com</a>
 
 There are 3 pagination types to choose from.
 
