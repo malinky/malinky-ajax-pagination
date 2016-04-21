@@ -23,6 +23,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
             mymapNextPageSelector                 = mapNextPageSelector,
             mymapNextPageUrl                      = mapNextPageUrl,
             mymapPaginatorCount                   = mapPaginatorCount,
+            mymapUserCallback                     = mapUserCallback,
             infiniteScrollRunning                 = false;
 
         /**
@@ -164,6 +165,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     if ( mymapPagingType == 'infinite-scroll' ) {
                                         infiniteScrollRunning = false;
                                     }
+                                    // User callback
+                                    eval(mymapUserCallback);
                                 }                            
             });
         };
@@ -416,7 +419,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapMaxNumPages                      = parseInt( malinkySettings.max_num_pages ),
                 mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
-                mapPaginatorCount                   = ++paginatorCount;
+                mapPaginatorCount                   = ++paginatorCount,
+                mapUserCallback                     = malinkySettings[key].callback_function;
 
             // If there is only one pagination we can find the next_page_selector anywhere on the page.
             if ( paginatorTotalCount == 1 ) {
