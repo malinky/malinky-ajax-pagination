@@ -21,6 +21,7 @@ There are 3 pagination types to choose from.
 * 'Navigation Selector' The selector of the post/product navigation.
 * 'Next Selector' The selector of the navigation next link.
 * Choose a pagination type.
+* Add an optional callback.
 * Click 'Save Changes'.
 
 #### Multiple Settings
