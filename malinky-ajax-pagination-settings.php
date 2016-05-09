@@ -423,7 +423,7 @@ class Malinky_Ajax_Pagination_Settings
 
     public function malinky_ajax_pagination_settings_callback_message()
     {
-        _e( '<p>Enter a callback function to call after each set of new posts are loaded.</p>', 'malinky-ajax-pagination' );
+        _e( '<p>Code that is called after each new set of posts are loaded.<br />Receives two variables: loadedPosts (An array of the new posts) and url (The url that was loaded).</p>', 'malinky-ajax-pagination' );
     }
 
     /**
@@ -488,7 +488,7 @@ class Malinky_Ajax_Pagination_Settings
     {
         $options = get_option( $args['option_name'] );
         $html = '';
-        $html .= '<textarea id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" rows="6" cols="50">' . esc_textarea( $options[ $args['option_id'] ] ) . '</textarea><br /><small>' . $args['option_small'] . '</small>';
+        $html .= '<textarea id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" rows="6" cols="50">' . (isset($options[ $args['option_id'] ]) ? $options[ $args['option_id'] ] : '') . '</textarea><br /><small>' . $args['option_small'] . '</small>';
         echo $html;
     }
 

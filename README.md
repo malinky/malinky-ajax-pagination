@@ -45,12 +45,35 @@ It's possible to query and display multiple sets of posts in the same template a
 * The load more button is wrapped in a div with the css class .malinky-load-more and the button has the css class .malinky-load-more__button.
 * Style these in your themes style.css file.
 
+#### Callback
+
+* Add your own Javascript code in the settings which runs after each new set of posts are loaded.
+* Callback receives two variables: loadedPosts (An array of the new posts) and url (The url that was loaded).
+
 #### Additional
 
 * If using infinite scroll there is an option to amend the buffer in pixels before the next set of posts are loaded.
 * If using load more button there is an option to amend the button text.
 * You can choose your own preloader.gif.
 * When using pagination the browser back and forward button still operate as expected.
+
+#### Conditional Loading
+
+By default the plugin loads on every page load. You can stop loading the Javascript and CSS by setting the following constants to false in your wp-config.php file.
+
+    define('MALINKY_LOAD_JS', false);
+    define('MALINKY_LOAD_CSS', false);
+
+Or by adding these two lines to your functions.php
+
+    add_filter( 'malinky_load_js', '__return_false' );
+    add_filter( 'malinky_load_css', '__return_false' );
+
+Once disabled you can load the Javascript and CSS in specific templates by adding the following before the wp_head().
+
+    global $malinky_ajax_pagination;
+    $malinky_ajax_pagination->malinky_ajax_pagination_styles();
+    $malinky_ajax_pagination->malinky_ajax_pagination_scripts();
 
 ## Installation
 
@@ -81,6 +104,10 @@ It's possible to query and display multiple sets of posts in the same template a
 4. Delete pagination setting.
 
 ## Changelog
+
+#### 1.2.0
+* Added callback to run after each set of new posts are loaded.
+* Removed condtional load so plugin now loads on every post type including pages. See conditional loading notes.
 
 #### 1.1.1
 * Allow posts pagination on single templates. An example would be a sidebar showing category posts with a load more button. **NOTE** This is not to paginate through single posts.
