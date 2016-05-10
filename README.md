@@ -6,22 +6,21 @@ Download from the [plugin directory](https://wordpress.org/plugins/malinky-ajax-
 
 There are 3 pagination types to choose from.
 
-* Infinite Scroll - Automatically load new posts when the user reaches the bottom of the screen.
+* Infinite Scroll - Automatically load new posts as the user reaches the bottom of the screen.
 * Load More Button - Click to load new posts.
 * Pagination - Normal pagination but load the next page with Ajax.
 
 #### Set Up
 
-* For additional help watch this [video](http://www.wordpress-ajax-pagination.com/set-up).
 * Once the plugin is installed navigate to Settings -> Ajax Pagination Settings.
 * Select an applicable theme default. If your theme isn't listed then add the correct selectors.
 * There are 4 required selectors which can be found by using your browser developer tools.
+* For additional help watch this [video](http://www.wordpress-ajax-pagination.com/set-up).
 * 'Posts Selector' The selector that wraps all of the posts/products.
 * 'Post Selector' The selector of an individual post/product.
 * 'Navigation Selector' The selector of the post/product navigation.
 * 'Next Selector' The selector of the navigation next link.
 * Choose a pagination type.
-* Add an optional callback.
 * Click 'Save Changes'.
 
 #### Multiple Settings
@@ -46,43 +45,12 @@ It's possible to query and display multiple sets of posts in the same template a
 * The load more button is wrapped in a div with the css class .malinky-load-more and the button has the css class .malinky-load-more__button.
 * Style these in your themes style.css file.
 
-#### Callback
-
-* Add your own Javascript code in the settings which runs after each new set of posts are loaded.
-* Callback receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).
-
-#### Isotope / Masonry
-
-If your using an isotope / masonry layout then you'll need to add a callback in the settings to layout the new posts when they are added. This should be in the following format.
-
-    $('.grid').isotope('reloadItems').isotope();
-
-Change the reference to the class name .grid to your own container element.
-
 #### Additional
 
 * If using infinite scroll there is an option to amend the buffer in pixels before the next set of posts are loaded.
 * If using load more button there is an option to amend the button text.
 * You can choose your own preloader.gif.
-* When using pagination the browser history is maintained allowing your visitors to use the browser back and forward buttons as expected.
-
-#### Conditional Loading
-
-By default the plugin loads on every page load. You can stop loading the Javascript and CSS by setting the following constants to false in your wp-config.php file.
-
-    define('MALINKY_LOAD_JS', false);
-    define('MALINKY_LOAD_CSS', false);
-
-Or by adding these two lines to your functions.php
-
-    add_filter( 'malinky_load_js', '__return_false' );
-    add_filter( 'malinky_load_css', '__return_false' );
-
-Once disabled you can load the Javascript and CSS in specific templates by adding the following before the wp_head().
-
-    global $malinky_ajax_pagination;
-    $malinky_ajax_pagination->malinky_ajax_pagination_styles();
-    $malinky_ajax_pagination->malinky_ajax_pagination_scripts();
+* When using pagination the browser back and forward button still operate as expected.
 
 ## Installation
 
@@ -113,10 +81,6 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 4. Delete pagination setting.
 
 ## Changelog
-
-#### 1.2.0
-* Added callback to run after each set of new posts are loaded.
-* Removed conditional load so plugin now loads on every post type. See conditional loading notes to enqueue only when required.
 
 #### 1.1.1
 * Allow posts pagination on single templates. An example would be a sidebar showing category posts with a load more button. **NOTE** This is not to paginate through single posts.

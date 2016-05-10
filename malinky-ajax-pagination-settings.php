@@ -206,13 +206,6 @@ class Malinky_Ajax_Pagination_Settings
                 'malinky-ajax-pagination-settings-' . $x
             );
 
-            add_settings_section(
-                'callback_settings',
-                __( 'Callback Settings', 'malinky-ajax-pagination' ),
-                array( $this, 'malinky_ajax_pagination_settings_callback_message' ),
-                'malinky-ajax-pagination-settings-' . $x
-            );
-
             /* ------------------------------------------------------------------------ *
              * Wrapper Settings
              * ------------------------------------------------------------------------ */
@@ -376,24 +369,6 @@ class Malinky_Ajax_Pagination_Settings
                 )
             );
 
-            /* ------------------------------------------------------------------------ *
-             * Callback Settings
-             * ------------------------------------------------------------------------ */
-
-            add_settings_field(
-                'callback_function',
-                __( 'Callback', 'malinky-ajax-pagination' ),
-                array( $this, 'malinky_settings_textarea_field' ),
-                'malinky-ajax-pagination-settings-' . $x,
-                'callback_settings',
-                array(
-                    'option_name'       => '_malinky_ajax_pagination_settings_' . $x,    
-                    'option_id'         => 'callback_function',
-                    'option_default'    => '' ,
-                    'option_small'      => __( '', 'malinky-ajax-pagination' )
-                )
-            );
-
         }
     }
 
@@ -419,11 +394,6 @@ class Malinky_Ajax_Pagination_Settings
     public function malinky_ajax_pagination_settings_load_more_button_message()
     {
         _e( '<p>These options allow you to override the button text if Load More Button is selected as the paging type.</p>', 'malinky-ajax-pagination' );
-    }
-
-    public function malinky_ajax_pagination_settings_callback_message()
-    {
-        _e( '<p>Code that is called after each new set of posts are loaded.<br />Receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).</p>', 'malinky-ajax-pagination' );
     }
 
     /**
@@ -473,23 +443,6 @@ class Malinky_Ajax_Pagination_Settings
     	$html = '';
     	$html .= '<input type="text" id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" placeholder="" size="30" /><br /><small>' . $args['option_small'] . '</small>';
     	echo $html;
-    }
-
-    /**
-     * Output a textarea field.
-     *
-     * @param   arr $args   option_name,
-     *                      option_id,
-     *                      option_default
-     * 
-     * @return  void
-     */
-    public function malinky_settings_textarea_field( $args )
-    {
-        $options = get_option( $args['option_name'] );
-        $html = '';
-        $html .= '<textarea id="' . $args['option_id'] . '" name="' . $args['option_name'] . '[' . $args['option_id'] . ']" rows="6" cols="50">' . (isset($options[ $args['option_id'] ]) ? $options[ $args['option_id'] ] : '') . '</textarea><br /><small>' . $args['option_small'] . '</small>';
-        echo $html;
     }
 
     /**
