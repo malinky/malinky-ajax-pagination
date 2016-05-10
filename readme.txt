@@ -2,7 +2,7 @@
 Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
-Tested up to: 4.5
+Tested up to: 4.5.2
 Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,16 +19,16 @@ We're looking for websites that use the plugin to feature on a showcase page. If
 
 There are 3 pagination types to choose from.
 
-* Infinite Scroll - Automatically load new posts as the user reaches the bottom of the screen.
+* Infinite Scroll - Automatically load new posts when the user reaches the bottom of the screen.
 * Load More Button - Click to load new posts.
 * Pagination - Normal pagination but load the next page with Ajax.
 
 = Set Up =
 
+* For additional help watch this <a href="http://www.wordpress-ajax-pagination.com/set-up" target="_blank">video</a>.
 * Once the plugin is installed navigate to Settings -> Ajax Pagination Settings.
 * Select an applicable theme default. If your theme isn't listed then add the correct selectors.
 * There are 4 required selectors which can be found by using your browser developer tools.
-* For additional help watch this <a href="http://www.wordpress-ajax-pagination.com/set-up" target="_blank">video</a>.
 * 'Posts Selector' The selector that wraps all of the posts/products.
 * 'Post Selector' The selector of an individual post/product.
 * 'Navigation Selector' The selector of the post/product navigation.
@@ -64,12 +64,20 @@ It's possible to query and display multiple sets of posts in the same template a
 * Add your own Javascript code in the settings which runs after each new set of posts are loaded.
 * Callback receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).
 
+= Isotope / Masonry =
+
+If your using an isotope / masonry layout then you'll need to add a callback in the settings to layout the new posts when they are added. This should be in the following format.
+
+    $('.grid').isotope('reloadItems').isotope();
+
+Change the reference to the class name .grid to your own container element.
+
 = Additional =
 
 * If using infinite scroll there is an option to amend the buffer in pixels before the next set of posts are loaded.
 * If using load more button there is an option to amend the button text.
 * You can choose your own preloader.gif.
-* When using pagination the browser back and forward button still operate as expected.
+* When using pagination the browser history is maintained allowing your visitors to use the browser back and forward buttons as expected.
 
 = Conditional Loading =
 
@@ -121,7 +129,7 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 = 1.2.0 =
 * Added callback to run after each set of new posts are loaded.
-* Removed condtional load so plugin now loads on every post type including pages. See conditional loading notes.
+* Removed conditional load so plugin now loads on every post type. See conditional loading notes to enqueue only when required.
 
 = 1.1.1 =
 * Allow posts pagination on single templates. An example would be a sidebar showing category posts with a load more button. **NOTE** This is not to paginate through single posts.
