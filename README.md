@@ -134,4 +134,4 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 ## Thanks
 
-Thanks to [qazbnm456](https://github.com/qazbnm456) for the initial work on the multiple pagination code.
+Thanks to [qazbnm456](https://github.com/qazbnm456) for the initial work on multiple pagination code.
