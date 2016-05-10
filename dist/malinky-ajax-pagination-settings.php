@@ -423,7 +423,7 @@ class Malinky_Ajax_Pagination_Settings
 
     public function malinky_ajax_pagination_settings_callback_message()
     {
-        _e( '<p>Code that is called after each new set of posts are loaded.<br />Receives two variables: loadedPosts (An array of the new posts) and url (The url that was loaded).</p>', 'malinky-ajax-pagination' );
+        _e( '<p>Code that is called after each new set of posts are loaded.<br />Receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).</p>', 'malinky-ajax-pagination' );
     }
 
     /**
