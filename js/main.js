@@ -174,9 +174,16 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     // Find the posts from the full html response using mymapPostClass.
                                     var $mapLoadedPosts = $( mapResponse ).find( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ' ' + mymapPostClass );
 
-                                    // Subtract 1 from the next page number to get the just loaded URL.
-                                    var currentUrl = (mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ (mymapNextPageNumber - 1) ));
-                                    
+                                    // Single pagination on the page.
+                                    if ( paginatorTotalCountAjax == 1 ) {
+                                        // Subtract 1 from the next page number to get the just loaded URL.
+                                        var currentUrl = (mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/' + (mymapNextPageNumber - 1) ));
+                                    } else {
+                                        // Subtract 1 from the next page number to get the just loaded URL.
+                                        var currentUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
+                                        var currentUrl = (currentUrl.replace( /\=[0-9]*/, '=' + (currentUrl.substr(currentUrl.lastIndexOf('=')+1)-1) ));
+                                    }
+
                                     // User callback.
                                     // An array of new posts.
                                     // The URL.

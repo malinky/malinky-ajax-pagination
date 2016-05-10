@@ -49,7 +49,7 @@ It's possible to query and display multiple sets of posts in the same template a
 #### Callback
 
 * Add your own Javascript code in the settings which runs after each new set of posts are loaded.
-* Callback receives two variables: loadedPosts (An array of the new posts) and url (The url that was loaded).
+* Callback receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).
 
 #### Additional
 
