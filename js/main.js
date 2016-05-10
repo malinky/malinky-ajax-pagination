@@ -23,6 +23,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
             mymapNextPageSelector                 = mapNextPageSelector,
             mymapNextPageUrl                      = mapNextPageUrl,
             mymapPaginatorCount                   = mapPaginatorCount,
+            mymapUserCallback                     = mapUserCallback,
             infiniteScrollRunning                 = false;
 
         /**
@@ -43,50 +44,12 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
                                     // Add data attribute count to each of the posts wrapper in the response so they match with the originals.
                                     // Add data attribute count to each of the pagination classes in the response so they match with the originals.
-                                    
-                                    // Counter for the data attributes in the response.
-                                    var paginatorCountAjax = 1;
-                                    var paginatorTotalCountAjax = 0;
 
                                     // Determine the total number of paginations on the page.
-                                    // See bottom of script.
-                                    for ( var key in malinkySettings ) {
-                                        if ($( mapResponse ).find( malinkySettings[key].posts_wrapper ).length && 
-                                            $( mapResponse ).find( malinkySettings[key].post_wrapper ).length && 
-                                            $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).length ) {
-                                                paginatorTotalCountAjax++;
-                                        }
-                                    }
+                                    var paginatorTotalCountAjax = mapPaginatorTotalCount(mapResponse);
 
-                                    // See bottom of script.
-                                    for ( var key in malinkySettings ) {
-                                        // console.log(malinkySettings[key].posts_wrapper);
-                                        // console.log(malinkySettings[key].post_wrapper);
-                                        // console.log(malinkySettings[key].pagination_wrapper);
-                                        // console.log(malinkySettings[key].next_page_selector);
-                                        // console.log($( mapResponse ).find( malinkySettings[key].posts_wrapper ).length);
-                                        // console.log($( mapResponse ).find( malinkySettings[key].post_wrapper ).length);
-                                        // console.log($( mapResponse ).find( malinkySettings[key].pagination_wrapper ).length);
-                                        // console.log($( mapResponse ).find( malinkySettings[key].next_page_selector ).length);
-                                        // Don't check for .next_page_selector as it won't exist if paging into the last page.
-                                        if ($( mapResponse ).find( malinkySettings[key].posts_wrapper ).length && 
-                                            $( mapResponse ).find( malinkySettings[key].post_wrapper ).length && 
-                                            $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).length ) {
-                                            // Single pagination on the page.
-                                            if ( paginatorTotalCountAjax == 1 ) {
-                                                $( mapResponse ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
-                                                $( mapResponse ).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
-                                            // Multiple paginations on the page.
-                                            // posts_wrapper must be unique.
-                                            } else {
-                                                $( mapResponse ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
-                                                $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
-                                                // Set up a data attribute on the the next page selector generally a.next.
-                                                $( mapResponse ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountAjax );
-                                                paginatorCountAjax++;
-                                            }
-                                        }
-                                    }
+                                    // Add paginator counts to the ajax reponse.
+                                    mapAddPaginatorCount(mapResponse, paginatorTotalCountAjax);
 
                                     // Find the posts from the full html response using mymapPostClass.
                                     var $mapLoadedPosts = $( mapResponse ).find( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ' ' + mymapPostClass );
@@ -155,7 +118,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     //Oops.
                                     mapFailed();
                                 },
-                complete:       function() {
+                complete:       function(requestObj) {
                                     if ( mymapPagingType == 'pagination' ) {
                                         $( 'body,html' ).animate({
                                             scrollTop: $( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).offset().top - 150
@@ -164,9 +127,101 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     if ( mymapPagingType == 'infinite-scroll' ) {
                                         infiniteScrollRunning = false;
                                     }
+
+                                    // Parse HTML first.
+                                    var mapResponse = $.parseHTML( requestObj.responseText );
+
+                                    // Determine the total number of paginations on the page.
+                                    var paginatorTotalCountAjax = mapPaginatorTotalCount(mapResponse);
+
+                                    // Add paginator counts to the ajax reponse.
+                                    mapAddPaginatorCount(mapResponse, paginatorTotalCountAjax);
+
+                                    // Find the posts from the full html response using mymapPostClass.
+                                    var $mapLoadedPosts = $( mapResponse ).find( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ' ' + mymapPostClass );
+
+                                    // Single pagination on the page.
+                                    if ( paginatorTotalCountAjax == 1 ) {
+                                        // Subtract 1 from the next page number to get the just loaded URL.
+                                        var currentUrl = (mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/' + (mymapNextPageNumber - 1) ));
+                                    } else {
+                                        // Subtract 1 from the next page number to get the just loaded URL.
+                                        var currentUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
+                                        var currentUrl = (currentUrl.replace( /\=[0-9]*/, '=' + (currentUrl.substr(currentUrl.lastIndexOf('=')+1)-1) ));
+                                    }
+
+                                    // User callback.
+                                    // An array of new posts.
+                                    // The URL.
+                                    (function(loadedPosts, url) {
+                                        eval(mymapUserCallback);
+                                    })($mapLoadedPosts, currentUrl);
+                                    
                                 }                            
             });
         };
+
+        /**
+         * Determine the total number of paginations on the page.
+         * See bottom of script.
+         *
+         * @param str repsone Full html response
+         * @return int
+         */
+        var mapPaginatorTotalCount = function(response) {
+            var paginatorTotalCountAjax = 0;
+
+            for ( var key in malinkySettings ) {
+                if ($( response ).find( malinkySettings[key].posts_wrapper ).length && 
+                    $( response ).find( malinkySettings[key].post_wrapper ).length && 
+                    $( response ).find( malinkySettings[key].pagination_wrapper ).length ) {
+                        paginatorTotalCountAjax++;
+                }
+            }
+
+            return paginatorTotalCountAjax;
+        }
+
+        /**
+         * Add paginator counts to the ajax reponse.
+         *
+         * @param str repsone Full html response
+         * @param int paginatorTotalCount Total paginations on the page.
+         */
+        var mapAddPaginatorCount = function(response, paginatorTotalCount) {
+            // Counter for the data attributes in the response.
+            var paginatorCountAjax = 1;
+
+            // See bottom of script.
+            for ( var key in malinkySettings ) {
+                // console.log(malinkySettings[key].posts_wrapper);
+                // console.log(malinkySettings[key].post_wrapper);
+                // console.log(malinkySettings[key].pagination_wrapper);
+                // console.log(malinkySettings[key].next_page_selector);
+                // console.log($( response ).find( malinkySettings[key].posts_wrapper ).length);
+                // console.log($( response ).find( malinkySettings[key].post_wrapper ).length);
+                // console.log($( response ).find( malinkySettings[key].pagination_wrapper ).length);
+                // console.log($( response ).find( malinkySettings[key].next_page_selector ).length);
+                // Don't check for .next_page_selector as it won't exist if paging into the last page.
+                if ($( response ).find( malinkySettings[key].posts_wrapper ).length && 
+                    $( response ).find( malinkySettings[key].post_wrapper ).length && 
+                    $( response ).find( malinkySettings[key].pagination_wrapper ).length ) {
+                    // Single pagination on the page.
+                    if ( paginatorTotalCount == 1 ) {
+                        $( response ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                        $( response ).find( malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                    // Multiple paginations on the page.
+                    // posts_wrapper must be unique.
+                    } else {
+                        $( response ).find( malinkySettings[key].posts_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                        $( response ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].pagination_wrapper ).attr( 'data-paginator-count', paginatorCountAjax );
+                        // Set up a data attribute on the the next page selector generally a.next.
+                        $( response ).find( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'data-paginator-count', paginatorCountAjax );
+                        paginatorCountAjax++;
+                    }
+                }
+            }
+        }
 
         /**
          * Add loader.gif div.
@@ -416,7 +471,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapMaxNumPages                      = parseInt( malinkySettings.max_num_pages ),
                 mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
-                mapPaginatorCount                   = ++paginatorCount;
+                mapPaginatorCount                   = ++paginatorCount,
+                mapUserCallback                     = malinkySettings[key].callback_function;
 
             // If there is only one pagination we can find the next_page_selector anywhere on the page.
             if ( paginatorTotalCount == 1 ) {
