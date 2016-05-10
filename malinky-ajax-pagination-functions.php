@@ -1,27 +1,5 @@
 <?php
 
-if ( ! function_exists( 'malinky_load_css' ) ) {
-
-    /**
-     * Filter used to dequeue styles.
-     */
-    function malinky_load_css() {
-        return apply_filters( 'malinky_load_css', MALINKY_LOAD_CSS );
-    }
-
-}
-
-if ( ! function_exists( 'malinky_load_js' ) ) {
-
-    /**
-     * Filter used to dequeue scripts.
-     */
-    function malinky_load_js() {
-        return apply_filters( 'malinky_load_js', MALINKY_LOAD_JS );
-    }
-
-}
-
 if ( ! function_exists( 'malinky_is_blog_page' ) ) {
 
     /**

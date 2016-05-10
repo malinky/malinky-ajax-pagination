@@ -3,7 +3,7 @@
  * Plugin Name: Ajax Pagination and Infinite Scroll
  * Plugin URI: https://github.com/malinky/malinky-ajax-pagination
  * Description: Choose from infinite scroll, load more button and pagination to load paged content with Ajax on your posts, pages, custom post types and WooCommerce. Multiple pagination settings can be created for different post types and templates.
- * Version: 1.2.0
+ * Version: 1.1.1
  * Author: Malinky
  * Author URI: https://github.com/malinky
  * License: GPLv2 or later
@@ -21,16 +21,6 @@ class Malinky_Ajax_Pagination
 		// No Trailing Slash.
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_URL', plugins_url( basename( plugin_dir_path( __FILE__ ) ) ) );
 
-		// Constant for enqueuing css.
-		if ( ! defined( 'MALINKY_LOAD_CSS' ) ) {
-			define( 'MALINKY_LOAD_CSS', true );
-		}
-
-		// Constand for enqueuing js.
-        if ( ! defined( 'MALINKY_LOAD_JS' ) ) {
-			define( 'MALINKY_LOAD_JS', true );
-		}
-
 	    // Includes.
 		require_once( 'malinky-ajax-pagination-settings.php' );
 		require_once( 'malinky-ajax-pagination-functions.php' );
@@ -39,22 +29,10 @@ class Malinky_Ajax_Pagination
         $this->settings = new Malinky_Ajax_Pagination_Settings();
 
 	    // Enqueue styles and scripts.
-   		add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_enqueue_scripts' ), 99 );
+	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_styles' ), 99 );
+	   	add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_scripts' ), 99 );
 	   	add_action( 'admin_enqueue_scripts', array( $this, 'malinky_ajax_pagination_admin_scripts' ) );
 	   	add_action( 'plugins_loaded', array( $this, 'malinky_ajax_pagination_load_textdomain' ) );
-	}
-
-	/**
-	 * Conditionally enqueue styles.
-	 */
-	function malinky_ajax_pagination_enqueue_scripts()
-	{
-		if ( malinky_load_css() ) {
-			$this->malinky_ajax_pagination_styles();
-		}
-		if ( malinky_load_js() ) {
-			$this->malinky_ajax_pagination_scripts();
-		}		
 	}
 
 	/**
@@ -70,13 +48,18 @@ class Malinky_Ajax_Pagination
 	 */
 	public function malinky_ajax_pagination_styles()
 	{
-		wp_register_style(
-			'malinky-ajax-pagination',
-			MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/css/style.css',
-			false,
-			NULL
-		);
-		wp_enqueue_style( 'malinky-ajax-pagination' );
+		// Conditional load, don't include script on singles.
+		if ( malinky_is_blog_page() ) {
+
+			wp_register_style(
+				'malinky-ajax-pagination',
+				MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/css/style.css',
+				false,
+				NULL
+			);
+			wp_enqueue_style( 'malinky-ajax-pagination' );
+
+		}
 	}
 
 	/**
@@ -84,37 +67,42 @@ class Malinky_Ajax_Pagination
 	 */
 	public function malinky_ajax_pagination_scripts()
 	{
-		wp_register_script(
-			'malinky-ajax-pagination-main-js',
-			MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/js/main.js',
-			array( 'jquery' ),
-			NULL,
-			true
-		);
+		// Conditional load
+		if ( malinky_is_blog_page() ) {
 
-		global $wp_query;
+			wp_register_script(
+				'malinky-ajax-pagination-main-js',
+				MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/js/main.js',
+				array( 'jquery' ),
+				NULL,
+				true
+			);
 
-		// Saved settings.
-		for ( $x = 1; $x <= $this->settings->malinky_ajax_pagination_settings_count_settings(); $x++ ) {
-            $malinky_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
-    	}
+			global $wp_query;
 
-		// Set ajax loader images.
-		foreach ( $malinky_settings as $key => $setting ) {
-			$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
+			// Saved settings.
+			for ( $x = 1; $x <= $this->settings->malinky_ajax_pagination_settings_count_settings(); $x++ ) {
+                $malinky_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
+        	}
+
+			// Set ajax loader images.
+			foreach ( $malinky_settings as $key => $setting ) {
+				$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
+			}
+
+			// Settings from the loaded page.
+			$malinky_settings['max_num_pages'] 		= $wp_query->max_num_pages;
+			$malinky_settings['next_page_number'] 	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
+			
+			// Allow pagination of posts on a single by passing an empty string.
+			// Otherwise there is a javascript error as get_next_posts_page_link is undefined.
+			// next_page_url won't work though and so the navigation for the posts must contain the href.
+			$malinky_settings['next_page_url'] 		= ( ! is_single() ) ? get_next_posts_page_link() : '';
+
+			wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
+			wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
+
 		}
-
-		// Settings from the loaded page.
-		$malinky_settings['max_num_pages'] 		= $wp_query->max_num_pages;
-		$malinky_settings['next_page_number'] 	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
-		
-		// Allow pagination of posts on a single by passing an empty string.
-		// Otherwise there is a javascript error as get_next_posts_page_link is undefined.
-		// next_page_url won't work though and so the navigation for the posts must contain the href.
-		$malinky_settings['next_page_url'] 		= ( ! is_single() ) ? get_next_posts_page_link() : '';
-
-		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
-		wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
 	}
 
 	/**
