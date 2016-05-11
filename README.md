@@ -114,6 +114,9 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 ## Changelog
 
+#### 1.2.1
+* Fix issue where double clicked load more button could fire twice and load the same posts.
+
 #### 1.2.0
 * Added callback to run after each set of new posts are loaded.
 * Removed conditional load so plugin now loads on every post type. See conditional loading notes to enqueue only when required.

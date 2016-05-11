@@ -18,3 +18,7 @@
 .malinky-load-more {
     text-align: center;
 }
+
+.malinky-load-more__button-disable {
+    pointer-events: none;
+}

@@ -3,7 +3,7 @@ Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
 Tested up to: 4.5.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,9 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 4. Delete pagination setting.
 
 == Changelog ==
+
+= 1.2.1 =
+* Fix issue where double clicked load more button could fire twice and load the same posts.
 
 = 1.2.0 =
 * Added callback to run after each set of new posts are loaded.
