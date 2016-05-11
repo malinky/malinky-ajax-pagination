@@ -95,7 +95,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                             // Update next page url.
                                             mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
                                         }
-                                    }
+                                    }                                    
 
                                     if ( mymapPagingType == 'pagination' ) {
                                         // Remove previously existing posts.
@@ -126,6 +126,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     }
                                     if ( mymapPagingType == 'infinite-scroll' ) {
                                         infiniteScrollRunning = false;
+                                    }
+                                    if ( mymapPagingType == 'load-more' ) {
+                                        $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).removeClass('malinky-load-more__button-disable');
                                     }
 
                                     // Parse HTML first.
@@ -355,6 +358,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 // Doesn't use delegated event as this click event is added after the new pagination button is added to the dom.
                 $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).click( function( event ) {
                     event.preventDefault();
+
+                    // Disable button (anchor) so can't be clicked twice.
+                    $(this).addClass('malinky-load-more__button-disable');
 
                     // Delay loading text and div.
                     mapLoadingTimer = setTimeout( mapLoading, 750 );
