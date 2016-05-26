@@ -104,15 +104,6 @@ class Malinky_Ajax_Pagination
 			$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
 		}
 
-		// Settings from the loaded page.
-		$malinky_settings['max_num_pages'] 		= $wp_query->max_num_pages;
-		$malinky_settings['next_page_number'] 	= get_query_var( 'paged' ) > 1 ? get_query_var( 'paged' ) + 1 : 1 + 1;
-		
-		// Allow pagination of posts on a single by passing an empty string.
-		// Otherwise there is a javascript error as get_next_posts_page_link is undefined.
-		// next_page_url won't work though and so the navigation for the posts must contain the href.
-		$malinky_settings['next_page_url'] 		= ( ! is_single() ) ? get_next_posts_page_link() : '';
-
 		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
 		wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
 	}

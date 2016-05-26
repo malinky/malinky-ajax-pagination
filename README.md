@@ -114,6 +114,12 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 ## Changelog
 
+#### 1.3.0
+* Removed the localization of max_num_pages and rewritten the last page selection in main.js.
+* Fix issue where pagination couldn't always find the last page.
+* Fix issue in callback for finding the current url.
+* Fix error before any settings have been saved.
+
 #### 1.2.1
 * Fix issue where double clicked load more button could fire twice and load the same posts.
 
