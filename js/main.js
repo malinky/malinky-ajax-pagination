@@ -18,8 +18,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
             mymapPagingType                       = mapPagingType,
             mymapPostsWrapperClass                = mapPostsWrapperClass,
             mymapPostClass                        = mapPostClass,
-            mymapMaxNumPages                      = mapMaxNumPages,
-            mymapNextPageNumber                   = mapNextPageNumber,
             mymapNextPageSelector                 = mapNextPageSelector,
             mymapNextPageUrl                      = mapNextPageUrl,
             mymapPaginatorCount                   = mapPaginatorCount,
@@ -35,7 +33,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
                     url:        mymapNextPageUrl,
                     dataType:   'html',
                     success:    function( response ) {
-
                                     // Parse HTML first.
                                     var mapResponse = $.parseHTML( response );
 
@@ -64,36 +61,30 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     $mapInsertPoint.after( $mapLoadedPosts );
                                 
                                     if ( mymapPagingType == 'infinite-scroll' || mymapPagingType == 'load-more' ) {
-
-                                        // Increment page number.
-                                        mymapNextPageNumber++;
-
                                         // Single pagination on the page.
                                         if ( paginatorTotalCountAjax == 1 ) {
-                                            // If we're on the last page and all posts have been loaded.
-                                            if (mymapNextPageNumber > mymapMaxNumPages ) {
+                                            // If on last page.
+                                            if ( ! mapIsLastPage( mapResponse, mymapNextPageSelector ) ) {
                                                 // mymapPagingType == 'load-more'.
                                                 $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
-                                                
                                                 // mymapPagingType == 'infinite-scroll'.
                                                 window.removeEventListener( 'scroll', mapInfiniteScroll );
+                                            // Or get next page url.
+                                            } else {
+                                                mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector ).attr( 'href' );
                                             }
-
-                                            // Update next page url.
-                                            mymapNextPageUrl = mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/'+ mymapNextPageNumber );
                                         // Multiple paginations on the page.
                                         } else {
-                                            // If the next page href is undefined this means there is no next page, generally the a.next element.
-                                            if ( ! $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
+                                            // If on last page.
+                                            if ( ! mapIsLastPage( mapResponse, mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ) ) {
                                                 // mymapPagingType == 'load-more'.
                                                 $( '#malinky-ajax-pagination-button[data-paginator-count="' + mymapPaginatorCount + '"]' ).parent().remove();
-
                                                 // mymapPagingType == 'infinite-scroll'.
                                                 window.removeEventListener( 'scroll', mapInfiniteScroll );
+                                            // Or get next page url.
+                                            } else {                                                
+                                                mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
                                             }
-
-                                            // Update next page url.
-                                            mymapNextPageUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
                                         }
                                     }                                    
 
@@ -143,24 +134,13 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     // Find the posts from the full html response using mymapPostClass.
                                     var $mapLoadedPosts = $( mapResponse ).find( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' + ' ' + mymapPostClass );
 
-                                    // Single pagination on the page.
-                                    if ( paginatorTotalCountAjax == 1 ) {
-                                        // Subtract 1 from the next page number to get the just loaded URL.
-                                        var currentUrl = (mymapNextPageUrl.replace( /\/page\/[0-9]*/, '/page/' + (mymapNextPageNumber - 1) ));
-                                    } else {
-                                        // Subtract 1 from the next page number to get the just loaded URL.
-                                        var currentUrl = $( mapResponse ).find( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' );
-                                        var currentUrl = (currentUrl.replace( /\=[0-9]*/, '=' + (currentUrl.substr(currentUrl.lastIndexOf('=')+1)-1) ));
-                                    }
-
                                     // User callback.
                                     // An array of new posts.
-                                    // The URL.
+                                    // The current URL.
                                     (function(loadedPosts, url) {
                                         eval(mymapUserCallback);
-                                    })($mapLoadedPosts, currentUrl);
-                                    
-                                }                            
+                                    })($mapLoadedPosts, this.url);
+                                }
             });
         };
 
@@ -190,6 +170,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
          *
          * @param str repsone Full html response
          * @param int paginatorTotalCount Total paginations on the page.
+         * return void
          */
         var mapAddPaginatorCount = function(response, paginatorTotalCount) {
             // Counter for the data attributes in the response.
@@ -224,6 +205,17 @@ var MalinkyAjaxPaging = ( function( $ ) {
                     }
                 }
             }
+        }
+
+        /**
+         * Check if response is the last page.
+         * 
+         * @param str response Full html response
+         * @param str nextPageSelector
+         * @return int Use 0 length as falsey.
+         */
+        var mapIsLastPage = function(response, nextPageSelector) {
+            return $( response ).find( nextPageSelector ).length;
         }
 
         /**
@@ -461,7 +453,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
             }
 
             // Variables.
-            // max_num_pages, next_page_number, next_page_url aren't part of the settings array.
             var mapAjaxLoader                       = malinkySettings[key].ajax_loader,
                 mapCssLoadMore                      = malinkySettings[key].malinky_load_more,
                 mapCssLoadMoreButton                = malinkySettings[key].malinky_load_more_button,
@@ -474,21 +465,17 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapPagingType                       = malinkySettings[key].paging_type,
                 mapPostsWrapperClass                = malinkySettings[key].posts_wrapper,
                 mapPostClass                        = malinkySettings[key].post_wrapper,
-                mapMaxNumPages                      = parseInt( malinkySettings.max_num_pages ),
-                mapNextPageNumber                   = parseInt( malinkySettings.next_page_number ),
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
                 mapPaginatorCount                   = ++paginatorCount,
                 mapUserCallback                     = malinkySettings[key].callback_function;
 
             // If there is only one pagination we can find the next_page_selector anywhere on the page.
             if ( paginatorTotalCount == 1 ) {
-                // Would like to remove the next_page_url altogether and force this to be set in the navigation href.
-                var mapNextPageUrl = $( malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
+                var mapNextPageUrl = $( malinkySettings[key].next_page_selector ).attr( 'href' );
             // Otherwise it should be a child of posts wrapper.
             // This also allows the settings to be added into the admin in any order.
             } else {
-                // Would like to remove the next_page_url altogether and force this to be set in the navigation href.
-                var mapNextPageUrl = $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'href' ) || malinkySettings.next_page_url;
+                var mapNextPageUrl = $( malinkySettings[key].posts_wrapper + ' ' + malinkySettings[key].next_page_selector ).attr( 'href' );
             }
             
             // Start.
