@@ -97,6 +97,9 @@ class Malinky_Ajax_Pagination
             $malinky_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
     	}
 
+		// If no settings have been saved yet.
+    	if ( ! isset( $malinky_settings ) ) return;
+
 		// Set ajax loader images.
 		foreach ( $malinky_settings as $key => $setting ) {
 			$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
