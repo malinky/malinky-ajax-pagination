@@ -375,18 +375,21 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
             /**
              * Attach a click event handler to the pagination links.
+             * A handler is added to each <a>. This means we can use this as the event.currentTarget to select the href.
+             * Otherwise users may nest elements like arrows inside the <a> which could have triggered the event and
+             * would be the event.target instead.
              * The pagination class is reloaded after a page change to update the page numbers therefore a delegated event is used.
              * This is attached to the document as it's the only item we can be sure to be there on first page load.
              * @link http://api.jquery.com/on/
              */
-            $( document ).on( 'click', mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]', function( event ) {
+            $( document ).on( 'click', mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"] a', function( event ) {
                 event.preventDefault();
 
                 // Delay loading text and div.
                 mapLoadingTimer = setTimeout( mapLoading, 750);
 
                 // Get the url of the clicked link.
-                mymapNextPageUrl = event.target.href;
+                mymapNextPageUrl = event.currentTarget.href;
 
                 mapLoadPosts();
 
