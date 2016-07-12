@@ -452,8 +452,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 paginatorCountSetUp++;
             }
 
-            console.log(malinkySettings[key].load_more_button_text);
-
             // Variables.
             var mapAjaxLoader                       = malinkySettings[key].ajax_loader,
                 mapCssLoadMore                      = malinkySettings[key].malinky_load_more,
@@ -470,8 +468,6 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 mapNextPageSelector                 = malinkySettings[key].next_page_selector,
                 mapPaginatorCount                   = ++paginatorCount,
                 mapUserCallback                     = malinkySettings[key].callback_function;
-
-            console.log(mapLoadMoreButtonText);
 
             // If there is only one pagination we can find the next_page_selector anywhere on the page.
             if ( paginatorTotalCount == 1 ) {
