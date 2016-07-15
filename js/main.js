@@ -500,6 +500,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
 })(jQuery);
 
-jQuery(document).on("sf:ajaxfinish", ".searchandfilter", function(){
+window.setTimeout(function() {
+    console.log('Go Go Go');
     MalinkyAjaxPaging.setUp(); 
-});
+}, 5000)
