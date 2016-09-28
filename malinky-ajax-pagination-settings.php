@@ -9,6 +9,24 @@ class Malinky_Ajax_Pagination_Settings
         // Set up sections and fields.
         add_action( 'admin_init', array( $this, 'malinky_ajax_pagination_settings_init' ) );
     }
+    
+    /**
+     * Return all the settings sets.
+     *
+     */
+    public function malinky_get_settings_sets(){
+        return get_option('_malinky_ajax_pagination_settings');
+    }
+    
+    /**
+     * Return a single settings set, based on its id
+     *
+     */
+    public function malinky_get_settings_set($id){
+        $all_sets = $this->malinky_get_settings_sets();
+        if ( !isset($all_sets[$id] )) return false;
+        return $all_sets[$id];
+    }
 
     /**
      * Return the number of settings pages saved in the database.
