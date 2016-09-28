@@ -58,8 +58,6 @@ class Malinky_Ajax_Pagination
         $current_version = get_option('malinky_ajax_pagination_db');
 
         if(!$current_version){ //install
-
-        }else{ //upgrade
             
         }
 
