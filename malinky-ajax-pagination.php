@@ -20,6 +20,8 @@ class Malinky_Ajax_Pagination
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 		// No Trailing Slash.
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_URL', plugins_url( basename( plugin_dir_path( __FILE__ ) ) ) );
+        // Database version
+        define( 'MALINKY_AJAX_PAGINATION_DB', 131);
 
 		// Constant for enqueuing css.
 		if ( ! defined( 'MALINKY_LOAD_CSS' ) ) {
@@ -37,12 +39,33 @@ class Malinky_Ajax_Pagination
 
         // Instantiate settings object.
         $this->settings = new Malinky_Ajax_Pagination_Settings();
+        
+        // Install or upgrade
+        add_action( 'init' , array($this, 'malinky_ajax_pagination_upgrade'));//install and upgrade
 
 	    // Enqueue styles and scripts.
    		add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_enqueue_scripts' ), 99 );
 	   	add_action( 'admin_enqueue_scripts', array( $this, 'malinky_ajax_pagination_admin_scripts' ) );
 	   	add_action( 'plugins_loaded', array( $this, 'malinky_ajax_pagination_load_textdomain' ) );
 	}
+    
+	/**
+	 * Install or upgrade the plugin
+	 */
+    
+    public function malinky_ajax_pagination_upgrade(){
+        global $wpdb;
+        $current_version = get_option('malinky_ajax_pagination_db');
+
+        if(!$current_version){ //install
+
+        }else{ //upgrade
+            
+        }
+
+        //upgrade DB version
+        update_option('malinky_ajax_pagination_db', MALINKY_AJAX_PAGINATION_DB );//upgrade DB version
+    }
 
 	/**
 	 * Conditionally enqueue styles.
