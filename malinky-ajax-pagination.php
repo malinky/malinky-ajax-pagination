@@ -59,6 +59,24 @@ class Malinky_Ajax_Pagination
 
         if(!$current_version){ //install
             
+            //we were not storing the DB version before v1.3.0
+            //upgrade data from <1.3.0 if any.
+            if ( $rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->options WHERE option_name LIKE '%s'",'_malinky_ajax_pagination_settings_%'), ARRAY_A) ){
+                
+                $new_option = array();
+                
+                foreach($rows as $old_settings_set){
+                    $new_option[] = $old_settings_set;
+                }
+                update_option('_malinky_ajax_pagination_settings',$new_option);
+                
+                //delete old data
+                $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name LIKE '%s'",'_malinky_ajax_pagination_settings_%'));
+                
+            }
+            
+        }else{ //upgrade
+
         }
 
         //upgrade DB version
