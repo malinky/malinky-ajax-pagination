@@ -107,7 +107,8 @@ if ( ! function_exists( 'malinky_ajax_pagination_get_default_loader' ) ) {
      */
     function malinky_ajax_pagination_get_default_loader()
     {
-        return sprintf('<div id="ajax_loader_default" class="ajax_loader">%s</div>','<span class="spin dashicons dashicons-admin-generic"></span>');
+        $icon = apply_filters('malinky_ajax_pagination_get_default_loader_icon','<span class="spin dashicons dashicons-admin-generic"></span>');
+        return sprintf('<div id="ajax_loader_default" class="ajax_loader">%s</div>',$icon);
 
     }
     
