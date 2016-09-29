@@ -22,7 +22,7 @@ function renderMediaUploader( $ ) {
     mapFileFrame.on( 'select', function() {
         // Grab attachment selection and construct a JSON representation.
         var mapAjaxLoader = mapFileFrame.state().get( 'selection' ).first().toJSON();
-        $( '#ajax_loader' ).val( mapAjaxLoader.id );
+        $( '#_malinky_ajax_pagination_settings_ajax_loader' ).val( mapAjaxLoader.id );
         $( '.malinky-ajax-pagination-ajax-loader' ).attr( 'src', mapAjaxLoader.url );
     });
 
