@@ -690,11 +690,11 @@ class Malinky_Ajax_Pagination_Settings
         $html = '';
         $html .= sprintf( '<div id="ajax_loader_default_container" class="%s">%s</div>',
             implode(' ',$ajax_loader_default_container_classes),
-            malinky_ajax_pagination_default_loader() 
+            malinky_ajax_pagination_get_default_loader() 
         );
         $html .= sprintf( '<div id="ajax_loader_custom_container" class="%s">%s</div>',
             implode(' ',$ajax_loader_custom_container_classes),
-            sprintf('<div id="ajax_loader_custom"  class="ajax_loader"><img src="%s" /></div>',malinky_ajax_pagination_loader_image_url( $set_id )) 
+            sprintf('<div id="ajax_loader_custom"  class="ajax_loader"><img src="%s" /></div>',malinky_ajax_pagination_get_loader_image_url( $set_id )) 
         );
         $html .= '<p>' . $link_upload . $link_default . '</p>';
         $html .= '<input type="hidden" id="' . $field_id . '" name="' . $field_name . '" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" /><br /><small>' . $args['option_small'] . '</small>';  
