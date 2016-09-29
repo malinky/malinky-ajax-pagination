@@ -55,7 +55,7 @@ class Malinky_Ajax_Pagination
     
     public function malinky_ajax_pagination_upgrade(){
         global $wpdb;
-        $current_version = get_option('malinky_ajax_pagination_db');
+        $current_version = get_option('_malinky_ajax_pagination_db');
 
         if(!$current_version){ //install
             
@@ -67,8 +67,8 @@ class Malinky_Ajax_Pagination
                 
                 foreach($rows as $set_id=>$old_settings_set){
                     $new_set = $old_settings_set;
-                    $new_set['settings_name'] = sprintf('Paging Settings %d',$set_id);
-                    $new_set['settings_slug'] = sanitize_title( $new_set['settings_name'], 'paging-settings-'.$set_id );
+                    $new_set['set_name'] = sprintf('Paging Settings %d',$set_id);
+                    $new_set['set_slug'] = sanitize_title( $new_set['set_name'], 'paging-settings-'.$set_id );
                     $new_option[] = $new_set;
                 }
                 update_option('_malinky_ajax_pagination_settings',$new_option);
@@ -83,7 +83,7 @@ class Malinky_Ajax_Pagination
         }
 
         //upgrade DB version
-        update_option('malinky_ajax_pagination_db', MALINKY_AJAX_PAGINATION_DB );//upgrade DB version
+        update_option('_malinky_ajax_pagination_db', MALINKY_AJAX_PAGINATION_DB );//upgrade DB version
     }
 
 	/**
