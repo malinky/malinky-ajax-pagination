@@ -89,8 +89,6 @@ class Malinky_Ajax_Pagination_Settings
     public function malinky_pagination_settings_current_set()
     {
         $id = $this->malinky_pagination_settings_current_set_id();
-        echo"toto";
-        print_r($id);die();
         return $this->malinky_get_settings_set($id);
     }
 
@@ -659,8 +657,10 @@ class Malinky_Ajax_Pagination_Settings
         
         $field_id   = sprintf('_malinky_ajax_pagination_settings_%s',$args['option_id']);
         $field_name = sprintf('_malinky_ajax_pagination_settings[%s]',$args['option_id']);
+        $set_id = $this->malinky_pagination_settings_current_set_id();
         $value = $this->malinky_get_settings_set( null,$args['option_id'] );
-        $link_upload_classes = $link_default_classes = array();
+        $link_upload_classes = $link_default_classes = array('separator');
+        $ajax_loader_default_container_classes = $ajax_loader_custom_container_classes = array('ajax_loader_container');
     
         if ( $value != $args['option_default'] && wp_get_attachment_image( esc_attr( $value ) ) != '' ) {
             $img_attr = array(
@@ -668,11 +668,11 @@ class Malinky_Ajax_Pagination_Settings
                 'alt'   => 'AJAX Loader',
             );
             $link_upload_classes[] = 'active';
-            $ajax_loader_img = wp_get_attachment_image( esc_attr( $value ), 'thumbnail', false, $img_attr );
+            $ajax_loader_custom_container_classes[] = 'active';
         } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-ajax-loader" alt="AJAX Loader" />';
             $options = 'default';
             $link_default_classes[] = 'active';
+            $ajax_loader_default_container_classes[] = 'active';
         }
         
         $link_upload = sprintf('<span class="separator"><a href="javascript:;" id="%s" class="%s">%s</a></span>',
@@ -681,17 +681,24 @@ class Malinky_Ajax_Pagination_Settings
             __('Upload AJAX Loader','malinky-ajax-pagination')
         );
         
-        $link_default = sprintf('<span class="separator"><a href="%s" id="%s" class="%s">%s</a></span>',
-            MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif',
+        $link_default = sprintf('<span class="separator"><a href="#" id="%s" class="%s">%s</a></span>',
             $args['option_id'] . '_remove',
             implode(' ',$link_default_classes),
             __('Use Original AJAX Loader','malinky-ajax-pagination')
         );
         
         $html = '';
-        $html .= $ajax_loader_img;
+        $html .= sprintf( '<div id="ajax_loader_default_container" class="%s">%s</div>',
+            implode(' ',$ajax_loader_default_container_classes),
+            malinky_ajax_pagination_default_loader() 
+        );
+        $html .= sprintf( '<div id="ajax_loader_custom_container" class="%s">%s</div>',
+            implode(' ',$ajax_loader_custom_container_classes),
+            sprintf('<div id="ajax_loader_custom"  class="ajax_loader"><img src="%s" /></div>',malinky_ajax_pagination_loader_image_url( $set_id )) 
+        );
         $html .= '<p>' . $link_upload . $link_default . '</p>';
         $html .= '<input type="hidden" id="' . $field_id . '" name="' . $field_name . '" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" /><br /><small>' . $args['option_small'] . '</small>';  
         echo $html;
    }
+
 }

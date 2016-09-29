@@ -78,19 +78,60 @@ if ( ! function_exists( 'malinky_ajax_pagination_ajax_loader' ) ) {
      *
      * @return str
      */
-    function malinky_ajax_pagination_ajax_loader( $ajax_loader )
+    function malinky_ajax_pagination_ajax_loader( $set_id )
     {
-        if ( $ajax_loader != 'default' && wp_get_attachment_image( esc_attr( $ajax_loader ) ) != '' ) {
-            $img_attr = array(
-                'alt'   => 'AJAX Loader'
-            );        
-            $ajax_loader_img = wp_get_attachment_image( esc_attr( $ajax_loader ), 'thumbnail', false, $img_attr );
-        } else {
-            $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" alt="AJAX Loader" />';
-        }
-        return $ajax_loader_img;
-    }  
+        global $malinky_ajax_pagination;
+        
+        $set = $malinky_ajax_pagination->settings->malinky_get_settings_set($set_id);
+        $ajax_loader = $set['ajax_loader'];
 
+       $loader = malinky_ajax_pagination_default_loader();
+        
+       if ( $ajax_loader != 'default'  ) { //&& wp_get_attachment_image( esc_attr( $ajax_loader ) ) != ''
+
+           $ajax_loader_img_url =malinky_ajax_pagination_loader_image_url($set_id);
+           $ajax_loader_img = sprintf('<img src="%s" />',$ajax_loader_img_url);
+           $loader = sprintf('<div id="ajax_loader_custom"  class="ajax_loader">%s</div>',$ajax_loader_img);
+       }
+
+       return $loader;
+        
+    }  
+}
+
+if ( ! function_exists( 'malinky_ajax_pagination_default_loader' ) ) {
+    
+    /**
+     * Return the image URL for a set, if any
+     * @return str
+     */
+    function malinky_ajax_pagination_default_loader()
+    {
+        return sprintf('<div id="ajax_loader_default" class="ajax_loader">%s</div>','<span class="spin dashicons dashicons-admin-generic"></span>');
+
+    }
+    
+}
+
+if ( ! function_exists( 'malinky_ajax_pagination_loader_image_url' ) ) {
+    
+    /**
+     * Return the image URL for a set, if any
+     * @return str
+     */
+    function malinky_ajax_pagination_loader_image_url( $set_id )
+    {
+        global $malinky_ajax_pagination;
+        
+        $set = $malinky_ajax_pagination->settings->malinky_get_settings_set($set_id);
+
+        $ajax_loader = $set['ajax_loader'];
+        if ( !is_numeric($ajax_loader) || !wp_get_attachment_image( esc_attr( $ajax_loader ) ) ) return;
+        $src = wp_get_attachment_image_src( esc_attr( $ajax_loader ), 'thumbnail' );
+        return $src[0];
+
+    }
+    
 }
 
 if ( ! function_exists( 'malinky_ajax_pagination_theme_defaults' ) ) {

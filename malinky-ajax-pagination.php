@@ -139,7 +139,8 @@ class Malinky_Ajax_Pagination
 
 		// Set ajax loader images.
 		foreach ( $all_sets as $loop_key => $loop_set ) {
-			$all_sets[$loop_key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $all_sets[$loop_key]['ajax_loader'] );	
+            $set_id = $loop_set['set-id'];
+			$all_sets[$loop_key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $set_id );	
 		}
         
 		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $all_sets );

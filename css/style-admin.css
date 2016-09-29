@@ -1,3 +1,5 @@
+@import 'style-shared.css';
+
 .malinky-ajax-pagination {
 	margin-top: 20px;
 	padding: 20px 20px 50px 20px;
@@ -40,13 +42,6 @@
 	text-decoration: underline;
 }
 
-.malinky-ajax-pagination-ajax-loader {
-	display: block;
-	width: 80px;
-	height: 80px;
-    margin: 20px 0 20px 0;
-}
-
 .malinky-ajax-pagination .button-delete {
     background: #d9534f;
     border-color: #d43f3a #c03834 #c03834;
@@ -62,6 +57,17 @@
     border-color: #c03834;
     box-shadow: 0 1px 0 #c03834;
 	text-decoration: none;
+}
+
+.ajax_loader_container{
+    display:none;
+}
+.ajax_loader_container.active{
+    display:block;
+}
+
+.ajax_loader{
+    margin:0;
 }
 
 .malinky-ajax-pagination .button-delete:active {
