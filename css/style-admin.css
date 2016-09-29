@@ -14,6 +14,16 @@
 	padding-bottom: 40px;
 }
 
+.malinky-ajax-pagination.postbox #sets-tabs li{
+    display:inline;
+}
+.malinky-ajax-pagination.postbox #sets-tabs li:after{
+    content:" | ";
+}
+.malinky-ajax-pagination.postbox #sets-tabs li:last-child:after {
+    content:"";
+}
+
 .malinky-ajax-pagination a {
 	text-decoration: none;
 }
