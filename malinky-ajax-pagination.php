@@ -65,8 +65,11 @@ class Malinky_Ajax_Pagination
                 
                 $new_option = array();
                 
-                foreach($rows as $old_settings_set){
-                    $new_option[] = $old_settings_set;
+                foreach($rows as $set_id=>$old_settings_set){
+                    $new_set = $old_settings_set;
+                    $new_set['settings_name'] = sprintf('Paging Settings %d',$set_id);
+                    $new_set['settings_slug'] = sanitize_title( $new_set['settings_name'], 'paging-settings-'.$set_id );
+                    $new_option[] = $new_set;
                 }
                 update_option('_malinky_ajax_pagination_settings',$new_option);
                 
