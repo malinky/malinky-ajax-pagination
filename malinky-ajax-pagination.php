@@ -134,20 +134,15 @@ class Malinky_Ajax_Pagination
 			true
 		);
 
-		// Saved settings.
-		for ( $x = 1; $x <= $this->settings->malinky_ajax_pagination_settings_count_settings(); $x++ ) {
-            $malinky_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
-    	}
-
 		// If no settings have been saved yet.
-    	if ( ! isset( $malinky_settings ) ) return;
+        if ( !$all_sets = $this->settings->malinky_get_settings_sets() ) return;
 
 		// Set ajax loader images.
-		foreach ( $malinky_settings as $key => $setting ) {
-			$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
+		foreach ( $all_sets as $loop_key => $loop_set ) {
+			$all_sets[$loop_key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $all_sets[$loop_key]['ajax_loader'] );	
 		}
-
-		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
+        
+		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $all_sets );
 		wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
 	}
 
