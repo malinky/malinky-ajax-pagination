@@ -219,8 +219,8 @@ var MalinkyAjaxPaging = ( function( $ ) {
         }
 
         /**
-         * Add loader.gif div.
-         * Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
+         * Add loader icon.
+         * Use last() as some themes don't wrap navigation and this only adds loader icon once.
          * 
          * MALINKY - Issue above now as removed last() need sample theme where navigation isn't wrapped.
          */
@@ -230,7 +230,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
         /**
          * While new posts are loaded.
-         * Show loader.gif.
+         * Show loader icon.
          * Add loading text to button if condition is true.
          * This function is called using a setTimeout of 750 in the click event handler.
          */
@@ -243,7 +243,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
         /**
          * After new posts have been loaded.
-         * Hide loader.gif.
+         * Hide loader icon.
          * Add loading text to button if condition is true.
          * Clear timer.
          */
@@ -316,9 +316,9 @@ var MalinkyAjaxPaging = ( function( $ ) {
             // This is removed this way to be used for multiple pagination.
             if ( $( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
 
-                // Add loader.gif div.
+                // Add loader icon.
                 mapAddLoader();
-
+                
                 // Remove existing pagination.
                 $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).remove();
 
@@ -335,10 +335,10 @@ var MalinkyAjaxPaging = ( function( $ ) {
             if ( $( mymapNextPageSelector + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).attr( 'href' ) ) {
 
                 // Add new pagination button after last mymapPaginationClass.
-                // Use last() as some themes don't wrap navigation and this only adds loader.gif div once.
+                // Use last() as some themes don't wrap navigation and this only adds loader icon once.
                 $( mymapPaginationClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).last().after('<div class="malinky-load-more"><a href="' + mymapNextPageUrl + '" id="malinky-ajax-pagination-button" class="malinky-load-more__button" data-paginator-count="' + mymapPaginatorCount + '">' + mapLoadMoreButtonText + '</a></div>');
 
-                // Add loader.gif div.
+                // Add loader icon.
                 mapAddLoader();
 
                 // Remove the existing pagination.
@@ -370,7 +370,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
 
         } else if ( mymapPagingType == 'pagination' ) {
 
-            // Add loader.gif div.
+            // Add loader icon.
             mapAddLoader();
 
             /**

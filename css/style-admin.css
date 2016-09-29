@@ -1,3 +1,5 @@
+@import 'style-shared.css';
+
 .malinky-ajax-pagination {
 	margin-top: 20px;
 	padding: 20px 20px 50px 20px;
@@ -14,20 +16,30 @@
 	padding-bottom: 40px;
 }
 
+.malinky-ajax-pagination.postbox #sets-tabs li{
+    display:inline;
+}
+
+.separator:after{
+    content:" | ";
+}
+.separator:last-child:after {
+    content:"";
+}
+
+.malinky-ajax-pagination.postbox #sets-tabs li.add-new-set{
+    font-style:italic;
+}
+
 .malinky-ajax-pagination a {
 	text-decoration: none;
 }
-
-.malinky-ajax-pagination a:hover,
 .malinky-ajax-pagination a.active {
-	text-decoration: underline;
+    font-weight:bold;
 }
 
-.malinky-ajax-pagination-ajax-loader {
-	display: block;
-	width: 80px;
-	height: 80px;
-    margin: 20px 0 20px 0;
+.malinky-ajax-pagination a:hover{
+	text-decoration: underline;
 }
 
 .malinky-ajax-pagination .button-delete {
@@ -45,6 +57,17 @@
     border-color: #c03834;
     box-shadow: 0 1px 0 #c03834;
 	text-decoration: none;
+}
+
+.ajax_loader_container{
+    display:none;
+}
+.ajax_loader_container.active{
+    display:block;
+}
+
+.ajax_loader{
+    margin:0;
 }
 
 .malinky-ajax-pagination .button-delete:active {

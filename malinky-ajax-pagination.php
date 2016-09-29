@@ -20,6 +20,8 @@ class Malinky_Ajax_Pagination
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 		// No Trailing Slash.
 		define( 'MALINKY_AJAX_PAGINATION_PLUGIN_URL', plugins_url( basename( plugin_dir_path( __FILE__ ) ) ) );
+        // Database version
+        define( 'MALINKY_AJAX_PAGINATION_DB', 131);
 
 		// Constant for enqueuing css.
 		if ( ! defined( 'MALINKY_LOAD_CSS' ) ) {
@@ -37,12 +39,52 @@ class Malinky_Ajax_Pagination
 
         // Instantiate settings object.
         $this->settings = new Malinky_Ajax_Pagination_Settings();
+        
+        // Install or upgrade
+        add_action( 'init' , array($this, 'malinky_ajax_pagination_upgrade'));//install and upgrade
 
 	    // Enqueue styles and scripts.
    		add_action( 'wp_enqueue_scripts', array( $this, 'malinky_ajax_pagination_enqueue_scripts' ), 99 );
 	   	add_action( 'admin_enqueue_scripts', array( $this, 'malinky_ajax_pagination_admin_scripts' ) );
 	   	add_action( 'plugins_loaded', array( $this, 'malinky_ajax_pagination_load_textdomain' ) );
 	}
+    
+	/**
+	 * Install or upgrade the plugin
+	 */
+    
+    public function malinky_ajax_pagination_upgrade(){
+        global $wpdb;
+        $current_version = get_option('_malinky_ajax_pagination_db');
+
+        if(!$current_version){ //install
+            
+            //we were not storing the DB version before v1.3.0
+            //upgrade data from <1.3.0 if any.
+            if ( $rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->options WHERE option_name LIKE '%s'",'_malinky_ajax_pagination_settings_%'), ARRAY_A) ){
+                
+                $new_option = array();
+                
+                foreach($rows as $set_id=>$old_settings_set){
+                    $new_set = $old_settings_set;
+                    $new_set['set_name'] = sprintf('Paging Settings %d',$set_id);
+                    $new_set['set_slug'] = sanitize_title( $new_set['set_name'], 'paging-settings-'.$set_id );
+                    $new_option[] = $new_set;
+                }
+                update_option('_malinky_ajax_pagination_settings',$new_option);
+                
+                //delete old data
+                $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name LIKE '%s'",'_malinky_ajax_pagination_settings_%'));
+                
+            }
+            
+        }else{ //upgrade
+
+        }
+
+        //upgrade DB version
+        update_option('_malinky_ajax_pagination_db', MALINKY_AJAX_PAGINATION_DB );//upgrade DB version
+    }
 
 	/**
 	 * Conditionally enqueue styles.
@@ -92,20 +134,16 @@ class Malinky_Ajax_Pagination
 			true
 		);
 
-		// Saved settings.
-		for ( $x = 1; $x <= $this->settings->malinky_ajax_pagination_settings_count_settings(); $x++ ) {
-            $malinky_settings[ $x ] = get_option( '_malinky_ajax_pagination_settings_' . $x );
-    	}
-
 		// If no settings have been saved yet.
-    	if ( ! isset( $malinky_settings ) ) return;
+        if ( !$all_sets = $this->settings->malinky_get_settings_sets() ) return;
 
 		// Set ajax loader images.
-		foreach ( $malinky_settings as $key => $setting ) {
-			$malinky_settings[$key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $malinky_settings[$key]['ajax_loader'] );	
+		foreach ( $all_sets as $loop_key => $loop_set ) {
+            $set_id = $loop_set['set-id'];
+			$all_sets[$loop_key]['ajax_loader'] = malinky_ajax_pagination_ajax_loader( $set_id );	
 		}
-
-		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $malinky_settings );
+        
+		wp_localize_script( 'malinky-ajax-pagination-main-js', 'malinkySettings', $all_sets );
 		wp_enqueue_script( 'malinky-ajax-pagination-main-js' );
 	}
 
