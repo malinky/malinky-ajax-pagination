@@ -52,6 +52,8 @@ class Malinky_Ajax_Pagination_Settings
 
         if (!$set) return;
         
+        $set = apply_filters('malinky_get_settings_set',$set,$set_id);
+        
         if ($option){
             return malinky_get_array_value($option,$set);
         }
