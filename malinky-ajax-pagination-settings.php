@@ -166,16 +166,7 @@ class Malinky_Ajax_Pagination_Settings
         
         ?>
         <div class="wrap">
-            <h1>
-            <?php
-                _e( 'Ajax Pagination Settings', 'malinky-ajax-pagination' ); 
-                $new_id = count( $all_sets ) + 1;
-                $url = admin_url('options-general.php');
-                $url = add_query_arg(array('page'=>'malinky-ajax-pagination-settings','set-id'=>$new_id),$url);
-                printf(' <a href="%s" class="page-title-action">%s</a>',$url,__( 'Add New', 'malinky-ajax-pagination' ));
-            ?>
-               
-            </h1>
+            <h1><?php _e( 'Ajax Pagination Settings', 'malinky-ajax-pagination' );  ?></h1>
             <div class="malinky-ajax-pagination postbox">
                 <?php 
         
@@ -187,12 +178,21 @@ class Malinky_Ajax_Pagination_Settings
 
                             $url = admin_url('options-general.php');
                             $url = add_query_arg(array('page'=>'malinky-ajax-pagination-settings','set-id'=>$set['set-id']),$url);
-                            $classes = array();
+                            $tab_classes = array();
                             if ( $set['set-id'] === $set_id_requested ){
-                                $classes[] = 'active';
+                                $tab_classes[] = 'active';
                             }
-                            printf('<li><a href="%s" class="%s">%s</a></li>',$url,implode(' ',$classes),$this->malinky_set_name($set['set-id']));
+                            printf('<li class="separator"><a href="%s" class="%s">%s</a></li>',$url,implode(' ',$tab_classes),$this->malinky_set_name($set['set-id']));
                         }
+                        //Add New
+                        $new_id = count( $all_sets ) + 1;
+                        $url = admin_url('options-general.php');
+                        $url = add_query_arg(array('page'=>'malinky-ajax-pagination-settings','set-id'=>$new_id),$url);
+                        $new_set_classes = array();
+                        if ( !$this->malinky_get_settings_set($set_id_requested) ) {
+                            $new_set_classes[] = 'active';
+                        }
+                        printf('<li class="separator add-new-set"><a href="%s" class="%s">%s</a></li>',$url,implode(' ',$new_set_classes),__( 'Add New', 'malinky-ajax-pagination' ));
                     ?>
                 </ul>
                 <?php
@@ -660,22 +660,37 @@ class Malinky_Ajax_Pagination_Settings
         $field_id   = sprintf('_malinky_ajax_pagination_settings_%s',$args['option_id']);
         $field_name = sprintf('_malinky_ajax_pagination_settings[%s]',$args['option_id']);
         $value = $this->malinky_get_settings_set( null,$args['option_id'] );
+        $link_upload_classes = $link_default_classes = array();
     
         if ( $value != $args['option_default'] && wp_get_attachment_image( esc_attr( $value ) ) != '' ) {
             $img_attr = array(
                 'class' => 'malinky-ajax-pagination-ajax-loader',
                 'alt'   => 'AJAX Loader',
             );
+            $link_upload_classes[] = 'active';
             $ajax_loader_img = wp_get_attachment_image( esc_attr( $value ), 'thumbnail', false, $img_attr );
         } else {
             $ajax_loader_img = '<img src="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" class="malinky-ajax-pagination-ajax-loader" alt="AJAX Loader" />';
             $options = 'default';
+            $link_default_classes[] = 'active';
         }
+        
+        $link_upload = sprintf('<span class="separator"><a href="javascript:;" id="%s" class="%s">%s</a></span>',
+            $args['option_id'] . '_button',
+            implode(' ',$link_upload_classes),
+            __('Upload AJAX Loader','malinky-ajax-pagination')
+        );
+        
+        $link_default = sprintf('<span class="separator"><a href="%s" id="%s" class="%s">%s</a></span>',
+            MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif',
+            $args['option_id'] . '_remove',
+            implode(' ',$link_default_classes),
+            __('Use Original AJAX Loader','malinky-ajax-pagination')
+        );
         
         $html = '';
         $html .= $ajax_loader_img;
-        $html .= '<p><a href="javascript:;" id="' . $args['option_id'] . '_button' . '">Upload AJAX Loader</a> | ';
-        $html .= '<a href="' . MALINKY_AJAX_PAGINATION_PLUGIN_URL . '/img/loader.gif" id="' . $args['option_id'] . '_remove' . '">Use Original AJAX Loader</a></p>';
+        $html .= '<p>' . $link_upload . $link_default . '</p>';
         $html .= '<input type="hidden" id="' . $field_id . '" name="' . $field_name . '" value="' . ( isset( $options[ $args['option_id'] ] ) ? esc_attr( $options[ $args['option_id'] ] ) : $args['option_default'] )  . '" /><br /><small>' . $args['option_small'] . '</small>';  
         echo $html;
    }

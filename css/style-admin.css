@@ -17,19 +17,26 @@
 .malinky-ajax-pagination.postbox #sets-tabs li{
     display:inline;
 }
-.malinky-ajax-pagination.postbox #sets-tabs li:after{
+
+.separator:after{
     content:" | ";
 }
-.malinky-ajax-pagination.postbox #sets-tabs li:last-child:after {
+.separator:last-child:after {
     content:"";
+}
+
+.malinky-ajax-pagination.postbox #sets-tabs li.add-new-set{
+    font-style:italic;
 }
 
 .malinky-ajax-pagination a {
 	text-decoration: none;
 }
-
-.malinky-ajax-pagination a:hover,
 .malinky-ajax-pagination a.active {
+    font-weight:bold;
+}
+
+.malinky-ajax-pagination a:hover{
 	text-decoration: underline;
 }
 

@@ -24,6 +24,9 @@ function renderMediaUploader( $ ) {
         var mapAjaxLoader = mapFileFrame.state().get( 'selection' ).first().toJSON();
         $( '#_malinky_ajax_pagination_settings_ajax_loader' ).val( mapAjaxLoader.id );
         $( '.malinky-ajax-pagination-ajax-loader' ).attr( 'src', mapAjaxLoader.url );
+        $( '#ajax_loader_button').addClass('active');
+        $( '#ajax_loader_remove').removeClass('active');
+        console.log("titi");
     });
 
     // Open the media uploader.
@@ -43,6 +46,8 @@ function renderMediaUploader( $ ) {
         event.preventDefault();
         $( '.malinky-ajax-pagination-ajax-loader' ).attr( 'src', $( this ).attr( 'href' ) );
         $( '#ajax_loader' ).val( 'default' );
+        $( '#ajax_loader_button').removeClass('active');
+        $( '#ajax_loader_remove').addClass('active');
     });    
     
 })(jQuery);
