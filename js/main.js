@@ -32,6 +32,11 @@ var MalinkyAjaxPaging = ( function( $ ) {
                     type:       'GET',
                     url:        mymapNextPageUrl,
                     dataType:   'html',
+                    beforeSend: function() {
+                                    // Trigger event before we load the posts.
+                                    var malinkyLoadPostsStartEvent = new CustomEvent('malinkyLoadPostsStart');
+                                    document.dispatchEvent(malinkyLoadPostsStartEvent);
+                                },
                     success:    function( response ) {
                                     // Parse HTML first.
                                     var mapResponse = $.parseHTML( response );
@@ -105,11 +110,15 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                     mapLoaded();
 
                                 },
-                error:          function( req, status ) {
+                    error:      function( req, status ) {
                                     //Oops.
                                     mapFailed();
                                 },
-                complete:       function(requestObj) {
+                    complete:   function(requestObj) {
+                                    // Trigger event before after the posts are loaded
+                                    var malinkyloadPostsCompleteEvent = new CustomEvent('malinkyLoadPostsComplete');
+                                    document.dispatchEvent(malinkyloadPostsCompleteEvent);
+
                                     if ( mymapPagingType == 'pagination' ) {
                                         $( 'body,html' ).animate({
                                             scrollTop: $( mymapPostsWrapperClass + '[data-paginator-count="' + mymapPaginatorCount + '"]' ).offset().top - 150
@@ -309,7 +318,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 if ( callNow ) func.apply( context, args );
             };
         };
-        
+
         if ( mymapPagingType == 'infinite-scroll' ) {
 
             // If the next page href is undefined this means there is no next page.
@@ -488,6 +497,10 @@ var MalinkyAjaxPaging = ( function( $ ) {
                 
                 // Init each match.
                 init(mapVars);
+
+                // Trigger event once initialized.
+                var malinkyPaginationInitializedEvent = new CustomEvent('malinkyPaginationInitialized');
+                document.dispatchEvent(malinkyPaginationInitializedEvent);
             }
         }
 
@@ -502,3 +515,19 @@ var MalinkyAjaxPaging = ( function( $ ) {
     }
 
 })(jQuery);
+
+// IE CustomEvent polyfill
+(function () {
+  if ( typeof window.CustomEvent === "function" ) return false;
+
+  function CustomEvent ( event, params ) {
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    var evt = document.createEvent( 'CustomEvent' );
+    evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+    return evt;
+   }
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();
