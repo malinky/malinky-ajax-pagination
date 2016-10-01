@@ -357,7 +357,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,
                     'option_id'         => 'load_more_button_text',
-                    'option_default'    => 'Load More Posts',
+                    'option_default'    => __( 'Load More Posts', 'malinky-ajax-pagination' ),
                     'option_small'      => __( 'Change the button text.', 'malinky-ajax-pagination' )
                 )
             );
@@ -371,7 +371,7 @@ class Malinky_Ajax_Pagination_Settings
                 array(
                     'option_name'       => '_malinky_ajax_pagination_settings_' . $x,    
                     'option_id'         => 'loading_more_posts_text',
-                    'option_default'    => 'Loading...' ,
+                    'option_default'    => __( 'Loading...', 'malinky-ajax-pagination' ),
                     'option_small'      => __( 'Change the text that is displayed on the button while new posts/products are being loaded.', 'malinky-ajax-pagination' )
                 )
             );
