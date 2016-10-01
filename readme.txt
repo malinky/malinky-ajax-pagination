@@ -72,6 +72,30 @@ This is useful if you run any other javascript / ajax on the page, for example f
 * Add your own Javascript code in the settings which runs after each new set of posts are loaded.
 * Callback receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).
 
+= Custom Events =
+
+There are 3 custom events that are triggered. Bind to these events to perform your own actions.
+
+* malinkyPaginationInitialized. Triggered after initialization.
+
+    `document.addEventListener('malinkyPaginationInitialized', function(e) {
+      console.log('PaginationInitialized');
+    });`
+
+* malinkyLoadPostsStart. Triggered before new posts are loaded.
+
+    `document.addEventListener('malinkyLoadPostsStart', function(e) {
+      console.log('LoadPostsStart');
+    });`
+
+* malinkyLoadPostsComplete. Triggered after new posts are loaded.
+
+    `document.addEventListener('malinkyLoadPostsComplete', function(e) {
+      console.log('LoadPostsComplete');
+    });`
+
+* Events only function when using a single set of pagination on a page.
+
 = Isotope / Masonry =
 
 If your using an isotope / masonry layout then you'll need to add a callback in the settings to layout the new posts when they are added. This should be in the following format.
@@ -137,6 +161,7 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 = 2.0.0 =
 * Added a javascript function that allows the plugin to be initialized at anytime. This is useful if you need to run additional javascript following the initial page load.
+* Added 3 custom events that fire during stages of the pagination.
 * Fix issue where pagination clicks didn't trigger the correct target.
 
 = 1.3.0 =
