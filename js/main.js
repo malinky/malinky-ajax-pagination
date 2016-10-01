@@ -502,8 +502,3 @@ var MalinkyAjaxPaging = ( function( $ ) {
     }
 
 })(jQuery);
-
-window.setTimeout(function() {
-    console.log('Go Go Go');
-    MalinkyAjaxPaging.setUp(); 
-}, 5000)
