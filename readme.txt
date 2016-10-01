@@ -2,8 +2,8 @@
 Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
-Tested up to: 4.5.2
-Stable tag: 1.3.0
+Tested up to: 4.6.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,22 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 4. Delete pagination setting.
 
 == Changelog ==
+
+= 2.0.0 =
+
+* Fix issue where pagination clicks didn't trigger the correct target.
+
+= 1.3.0 =
+* Removed the localization of max_num_pages and rewritten the last page selection in main.js.
+* Fix issue where pagination couldn't always find the last page.
+* Fix issue in callback for finding the current url.
+* Fix error before any settings have been saved.
+
+= 1.3.0 =
+* Removed the localization of max_num_pages and rewritten the last page selection in main.js.
+* Fix issue where pagination couldn't always find the last page.
+* Fix issue in callback for finding the current url.
+* Fix error before any settings have been saved.
 
 = 1.2.2 =
 * Fix issue where pagination couldn't always find the last page.

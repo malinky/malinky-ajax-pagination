@@ -3,7 +3,7 @@
  * Plugin Name: Ajax Pagination and Infinite Scroll
  * Plugin URI: https://github.com/malinky/malinky-ajax-pagination
  * Description: Choose from infinite scroll, load more button and pagination to load paged content with Ajax on your posts, pages, custom post types and WooCommerce. Multiple pagination settings can be created for different post types and templates.
- * Version: 1.3.0
+ * Version: 2.0.0
  * Author: Malinky
  * Author URI: https://github.com/malinky
  * License: GPLv2 or later
