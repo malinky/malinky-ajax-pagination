@@ -2,8 +2,8 @@
 Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
-Tested up to: 4.5.2
-Stable tag: 1.3.0
+Tested up to: 4.6.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,10 +59,42 @@ It's possible to query and display multiple sets of posts in the same template a
 * The load more button is wrapped in a div with the css class .malinky-load-more and the button has the css class .malinky-load-more__button.
 * Style these in your themes style.css file.
 
+= Initialization (Setup) =
+
+The plugin is initialized when the page first loads and the pagination is then updated to use Ajax. If you need to reinitialize the plugin at anytime call the folowing function in your javascript.
+
+    MalinkyAjaxPaging.setUp();
+
+This is useful if you run any other javascript / ajax on the page, for example filtering on an ecommerce site.
+
 = Callback =
 
 * Add your own Javascript code in the settings which runs after each new set of posts are loaded.
 * Callback receives two parameters: loadedPosts (An array of the new posts) and url (The url that was loaded).
+
+= Custom Events =
+
+There are 3 custom events that are triggered. Bind to these events to perform your own actions.
+
+* malinkyPaginationInitialized. Triggered after initialization.
+
+    `document.addEventListener('malinkyPaginationInitialized', function(e) {
+      console.log('PaginationInitialized');
+    });`
+
+* malinkyLoadPostsStart. Triggered before new posts are loaded.
+
+    `document.addEventListener('malinkyLoadPostsStart', function(e) {
+      console.log('LoadPostsStart');
+    });`
+
+* malinkyLoadPostsComplete. Triggered after new posts are loaded.
+
+    `document.addEventListener('malinkyLoadPostsComplete', function(e) {
+      console.log('LoadPostsComplete');
+    });`
+
+* Events only function when using a single set of pagination on a page.
 
 = Isotope / Masonry =
 
@@ -126,6 +158,23 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 4. Delete pagination setting.
 
 == Changelog ==
+
+= 2.0.0 =
+* Added a javascript function that allows the plugin to be initialized at anytime. This is useful if you need to run additional javascript following the initial page load.
+* Added 3 custom events that fire during stages of the pagination.
+* Fix issue where pagination clicks didn't trigger the correct target.
+
+= 1.3.0 =
+* Removed the localization of max_num_pages and rewritten the last page selection in main.js.
+* Fix issue where pagination couldn't always find the last page.
+* Fix issue in callback for finding the current url.
+* Fix error before any settings have been saved.
+
+= 1.3.0 =
+* Removed the localization of max_num_pages and rewritten the last page selection in main.js.
+* Fix issue where pagination couldn't always find the last page.
+* Fix issue in callback for finding the current url.
+* Fix error before any settings have been saved.
 
 = 1.2.2 =
 * Fix issue where pagination couldn't always find the last page.
