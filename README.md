@@ -114,6 +114,9 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 
 ## Changelog
 
+#### 2.0.0
+* Fix issue where pagination clicks didn't trigger the correct target.
+
 #### 1.3.0
 * Removed the localization of max_num_pages and rewritten the last page selection in main.js.
 * Fix issue where pagination couldn't always find the last page.
