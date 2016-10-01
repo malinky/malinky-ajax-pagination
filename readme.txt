@@ -59,6 +59,14 @@ It's possible to query and display multiple sets of posts in the same template a
 * The load more button is wrapped in a div with the css class .malinky-load-more and the button has the css class .malinky-load-more__button.
 * Style these in your themes style.css file.
 
+= Initialization (Setup) =
+
+The plugin is initialized when the page first loads and the pagination is then updated to use Ajax. If you need to reinitialize the plugin at anytime call the folowing function in your javascript.
+
+    MalinkyAjaxPaging.setUp();
+
+This is useful if you run any other javascript / ajax on the page, for example filtering on an ecommerce site.
+
 = Callback =
 
 * Add your own Javascript code in the settings which runs after each new set of posts are loaded.
@@ -128,7 +136,7 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 == Changelog ==
 
 = 2.0.0 =
-
+* Added a javascript function that allows the plugin to be initialized at anytime. This is useful if you need to run additional javascript following the initial page load.
 * Fix issue where pagination clicks didn't trigger the correct target.
 
 = 1.3.0 =
