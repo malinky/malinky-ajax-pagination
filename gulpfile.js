@@ -10,20 +10,6 @@ var minifyCSS       = require('gulp-minify-css');
 var runSequence     = require('run-sequence');
 var uglify          = require('gulp-uglify');
 
-/*
-Browser List for Autoprefixer https://github.com/ai/browserslist
-https://www.npmjs.com/package/del
-https://github.com/sindresorhus/del
-https://www.npmjs.com/package/gulp-minify-css
-https://github.com/jonathanepollack/gulp-minify-css
-https://www.npmjs.com/package/run-sequence
-https://github.com/OverZealous/run-sequence
-https://www.npmjs.com/package/gulp-uglify
-https://github.com/terinjokes/gulp-uglify
-https://github.com/terinjokes/gulp-uglify/issues/56
-*/
-
-
 /* ------------------------------------------------------------------------ *
  * Dist
  * 
@@ -42,7 +28,6 @@ gulp.task('dist-clean', function () {
     del('dist/*');
 });
 
-
 /**
   * Move root .php files.
   */
@@ -50,7 +35,6 @@ gulp.task('dist-move-files', function() {
     return gulp.src(['*.php', 'readme.txt'])
         .pipe(gulp.dest('dist'));
 });
-
 
 /**
   * Move root directories and their contents.
@@ -62,7 +46,6 @@ gulp.task('dist-move-dir', function() {
         .pipe(gulp.dest('dist'));
 });
 
-
 /**
  * Minify CSS, Autoprefix.
  */
@@ -73,7 +56,6 @@ gulp.task('dist-styles', function() {
     .pipe(gulp.dest('dist/css'));
 });
 
-
 /**
  * Minify JS.
  */
@@ -82,7 +64,6 @@ gulp.task('dist-scripts', function() {
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 });
-
 
 /**
  * Set up dist task.
@@ -94,4 +75,4 @@ gulp.task('dist', function() {
                 'dist-styles', 
                 'dist-scripts'
             );
-})
+});
