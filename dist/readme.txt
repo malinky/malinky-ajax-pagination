@@ -2,8 +2,8 @@
 Contributors: malinkymedia
 Tags: admin, AJAX, ajax pagination, back, custom post types, forward, history, infinite, infinite scroll, infinite scrolling, load more, load more button, navigation, next, options, page, pages, pagination, paging, post types, post, posts, previous, scroll, scroll to top
 Requires at least: 3.6.0
-Tested up to: 4.6.1
-Stable tag: 2.0.0
+Tested up to: 4.7.2
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,10 @@ Once disabled you can load the Javascript and CSS in specific templates by addin
 4. Delete pagination setting.
 
 == Changelog ==
+
+= 2.0.1 =
+
+* Fix custom event IE bug.
 
 = 2.0.0 =
 * Added a javascript function that allows the plugin to be initialized at anytime. This is useful if you need to run additional javascript following the initial page load.
