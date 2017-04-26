@@ -56,7 +56,7 @@ var MalinkyAjaxPaging = ( function( $ ) {
                                 },
                     success:    function( response ) {
                                     // Parse HTML first.
-                                    var mapResponse = $.parseHTML( response );
+                                    var mapResponse = $('<container>').append($.parseHTML( response ));
 
                                     // Find the post wrappers.
                                     var $postsWrapperClass = $( mapResponse ).find( mymapPostsWrapperClass );
